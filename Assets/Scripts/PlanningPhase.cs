@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -31,8 +31,8 @@ public class PlanningPhase : MonoBehaviour {
 
 		AlianResources ar = new AlianResources ();
 		if (ar.Initiate ()) {
-			List<Candidate> candidates = ar.GetCandidatesList ();
-			foreach (Candidate c in candidates) {
+			List<Employee> candidates = ar.GetCandidatesList ();
+			foreach (Employee c in candidates) {
 				c.Print ();
 				ar.HireEmployee(c.name);
 			}

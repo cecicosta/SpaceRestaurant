@@ -6,11 +6,22 @@ public class Ingredient{
 	public Ingredient(){
 		available = true;
 	}
+	public Ingredient(Ingredient i){
+		name = i.name;
+		code = i.code;
+		description = i.description;
+		cost = i.cost;
+		satisf_bonus = i.satisf_bonus;
+		aquired_day = i.aquired_day;
+		available = i.available;
+	}
+
 	public string name;
 	public string code;
 	public string description;
-	public int cost;
+	public double cost;
 	public int satisf_bonus;
+	public int aquired_day;
 	public bool available;
 }
 
@@ -35,10 +46,39 @@ public class IngredientsProvider {
 		Ingredient ingredient = new Ingredient();
 		ingredient.name = fields [0];
 		ingredient.code = fields [1];
-		System.Int32.TryParse (fields [2], out ingredient.cost);
+		System.Double.TryParse (fields [2], out ingredient.cost);
 		System.Int32.TryParse (fields [3], out ingredient.satisf_bonus);
 		ingredient.description = fields [4];
 		ingredients.Add (ingredient);
+	}
+
+
+	//Returns a copy of the employees list
+	public List<Ingredient> GetIngredientsList(){
+		List<Ingredient> copy = new List<Ingredient>();
+		foreach (Ingredient i in ingredients) {
+			Ingredient d_cpy = new Ingredient(i);
+			copy.Add(d_cpy);
+		}
+		return copy;
+	}
+	
+	public Ingredient GetIngredient(string name){
+		Ingredient ingredient = 
+			ingredients.Find (
+				x => x.name == name);
+		return ingredient;
+	}
+	
+	public bool SetAvailable(string name, bool available){
+		Ingredient ingredient = 
+			ingredients.Find (
+				x => x.name == name);
+		if (ingredient == null)
+			return false;
+		
+		ingredient.available = available;
+		return true;
 	}
 
 	public void PrettyPrint(){

@@ -13,6 +13,12 @@ public class Marketing {
 		return null;
 	}
 
+	private int satisfaction;
+	public int Satisfaction {
+		get{
+			return satisfaction;
+		}
+	}
 
 	private List<Advertisement> advertisements;
 	private List<Promotion> promotions;

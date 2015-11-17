@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EstablishmentManagement{
+public class EstablishmentManagement{ 
+	public Establishment establishment;
+
 	private EstablishmentManagement(){
+	
 	}
 	private static EstablishmentManagement establishment_man;
 	public static EstablishmentManagement GetInstance(){
@@ -23,7 +26,6 @@ public class EstablishmentManagement{
 		return true;
 	}
 
-	public const int kMaxActionPoints = 5;
-	public const int kConvertionFactor = 2; 
-	public Establishment establishment;
+	private const int kMaxActionPoints = 5;
+	private const int kConvertionFactor = 2;
 }

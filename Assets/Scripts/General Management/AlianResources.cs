@@ -12,37 +12,24 @@ public class AlianResources{
 	public bool Initiate(){
 		if (employee_provider == null)
 			return false;
-		return employee_provider.Initiate ();
+		if (!employee_provider.Initiate ())
+			return false;
+
+		//Hire initial employees
+		HireEmployee ("Arlinum");
+		HireEmployee ("Ornete");
+		return true;
 	}
 
 	public bool HireEmployee(string name){
-		if (!employee_provider.SetAvailable (name, false)) {
-			return false;
-		}
-		Candidate candidate = employee_provider.GetCandidate (name);
+		Employee candidate = employee_provider.GetCandidate (name);
 		if (candidate == null) {
 			return false;
 		}
+		if(!employee_provider.RemoveCandidate (candidate))
+			return false;
 
-		Employee employee = new Employee ();
-		employee.name = candidate.name;
-		employee.level = candidate.level;
-		employee.salary = candidate.level * kSalaryMultiplier;
-		switch (candidate.type) {
-		case "chef":
-			employee.type = Employee.Occupation.Chef;
-			break;
-		case "waiter":
-			employee.type = Employee.Occupation.Waiter;
-			break;
-		case "marketing":
-			employee.type = Employee.Occupation.Marketing;
-			break;
-		case "finances":
-			employee.type = Employee.Occupation.Waiter;
-			break;
-		}
-		employees.Add(employee);
+		employees.Add(candidate);
 		return true;
 	}
 
@@ -50,6 +37,20 @@ public class AlianResources{
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)
 			return false;
+		//Add new dishes for the chef
+		if(employee.type == Employee.Type.Chef){
+			MenuProvider menu = MenuProvider.GetInstance();
+			if(menu == null)
+				return false;
+			List<Dish> dishes = menu.GetDishList().FindAll(
+								x => x.nivel == employee.level+1);
+			System.Random generator = new System.Random();
+			Dish dish = dishes[generator.Next(0,dishes.Count-1)];
+			dishes.Remove(dish);
+			employee.dishes.Add(dish.id);
+			dish = dishes[generator.Next(0,dishes.Count-1)];
+			employee.dishes.Add(dish.id);
+		}
 		employee.level++;
 		return true;
 	}
@@ -65,21 +66,35 @@ public class AlianResources{
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee != null && !employees.Remove (employee))
 			return false;
-		return employee_provider.SetAvailable (name, true);
+		if(!employee_provider.AddCandidate (employee))
+			return false;
+		return true;
 	}
 
-	public List<Candidate> GetCandidatesList() {
-		List<Candidate> copy = employee_provider.candidates.ToList ();
-		return copy;
+	public List<Employee> GetCandidatesList() {
+		return employee_provider.GetCandidatesList ();
 	}
 
+	//Returns a copy of the list of employees
 	public List<Employee> GetEmployeesList() {
-		List<Employee> copy = employees.ToList();
+		List<Employee> copy = new List<Employee> ();
+		foreach(Employee e in employees){
+			copy.Add(new Employee(e));
+		}
 		return copy;
 	}
-
+	//Returns a reference for an employee
 	public Employee GetEmployee(string name){
 		return employees.Find (x => x.name == name);
+	}
+
+	public List<Employee> GetEmployeesOfType(Employee.Type type){
+		List<Employee> emp = employees.FindAll (x => x.type == type);
+		List<Employee> copy = new List<Employee> ();
+		foreach (Employee e in emp) {
+			copy.Add(new Employee(e));
+		}
+		return copy;
 	}
 
 	private List<Employee> employees;

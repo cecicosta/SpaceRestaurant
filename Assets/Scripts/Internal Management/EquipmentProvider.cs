@@ -6,7 +6,14 @@ public class Equipment{
 	public Equipment(){
 		available = true;
 	}
-	public int cost;
+	public Equipment(Equipment e){
+		cost = e.cost;
+		name = e.name;
+		effect = e.effect;
+		description = e.description;
+		available = e.available;
+	}
+	public double cost;
 	public string name;
 	public string effect;
 	public string description;
@@ -35,11 +42,39 @@ public class EquipmentsProvider {
 		Equipment equipment = new Equipment();
 		equipment.name = fields [0];
 		equipment.effect = fields [1];
-		System.Int32.TryParse (fields [2], out equipment.cost);
+		System.Double.TryParse (fields [2], out equipment.cost);
 		equipment.description = fields [3];
 		equipments.Add (equipment);
 	}
+
+	//Returns a copy of the equipments list
+	public List<Equipment> GetEquipmentsList(){
+		List<Equipment> copy = new List<Equipment>();
+		foreach (Equipment e in equipments) {
+			Equipment e_cpy = new Equipment(e);
+			copy.Add(e_cpy);
+		}
+		return copy;
+	}
 	
+	public Equipment GetEquipment(string name){
+		Equipment equipment = 
+			equipments.Find (
+				x => x.name == name);
+		return equipment;
+	}
+	
+	public bool SetAvailable(string name, bool available){
+		Equipment equipment = 
+			equipments.Find (
+				x => x.name == name);
+		if (equipment == null)
+			return false;
+		
+		equipment.available = available;
+		return true;
+	}
+
 	public void PrettyPrint(){
 		foreach (Equipment equip in equipments) {
 			Debug.Log (equip.name);

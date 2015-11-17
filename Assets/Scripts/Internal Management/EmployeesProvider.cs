@@ -1,19 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
-public class Candidate{
-	public Candidate(){
-		available = true;
+public class Employee{
+	public Employee(){
 		dishes = new List<int> ();
+		hapyness = kInitialHapyness;
 	}
+	//Copy constructor
+	public Employee(Employee c){
+		name = c.name;
+		type = c.type;
+		cost = c.cost;
+		level = c.level;
+		hapyness = c.hapyness;
+		description = c.description;
+		foreach (int d in c.dishes) {
+			dishes.Add(d);
+		}
+	}
+
 	public string name;
-	public string type;
 	public string description;
+	public Type type;
 	public int level;
-	public int cost;
-	public bool available;
+	public int hapyness;
+	public double cost;
+	public double Salary{
+		get{
+			return level*kSalaryMultiplier;
+		}
+	}
 	public List<int> dishes;
+
+	public enum Type{Chef, Waiter, Marketing, Finances};
 
 	public void Print(){
 		Debug.Log (name);
@@ -25,12 +46,16 @@ public class Candidate{
 		Debug.Log(cost);
 		Debug.Log(description);
 	}
+
+	private const int kSalaryMultiplier = 15;
+	private const int kInitialHapyness = 3;
 }
 
 public class EmployeesProvider{
 	public EmployeesProvider(){
-		candidates = new List<Candidate> ();
+		candidates = new List<Employee> ();
 	}
+
 	public bool Initiate(){
 		string employees = System.IO.File.ReadAllText ("Assets/employees.txt");
 		if(employees.CompareTo("") == 0){
@@ -43,13 +68,30 @@ public class EmployeesProvider{
 		}
 		return true;
 	}
+
 	public void BuildCandidatesList(string[] fields){
-		Candidate candidate = new Candidate();
+		Employee candidate = new Employee();
 		candidate.name = fields [0];
-		candidate.type = fields [1];
-		candidate.description = fields [5];
+
+		switch (fields [1]) {
+		case "chef":
+			candidate.type = Employee.Type.Chef;
+			break;
+		case "waiter":
+			candidate.type = Employee.Type.Waiter;
+			break;
+		case "marketing":
+			candidate.type = Employee.Type.Marketing;
+			break;
+		case "finances":
+			candidate.type = Employee.Type.Finances;
+			break;
+		}
+
 		System.Int32.TryParse (fields [2],out candidate.level);
-		System.Int32.TryParse (fields [4],out candidate.cost);
+		System.Double.TryParse (fields [4],out candidate.cost);
+
+		candidate.description = fields [5];
 
 		string[] dishes = fields [3].Split (',');
 		foreach (string str in dishes) {
@@ -57,33 +99,47 @@ public class EmployeesProvider{
 			System.Int32.TryParse (str, out dish);
 			candidate.dishes.Add(dish);
 		}
-
 		candidates.Add (candidate);
 	}
 
-	public Candidate GetCandidate(string name){
-		Candidate candidate = 
+	//Returns a copy of the employees list
+	public List<Employee> GetCandidatesList(){
+		List<Employee> copy = new List<Employee>();
+		foreach (Employee c in candidates) {
+			Employee c_cpy = new Employee(c);
+			copy.Add(c_cpy);
+		}
+		return copy;
+	}
+
+	//Returns a reference for a candidate
+	public Employee GetCandidate(string name){
+		Employee candidate = 
 			candidates.Find (
 				x => x.name == name);
 		return candidate;
 	}
 
-	public bool SetAvailable(string name, bool available){
-		Candidate candidate = 
-			candidates.Find (
-				x => x.name == name);
-		if (candidate == null)
+	public bool RemoveCandidate(Employee c){
+		Employee existing = candidates.Find(x => x.name == c.name);
+		if (existing == null)
 			return false;
+		return candidates.Remove (existing);
+	}
 
-		candidate.available = available;
+	public bool AddCandidate(Employee c){
+		Employee existing = candidates.Find(x => x.name == c.name);
+		if (existing != null)
+			return false;
+		candidates.Add (c);
 		return true;
 	}
 
 	public void PrettyPrint(){
-		foreach (Candidate cand in candidates) {
+		foreach (Employee cand in candidates) {
 			cand.Print();
 		}
 	}
 	
-	public List<Candidate> candidates;
+	private List<Employee> candidates;
 }
