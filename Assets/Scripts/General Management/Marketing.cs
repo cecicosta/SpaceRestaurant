@@ -12,11 +12,14 @@ public class Marketing {
 	public List<Advertisement> QueryAvailableAdvertisements(){
 		return null;
 	}
-
+	
 	private int satisfaction;
 	public int Satisfaction {
 		get{
 			return satisfaction;
+		}
+		set{
+			satisfaction = value;
 		}
 	}
 

@@ -34,14 +34,19 @@ public class Finances {
 		return true;
 	}
 
-	private MenuProvider menu;
-	private List<Dish> dishes; 
+	//Cash control
 	private double cash;
 	public double Cash {
 		get{
 			return cash;
 		}
+		set{
+			cash = value;
+		}
 	}
+
+	private MenuProvider menu;
+	private List<Dish> dishes; 
 
 	private const float kChangePricePercent = 0.1f; 
 	private const int kInitialCash = 200;

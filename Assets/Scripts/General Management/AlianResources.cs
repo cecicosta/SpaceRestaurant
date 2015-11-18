@@ -7,6 +7,7 @@ public class AlianResources{
 	public AlianResources(){
 		employee_provider = new EmployeesProvider ();
 		employees = new List<Employee> ();
+		trained = new List<string> ();
 	}
 
 	public bool Initiate(){
@@ -34,6 +35,8 @@ public class AlianResources{
 	}
 
 	public bool TrainEmployeeLevel(string name){
+		if (trained.Contains (name))
+			return false;
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)
 			return false;
@@ -52,13 +55,17 @@ public class AlianResources{
 			employee.dishes.Add(dish.id);
 		}
 		employee.level++;
+		trained.Add (employee.name);
 		return true;
 	}
 	public bool TrainEmployeeHapyness(string name){
+		if (trained.Contains (name))
+			return false;
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)
 			return false;
 		employee.hapyness++;
+		trained.Add (employee.name);
 		return true;
 	}
 
@@ -97,6 +104,11 @@ public class AlianResources{
 		return copy;
 	}
 
+	public void ClearTrained(){
+		trained.Clear();
+	}
+
+	private List<string> trained;
 	private List<Employee> employees;
 	private EmployeesProvider employee_provider;
 	private const int kSalaryMultiplier = 10;
