@@ -35,8 +35,6 @@ public class AlianResources{
 	}
 
 	public bool TrainEmployeeLevel(string name){
-		if (trained.Contains (name))
-			return false;
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)
 			return false;
@@ -55,21 +53,22 @@ public class AlianResources{
 			employee.dishes.Add(dish.id);
 		}
 		employee.level++;
-		trained.Add (employee.name);
+		if(!WasTrained(name))
+			trained.Add (employee.name);
 		return true;
 	}
 	public bool TrainEmployeeHapyness(string name){
-		if (trained.Contains (name))
-			return false;
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)
 			return false;
-		employee.hapyness++;
-		trained.Add (employee.name);
+		employee.happiness++;
+		if(!WasTrained(name))
+			trained.Add (employee.name);
 		return true;
 	}
 
 	public bool DismissEmployee(string name){
+		Debug.Log (name);
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee != null && !employees.Remove (employee))
 			return false;
@@ -102,6 +101,10 @@ public class AlianResources{
 			copy.Add(new Employee(e));
 		}
 		return copy;
+	}
+
+	public bool WasTrained(string name){
+		return trained.Contains (name);
 	}
 
 	public void ClearTrained(){

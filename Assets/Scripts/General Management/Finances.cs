@@ -15,7 +15,7 @@ public class Finances {
 		if (menu == null)
 			return false;
 		dishes = menu.GetDishList ();
-		return dishes == null;
+		return dishes != null;
 	}
 
 	public bool IncreasePrice(string name){

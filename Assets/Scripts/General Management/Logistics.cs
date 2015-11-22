@@ -79,6 +79,23 @@ public class Logistics {
 			return current_day; 	
 		}
 	}
+	public int StorageTime{
+		get{
+			return kStorageTime;
+		}
+	}
+	public int StorageCapacity{
+		get{
+			return kStorageCapacity;
+		}
+	}
+	public int InventoryCount{
+		get{
+			return inventory.Count;
+		}
+	}
+	private const int kStorageTime = 3;
+	private const int kStorageCapacity = 20;
 	private IngredientsProvider provider;
 	private List<Ingredient> inventory;
 }

@@ -6,6 +6,10 @@ public class Marketing {
 	public Marketing(){
 	}	
 
+	public bool Initiate(){
+		return true;
+	}
+
 	public List<Promotion> QueryAvailablePromotion(){
 		return null;
 	}

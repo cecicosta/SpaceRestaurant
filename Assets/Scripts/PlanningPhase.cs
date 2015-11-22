@@ -29,37 +29,7 @@ public class PlanningPhase : MonoBehaviour {
 			Debug.Log ("Menu read with success");
 		}*/
 
-		AlianResources ar = new AlianResources ();
-		if (ar.Initiate ()) {
-			List<Employee> candidates = ar.GetCandidatesList ();
-			foreach (Employee c in candidates) {
-				c.Print ();
-				ar.HireEmployee(c.name);
-			}
 
-			List<Employee> employees = ar.GetEmployeesList();
-			foreach(Employee e in employees){
-				Debug.Log(e.name);
-				Debug.Log(e.type);
-				Debug.Log(e.level);
-				Debug.Log(e.hapyness);
-				e.hapyness = 10;
-			}
-			Debug.Log ("Candidates loaded");
-		
-			employees = ar.GetEmployeesList();
-			foreach(Employee e in employees){
-				Debug.Log(e.name);
-				Debug.Log(e.type);
-				Debug.Log(e.level);
-				Debug.Log(e.hapyness);
-
-			}
-			Debug.Log ("Candidates loaded");
-
-
-		} else
-			Debug.Log ("Candidates not loades");
 
 	}
 	

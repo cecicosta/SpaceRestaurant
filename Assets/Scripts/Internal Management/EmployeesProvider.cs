@@ -6,16 +6,17 @@ using System.Linq;
 public class Employee{
 	public Employee(){
 		dishes = new List<int> ();
-		hapyness = kInitialHapyness;
+		happiness = kInitialHapyness;
 	}
 	//Copy constructor
 	public Employee(Employee c){
 		name = c.name;
 		type = c.type;
-		cost = c.cost;
+		HireCosts = c.HireCosts;
 		level = c.level;
-		hapyness = c.hapyness;
+		happiness = c.happiness;
 		description = c.description;
+		dishes = new List<int> ();
 		foreach (int d in c.dishes) {
 			dishes.Add(d);
 		}
@@ -25,11 +26,24 @@ public class Employee{
 	public string description;
 	public Type type;
 	public int level;
-	public int hapyness;
-	public double cost;
+	public int happiness;
+	public double hire_costs;
+	public double HireCosts{
+		get{
+			return hire_costs;
+		}
+		set{
+			hire_costs = value;
+		}
+	}
+	public double DismissCosts{
+		get{
+			return level * kDismissCostMultiplier;
+		}
+	}
 	public double Salary{
 		get{
-			return level*kSalaryMultiplier;
+			return level * kSalaryMultiplier;
 		}
 	}
 	public List<int> dishes;
@@ -43,10 +57,11 @@ public class Employee{
 		foreach(int dish in dishes){
 			Debug.Log(dish);
 		}
-		Debug.Log(cost);
+		Debug.Log(HireCosts);
 		Debug.Log(description);
 	}
 
+	private const int kDismissCostMultiplier = 12;
 	private const int kSalaryMultiplier = 15;
 	private const int kInitialHapyness = 3;
 }
@@ -89,7 +104,9 @@ public class EmployeesProvider{
 		}
 
 		System.Int32.TryParse (fields [2],out candidate.level);
-		System.Double.TryParse (fields [4],out candidate.cost);
+		double cost = 0;
+		System.Double.TryParse (fields [4],out cost);
+		candidate.HireCosts = cost;
 
 		candidate.description = fields [5];
 

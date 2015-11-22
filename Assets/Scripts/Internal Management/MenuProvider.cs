@@ -14,6 +14,7 @@ public class Dish{
 		price = d.price;
 		description = d.description;
 		available = d.available;
+		ingredients = new List<string> ();
 		foreach (string i in d.ingredients) {
 			ingredients.Add(i);
 		}
@@ -50,8 +51,10 @@ public class MenuProvider{
 	public static MenuProvider GetInstance(){
 		if (menu_provider == null) {
 			menu_provider = new MenuProvider();
-			if(!menu_provider.Initiate())
+			if(!menu_provider.Initiate()){
+				Debug.LogError("Failed to load menu");
 				menu_provider = null;
+			}
 		}
 		return menu_provider;
 	}
