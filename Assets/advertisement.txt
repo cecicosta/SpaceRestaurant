@@ -1,5 +1,4 @@
-Midia	Clientes 	Valor
-Jornal	3,4,5	50
-Radio	7,8,9	70
-Internet	10,11,12	100
-TV	15,16,17	120
+Jornal	3-5	50
+Rádio	7-9	70
+Internet	10-12	100
+TV	15-17	120

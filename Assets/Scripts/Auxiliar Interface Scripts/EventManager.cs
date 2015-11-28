@@ -10,7 +10,13 @@ public class EventManager : MonoBehaviour {
 
 	public delegate void UpdateIngredientsAction();
 	public static event UpdateEmployeesAction OnUpdateIngredients;
-	
+
+	public delegate void UpdateAdvertisementsAction();
+	public static event UpdateEmployeesAction OnUpdateAdvertisements;
+
+	public delegate void UpdateEquipmentsAction();
+	public static event UpdateEmployeesAction OnUpdateEquipments;
+
 	public static void UpdateEmployees(){
 		if(OnUpdateEmployees != null)
 			OnUpdateEmployees ();
@@ -24,5 +30,15 @@ public class EventManager : MonoBehaviour {
 	public static void UpdateIngredients(){
 		if (OnUpdateIngredients != null)
 			OnUpdateIngredients ();
+	}
+
+	public static void UpdateAdvertisements(){
+		if (OnUpdateAdvertisements != null)
+			OnUpdateAdvertisements ();
+	}
+
+	public static void UpdateEquipments(){
+		if (OnUpdateEquipments != null)
+			OnUpdateEquipments ();
 	}
 }

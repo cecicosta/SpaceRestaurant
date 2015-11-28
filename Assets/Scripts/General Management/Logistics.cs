@@ -69,24 +69,38 @@ public class Logistics {
 		return inventory.Find (x => x.code == code);
 	}
 
+	public void CleanOutOfDateIngredients(){
+		foreach (Ingredient i in inventory) {
+			if(storage_time - current_day - i.aquired_day <= 0){
+				inventory.Remove(i);
+			}
+		}
+	}
+
 	public void NextDay(){
 		current_day++;
 	}
 
 	private int current_day;
-	public int Day{
+	public int CurrentDay{
 		get{
 			return current_day; 	
 		}
 	}
 	public int StorageTime{
 		get{
-			return kStorageTime;
+			return storage_time;
+		}
+		set{
+			storage_time = value;
 		}
 	}
 	public int StorageCapacity{
 		get{
-			return kStorageCapacity;
+			return storage_capacity;
+		}
+		set{
+			storage_capacity = value;
 		}
 	}
 	public int InventoryCount{
@@ -94,8 +108,8 @@ public class Logistics {
 			return inventory.Count;
 		}
 	}
-	private const int kStorageTime = 3;
-	private const int kStorageCapacity = 20;
+	public int storage_time = 3;
+	public int storage_capacity = 20;
 	private IngredientsProvider provider;
 	private List<Ingredient> inventory;
 }

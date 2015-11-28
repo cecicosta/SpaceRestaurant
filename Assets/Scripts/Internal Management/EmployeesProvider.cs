@@ -6,7 +6,7 @@ using System.Linq;
 public class Employee{
 	public Employee(){
 		dishes = new List<int> ();
-		happiness = kInitialHapyness;
+		happiness = kInitialHappiness;
 	}
 	//Copy constructor
 	public Employee(Employee c){
@@ -41,9 +41,19 @@ public class Employee{
 			return level * kDismissCostMultiplier;
 		}
 	}
+	public double TrainCosts{
+		get{
+			return (level+1) * kTrainCostMultiplier;
+		}
+	}
 	public double Salary{
 		get{
 			return level * kSalaryMultiplier;
+		}
+	}
+	public int Capacity{
+		get{
+			return level * kCapacityMultiplier;
 		}
 	}
 	public List<int> dishes;
@@ -60,10 +70,12 @@ public class Employee{
 		Debug.Log(HireCosts);
 		Debug.Log(description);
 	}
-
+	
+	private const int kCapacityMultiplier = 3;
+	private const int kTrainCostMultiplier = 10;
 	private const int kDismissCostMultiplier = 12;
 	private const int kSalaryMultiplier = 15;
-	private const int kInitialHapyness = 3;
+	private const int kInitialHappiness = 3;
 }
 
 public class EmployeesProvider{

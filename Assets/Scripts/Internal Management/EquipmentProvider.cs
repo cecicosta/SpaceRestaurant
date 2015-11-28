@@ -7,13 +7,34 @@ public class Equipment{
 		available = true;
 	}
 	public Equipment(Equipment e){
-		cost = e.cost;
+		price = e.price;
 		name = e.name;
 		effect = e.effect;
 		description = e.description;
 		available = e.available;
 	}
-	public double cost;
+	public void EnhanceAttribute(Establishment establishment){
+		switch (name) {
+		case "Freezer Zorgnator 2000":
+			break;
+		case "Fogão à lenha da floresta de Rupester":
+			break;
+		case "Patins Voadores Bulianos":
+			break;
+		case "Calculadora HP 8.000":
+			break;
+		case "Óculos Hipster Firuliano":
+			break;
+		case "Auto Cleaner 7500 Limpóide":
+			break;
+		case "Jukebox Jeki 5000":
+			break;
+		case "Nave Espacial Space Rover":
+			break;
+		}
+	}
+
+	public double price;
 	public string name;
 	public string effect;
 	public string description;
@@ -42,7 +63,7 @@ public class EquipmentsProvider {
 		Equipment equipment = new Equipment();
 		equipment.name = fields [0];
 		equipment.effect = fields [1];
-		System.Double.TryParse (fields [2], out equipment.cost);
+		System.Double.TryParse (fields [2], out equipment.price);
 		equipment.description = fields [3];
 		equipments.Add (equipment);
 	}
@@ -75,11 +96,26 @@ public class EquipmentsProvider {
 		return true;
 	}
 
+	public bool RemoveEquipment(Equipment equip){
+		Equipment existing = equipments.Find(x => x.name == equip.name);
+		if (existing == null)
+			return false;
+		return equipments.Remove (existing);
+	}
+	
+	public bool AddEquipment(Equipment equip){
+		Equipment existing = equipments.Find(x => x.name == equip.name);
+		if (existing != null)
+			return false;
+		equipments.Add (equip);
+		return true;
+	}
+
 	public void PrettyPrint(){
 		foreach (Equipment equip in equipments) {
 			Debug.Log (equip.name);
 			Debug.Log(equip.effect);
-			Debug.Log(equip.cost);
+			Debug.Log(equip.price);
 			Debug.Log(equip.description);
 		}
 	}

@@ -7,7 +7,7 @@ public class Infrastructure{
 	public Infrastructure(){
 		equip_provider = new EquipmentsProvider ();
 		equipments = new List<Equipment> ();
-		dirtiness = 2;
+		dirtiness = initial_dirtness;
 	}
 
 	public bool Initiate(){
@@ -19,10 +19,13 @@ public class Infrastructure{
 		return true;
 	}
 		
-	public bool AquireEquipment(string name){
+	public bool BuyEquipment(string name){
 		Equipment equipment = equip_provider.GetEquipment(name);
 		if (equipment == null)
 			return false;
+		if (!equip_provider.RemoveEquipment (equipment)) {
+			return false;
+		}
 		Equipment e_cpy = new Equipment (equipment);
 		equipments.Add (e_cpy);
 		return true;
@@ -50,5 +53,6 @@ public class Infrastructure{
 			return dirtiness;
 		}
 	}
+	private int initial_dirtness = 2;
 
 }

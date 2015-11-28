@@ -67,7 +67,7 @@ public class Establishment{
 		List<Employee> waiters = alien_resources.GetEmployeesOfType (Employee.Type.Waiter);
 		int capacity = 0;
 		foreach(Employee e in waiters){
-			capacity += e.level*kCapacityMultiplier;
+			capacity += e.Capacity;
 		}
 		return capacity;
 	}
@@ -98,11 +98,13 @@ public class Establishment{
 			return false;
 		if (alien_resources.WasTrained (name))
 			return false;
-		if (finances.Cash - (employee.level + 1) * kTrainCostMultiplier < 0)
+		if (finances.Cash - employee.TrainCosts < 0)
 			return false;
+
+		double train_costs = employee.TrainCosts;
 		if (!alien_resources.TrainEmployeeLevel (employee.name))
 			return false;
-		finances.Cash -= (employee.level+1)*kTrainCostMultiplier;
+		finances.Cash -= train_costs;
 
 		return true;
 	}
@@ -113,11 +115,13 @@ public class Establishment{
 			return false;
 		if (alien_resources.WasTrained (name))
 			return false;
-		if (finances.Cash - (employee.level + 1) * kTrainCostMultiplier < 0)
+		if (finances.Cash - employee.TrainCosts < 0)
 			return false;
+
+		double train_costs = employee.TrainCosts;
 		if (!alien_resources.TrainEmployeeHapyness (employee.name))
 			return false;
-		finances.Cash -= (employee.level+1)*kTrainCostMultiplier;
+		finances.Cash -= train_costs;
 		
 		return true;
 	}
@@ -171,11 +175,13 @@ public class Establishment{
 
 	//Logistics
 	public int CurrentDay(){
-		return logistics.Day;
+		return logistics.CurrentDay;
 	}
 	public void NextDay(){
 		logistics.NextDay ();
+		logistics.CleanOutOfDateIngredients ();
 		alien_resources.ClearTrained ();
+		marketing.ClearHired ();
 	}
 	public int GetStorageTime(){
 		//TODO: some equipments can add to the storage time
@@ -187,9 +193,40 @@ public class Establishment{
 		//TODO: some situations cam subtract from the storage time
 		return logistics.StorageCapacity;
 	}
+
+	//Marketing 
+	public bool HireAdvertisement(string type){
+		List<Advertising> ads_list = marketing.GetAdvertisementsList ();
+		Advertising advertisement = ads_list.Find (x => x.type == type);
+		if (advertisement == null)
+			return false;
+		if (marketing.WasHired (type))
+			return false;
+		if (finances.Cash - advertisement.price < 0)
+			return false;
+		if (!marketing.HireAdvertisement (type))
+			return false;
+		finances.Cash -= advertisement.price;
+		
+		return true;
+	}
+
+	//Infrastructure
+	public bool BuyEquipment(string name){
+		List<Equipment> equips_list = infrastructure.GetProviderEquipmentsList ();
+		Equipment equipment = equips_list.Find (x => x.name == name);
+		if (equipment == null)
+			return false;
+		if (finances.Cash - equipment.price < 0)
+			return false;
+		if (!infrastructure.BuyEquipment (name))
+			return false;
+		finances.Cash -= equipment.price;
 	
+		//TODO: Update All Attributes and modifiers
+		return true;
+	}
+
 	private const int kSatisfactionCost = 5;
-	private const int kTrainCostMultiplier = 10;
-	private const int kCapacityMultiplier = 3;
 	private System.Random generator;
 }
