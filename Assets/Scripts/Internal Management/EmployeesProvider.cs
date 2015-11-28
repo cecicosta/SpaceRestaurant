@@ -6,7 +6,7 @@ using System.Linq;
 public class Employee{
 	public Employee(){
 		dishes = new List<int> ();
-		happiness = kInitialHappiness;
+		happiness = initialHappiness;
 	}
 	//Copy constructor
 	public Employee(Employee c){
@@ -38,22 +38,27 @@ public class Employee{
 	}
 	public double DismissCosts{
 		get{
-			return level * kDismissCostMultiplier;
+			return level * dismissCostMultiplier;
 		}
 	}
-	public double TrainCosts{
+	public double TrainSkillCosts{
 		get{
-			return (level+1) * kTrainCostMultiplier;
+			return (level+1) * trainCostMultiplier;
+		}
+	}
+	public double TrainHappinessCosts{
+		get{
+			return (happiness+1) * trainCostMultiplier;
 		}
 	}
 	public double Salary{
 		get{
-			return level * kSalaryMultiplier;
+			return level * salaryMultiplier;
 		}
 	}
 	public int Capacity{
 		get{
-			return level * kCapacityMultiplier;
+			return level * capacityMultiplier;
 		}
 	}
 	public List<int> dishes;
@@ -70,12 +75,25 @@ public class Employee{
 		Debug.Log(HireCosts);
 		Debug.Log(description);
 	}
+
+	public static bool LoadAttributes(){
+
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		capacityMultiplier = at_m.IntValue("capacity_multiplier");
+		trainCostMultiplier = at_m.IntValue ("train_cost_multiplier");
+		dismissCostMultiplier = at_m.IntValue("dismiss_multiplier");
+		salaryMultiplier = at_m.IntValue("salary_multiplier");
+		initialHappiness = at_m.IntValue("initial_happiness");
+		return true;
+	}
 	
-	private const int kCapacityMultiplier = 3;
-	private const int kTrainCostMultiplier = 10;
-	private const int kDismissCostMultiplier = 12;
-	private const int kSalaryMultiplier = 15;
-	private const int kInitialHappiness = 3;
+	private static int capacityMultiplier;
+	private static int trainCostMultiplier;
+	private static int dismissCostMultiplier;
+	private static int salaryMultiplier;
+	private static int initialHappiness;
 }
 
 public class EmployeesProvider{
@@ -84,10 +102,15 @@ public class EmployeesProvider{
 	}
 
 	public bool Initiate(){
+
 		string employees = System.IO.File.ReadAllText ("Assets/employees.txt");
 		if(employees.CompareTo("") == 0){
 			return false;
 		}
+		if (!Employee.LoadAttributes ()) {
+			return false;
+		}
+
 		string[] lines = employees.Split('\n');
 		foreach(string str in lines) {
 			string[] fields = str.Split('\t');

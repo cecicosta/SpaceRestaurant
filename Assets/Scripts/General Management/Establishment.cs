@@ -16,7 +16,7 @@ public class Establishment{
 	public Infrastructure infrastructure;
 
 	public int action_points;
-	public int response_points;
+	public int reaction_points;
 
 	public Establishment(){
 		generator = new System.Random ();
@@ -28,6 +28,10 @@ public class Establishment{
 	}
 
 	public bool Initiate(){
+		if (!LoadAttributes ()) {
+			Debug.LogError("failed to initiate alien resources");
+			return false;
+		}
 		if (!alien_resources.Initiate ()) {
 			Debug.LogError("failed to initiate alien resources");
 			return false;
@@ -72,8 +76,7 @@ public class Establishment{
 		return capacity;
 	}
 	public int CalculateRequests(){
-		int[] request_factors = {8,10,12};
-		int factor = request_factors[generator.Next (0, 2)];
+		int factor = requestCalcFactorRange[generator.Next (0, requestCalcFactorRange.Length)];
 		return marketing.Satisfaction / factor;
 	}
 
@@ -98,10 +101,10 @@ public class Establishment{
 			return false;
 		if (alien_resources.WasTrained (name))
 			return false;
-		if (finances.Cash - employee.TrainCosts < 0)
+		if (finances.Cash - employee.TrainSkillCosts < 0)
 			return false;
 
-		double train_costs = employee.TrainCosts;
+		double train_costs = employee.TrainSkillCosts;
 		if (!alien_resources.TrainEmployeeLevel (employee.name))
 			return false;
 		finances.Cash -= train_costs;
@@ -115,10 +118,10 @@ public class Establishment{
 			return false;
 		if (alien_resources.WasTrained (name))
 			return false;
-		if (finances.Cash - employee.TrainCosts < 0)
+		if (finances.Cash - employee.TrainHappinessCosts < 0)
 			return false;
 
-		double train_costs = employee.TrainCosts;
+		double train_costs = employee.TrainSkillCosts;
 		if (!alien_resources.TrainEmployeeHapyness (employee.name))
 			return false;
 		finances.Cash -= train_costs;
@@ -166,11 +169,11 @@ public class Establishment{
 	}
 	public void IncreasePrices(string dish){
 		finances.IncreasePrice (dish);
-		marketing.Satisfaction -= kSatisfactionCost;
+		marketing.Satisfaction -= satisfactionIncrement;
 	}
 	public void DecreasePrices(string dish){
 		finances.DecreasePrice (dish);
-		marketing.Satisfaction += kSatisfactionCost;
+		marketing.Satisfaction += satisfactionIncrement;
 	}
 
 	//Logistics
@@ -181,7 +184,8 @@ public class Establishment{
 		logistics.NextDay ();
 		logistics.CleanOutOfDateIngredients ();
 		alien_resources.ClearTrained ();
-		marketing.ClearHired ();
+		marketing.ClearHiredAds ();
+		RestorePoints ();
 	}
 	public int GetStorageTime(){
 		//TODO: some equipments can add to the storage time
@@ -227,6 +231,35 @@ public class Establishment{
 		return true;
 	}
 
-	private const int kSatisfactionCost = 5;
+	//Establishment
+	public void RestorePoints(){
+		action_points = initialActionPoints;
+		reaction_points = initialReactionPoints;
+	}
+	public bool ConvertActionPointsToResponsePoint(){
+		if (action_points - actionReationConvertion < 0)
+			return false;
+		action_points -= actionReationConvertion;
+		reaction_points++;
+		return true;
+	}
+
+	public static bool LoadAttributes(){
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		initialActionPoints = at_m.IntValue ("action_points");
+		initialReactionPoints = at_m.IntValue ("reaction_points");
+		actionReationConvertion = at_m.IntValue ("action_reaction_convertion");
+		satisfactionIncrement = at_m.IntValue ("satisfaction_increment");
+		requestCalcFactorRange = at_m.RangeValue ("requests_calc_factor_range");
+		return true;
+	}
+
+	private static int initialReactionPoints;
+	private static int initialActionPoints;
+	private static int actionReationConvertion;
+	private static int satisfactionIncrement; //Incremental value of satisfaction over price changes
+	private static int[] requestCalcFactorRange;
 	private System.Random generator;
 }

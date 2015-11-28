@@ -11,6 +11,9 @@ public class Logistics {
 	}
 
 	public bool Initiate(){
+		if (!LoadAttributes ()) {
+			return false;
+		}
 		return provider.Initiate ();
 	}
 
@@ -108,8 +111,18 @@ public class Logistics {
 			return inventory.Count;
 		}
 	}
-	public int storage_time = 3;
-	public int storage_capacity = 20;
+
+	public static bool LoadAttributes(){
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		storage_time = at_m.IntValue ("storage_time");
+		storage_capacity = at_m.IntValue ("inventory_capacity");
+		return true;
+	}
+	
+	private static int storage_time = 3;
+	private static int storage_capacity = 20;
 	private IngredientsProvider provider;
 	private List<Ingredient> inventory;
 }

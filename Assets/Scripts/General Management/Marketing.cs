@@ -49,7 +49,7 @@ public class Marketing {
 		return advertisements.Find(x => x.type == type) != null;
 	}
 
-	public void ClearHired(){
+	public void ClearHiredAds(){
 		advertisements.Clear ();
 	}
 	

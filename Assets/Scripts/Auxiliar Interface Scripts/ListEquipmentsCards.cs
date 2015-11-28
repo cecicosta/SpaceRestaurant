@@ -39,18 +39,22 @@ public class ListEquipmentsCards : MonoBehaviour {
 		List<Equipment> equipments_list = null;
 		if (viwerType == EquipmentViwer.Available) {
 			equipments_list = establishment.infrastructure.GetProviderEquipmentsList ();
-		} else if(viwerType == EquipmentViwer.Aquired) {
+		} else if (viwerType == EquipmentViwer.Aquired) {
 			equipments_list = establishment.infrastructure.GetAquiredEquipmentsList ();
-		}
+		} 
 
 		if (equipments_list == null) {
 			Debug.LogError("Error getting the equipments list");
 			return;
 		}
 
-		foreach(Equipment ad in equipments_list){
+		foreach(Equipment eq in equipments_list){
 			EquipmentCard card = Instantiate(equipmentCard);
 			card.transform.SetParent(this.transform);
+			card.name.text = eq.name;
+			card.effect.text = eq.effect;
+			card.description.text = eq.description;
+			card.price.text = eq.price.ToString();
 			//TODO: find image by candidate name
 			cards.Add(card);
 		}

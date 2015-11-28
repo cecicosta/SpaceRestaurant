@@ -7,10 +7,13 @@ public class Finances {
 	public int outgoing;
 
 	public Finances(){
-		cash = kInitialCash;
+		cash = initialCash;
 	}
 
 	public bool Initiate(){
+		if (!LoadAttributes ()) {
+			return false;
+		}
 		menu = MenuProvider.GetInstance ();
 		if (menu == null)
 			return false;
@@ -22,7 +25,7 @@ public class Finances {
 		Dish dish = dishes.Find (x => x.name == name);
 		if (dish == null)
 			return false;
-		dish.price += dish.price * kChangePricePercent; 
+		dish.price += dish.price * changePricePercent; 
 		return true;
 	}
 
@@ -30,7 +33,7 @@ public class Finances {
 		Dish dish = dishes.Find (x => x.name == name);
 		if (dish == null)
 			return false;
-		dish.price -= dish.price * kChangePricePercent; 
+		dish.price -= dish.price * changePricePercent; 
 		return true;
 	}
 
@@ -48,6 +51,15 @@ public class Finances {
 	private MenuProvider menu;
 	private List<Dish> dishes; 
 
-	private const float kChangePricePercent = 0.1f; 
-	private const int kInitialCash = 200;
+	public static bool LoadAttributes(){
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		changePricePercent = at_m.DoubleValue ("initial_cash");
+		initialCash = at_m.DoubleValue ("food_price_increment");
+		return true;
+	}
+	
+	private static double changePricePercent = 0.1; 
+	private static double initialCash = 200;
 }

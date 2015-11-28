@@ -11,6 +11,10 @@ public class Infrastructure{
 	}
 
 	public bool Initiate(){
+		if (!LoadAttributes ()) {
+			return false;
+		}
+
 		return equip_provider.Initiate ();
 	}
 
@@ -53,6 +57,14 @@ public class Infrastructure{
 			return dirtiness;
 		}
 	}
-	private int initial_dirtness = 2;
+
+	public static bool LoadAttributes(){
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		initial_dirtness = at_m.IntValue ("initial_dirtness");
+		return true;
+	}
+	private static int initial_dirtness;
 
 }
