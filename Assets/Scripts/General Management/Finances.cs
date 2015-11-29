@@ -17,12 +17,11 @@ public class Finances {
 		menu = MenuProvider.GetInstance ();
 		if (menu == null)
 			return false;
-		dishes = menu.GetDishList ();
-		return dishes != null;
+		return true;
 	}
 
 	public bool IncreasePrice(string name){
-		Dish dish = dishes.Find (x => x.name == name);
+		Dish dish = menu.GetDish (name);
 		if (dish == null)
 			return false;
 		dish.price += dish.price * changePricePercent; 
@@ -30,7 +29,7 @@ public class Finances {
 	}
 
 	public bool DecreasePrice(string name){
-		Dish dish = dishes.Find (x => x.name == name);
+		Dish dish = menu.GetDish (name);
 		if (dish == null)
 			return false;
 		dish.price -= dish.price * changePricePercent; 
@@ -49,7 +48,6 @@ public class Finances {
 	}
 
 	private MenuProvider menu;
-	private List<Dish> dishes; 
 
 	public static bool LoadAttributes(){
 		AttributesManager at_m = AttributesManager.GetInstance ();

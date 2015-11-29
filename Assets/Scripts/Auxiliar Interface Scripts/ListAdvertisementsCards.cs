@@ -36,19 +36,16 @@ public class ListAdvertisementsCards : MonoBehaviour {
 			}
 			cards.Clear();
 		}
-		Debug.Log ("called on enable 1");
 		List<Advertising> advertisement_list = null;
 		if (viwerType == AdvertisementViwer.Available) {
 			advertisement_list = establishment.marketing.GetAdvertisementsList ();
 		} else if(viwerType == AdvertisementViwer.Active) {
 			advertisement_list = establishment.marketing.GetActiveAdvertisementsList ();
 		}
-		Debug.Log ("called on enable 2");
 		if (advertisement_list == null) {
 			Debug.LogError("Error getting the ingredients list");
 			return;
 		}
-		Debug.Log ("called on enable 3");
 		foreach(Advertising ad in advertisement_list){
 			AdvertisementCard card = Instantiate(advertisementCard);
 			card.transform.SetParent(this.transform);
