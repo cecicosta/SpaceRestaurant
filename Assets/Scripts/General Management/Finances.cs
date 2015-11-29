@@ -7,13 +7,13 @@ public class Finances {
 	public int outgoing;
 
 	public Finances(){
-		cash = initialCash;
 	}
 
 	public bool Initiate(){
 		if (!LoadAttributes ()) {
 			return false;
 		}
+		cash = initialCash;
 		menu = MenuProvider.GetInstance ();
 		if (menu == null)
 			return false;
@@ -55,11 +55,12 @@ public class Finances {
 		AttributesManager at_m = AttributesManager.GetInstance ();
 		if (at_m == null)
 			return false;
-		changePricePercent = at_m.DoubleValue ("initial_cash");
-		initialCash = at_m.DoubleValue ("food_price_increment");
+		changePricePercent = at_m.DoubleValue ("food_price_increment");
+		initialCash = at_m.DoubleValue ("initial_cash");
+		Debug.Log (initialCash);
 		return true;
 	}
 	
-	private static double changePricePercent = 0.1; 
-	private static double initialCash = 200;
+	private static double changePricePercent; 
+	private static double initialCash;
 }

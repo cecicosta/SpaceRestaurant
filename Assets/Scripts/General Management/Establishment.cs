@@ -68,7 +68,7 @@ public class Establishment{
 
 	//Calculate volume of requests and capacity
 	public int CalculateCapacity(){
-		List<Employee> waiters = alien_resources.GetEmployeesOfType (Employee.Type.Waiter);
+		List<Employee> waiters = alien_resources.GetEmployeesOfType (Employee.Type.waiter);
 		int capacity = 0;
 		foreach(Employee e in waiters){
 			capacity += e.Capacity;
@@ -217,6 +217,7 @@ public class Establishment{
 
 	//Infrastructure
 	public bool BuyEquipment(string name){
+
 		List<Equipment> equips_list = infrastructure.GetProviderEquipmentsList ();
 		Equipment equipment = equips_list.Find (x => x.name == name);
 		if (equipment == null)
@@ -227,7 +228,23 @@ public class Establishment{
 			return false;
 		finances.Cash -= equipment.price;
 	
-		//TODO: Update All Attributes and modifiers
+
+		foreach(Modifier mod in equipment.variable_modifiers)
+			AttributeModifiers.ApplyModifier (this, mod);
+
+		if (equipment.constant_modifiers.Count > 0) {
+			Debug.Log("constant attribute");
+			AttributesManager at_m = AttributesManager.GetInstance ();
+			foreach (Modifier mod in equipment.constant_modifiers) {
+				Debug.Log(mod.value + ", " + mod.attribute);
+				at_m.SetAttribute (mod.attribute, mod.value);
+			}
+			at_m.UpdateAttributes();
+		}
+
+		Debug.Log (infrastructure.Dirtiness);
+		Debug.Log (marketing.Satisfaction);
+		Debug.Log (logistics.StorageTime);
 		return true;
 	}
 

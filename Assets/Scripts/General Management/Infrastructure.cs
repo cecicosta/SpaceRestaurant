@@ -7,13 +7,13 @@ public class Infrastructure{
 	public Infrastructure(){
 		equip_provider = new EquipmentsProvider ();
 		equipments = new List<Equipment> ();
-		dirtiness = initial_dirtness;
 	}
 
 	public bool Initiate(){
 		if (!LoadAttributes ()) {
 			return false;
 		}
+		dirtiness = initial_dirtness;
 
 		return equip_provider.Initiate ();
 	}
@@ -55,6 +55,9 @@ public class Infrastructure{
 	public int Dirtiness {
 		get{
 			return dirtiness;
+		}
+		set{
+			dirtiness = value;
 		}
 	}
 

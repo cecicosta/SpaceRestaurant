@@ -5,9 +5,15 @@ using System.Collections.Generic;
 public class Marketing {
 	public Marketing(){
 		advertisements = new List<Advertising> ();
+
 	}	
 
 	public bool Initiate(){
+		if (!LoadAttributes ()) {
+			return false;
+		}
+
+		satisfaction = initialSatisfaction;
 		adsProvider = AdvertisementsProvider.GetInstance ();
 		if (adsProvider == null) {
 			Debug.LogError("Ads is null");
@@ -63,6 +69,15 @@ public class Marketing {
 		}
 	}
 
+	public static bool LoadAttributes(){
+		AttributesManager at_m = AttributesManager.GetInstance ();
+		if (at_m == null)
+			return false;
+		initialSatisfaction = at_m.IntValue ("initial_satisfaction");
+		return true;
+	}
+
+	private static int initialSatisfaction;
 	private AdvertisementsProvider adsProvider;
 	private List<Advertising> advertisements;
 }

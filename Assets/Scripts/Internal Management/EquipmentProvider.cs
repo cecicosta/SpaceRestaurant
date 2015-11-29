@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class Equipment{
 	public Equipment(){
 		available = true;
+		variable_modifiers = new List<Modifier> ();
+		constant_modifiers = new List<Modifier> ();
 	}
 	public Equipment(Equipment e){
 		price = e.price;
@@ -12,31 +15,23 @@ public class Equipment{
 		effect = e.effect;
 		description = e.description;
 		available = e.available;
-	}
-	public void EnhanceAttribute(Establishment establishment){
-		switch (name) {
-		case "Freezer Zorgnator 2000":
-			break;
-		case "Fogão à lenha da floresta de Rupester":
-			break;
-		case "Patins Voadores Bulianos":
-			break;
-		case "Calculadora HP 8.000":
-			break;
-		case "Óculos Hipster Firuliano":
-			break;
-		case "Auto Cleaner 7500 Limpóide":
-			break;
-		case "Jukebox Jeki 5000":
-			break;
-		case "Nave Espacial Space Rover":
-			break;
+		variable_modifiers = new List<Modifier> ();
+		constant_modifiers = new List<Modifier> ();
+		int i = 0;
+		foreach (Modifier mod in e.variable_modifiers) {
+			variable_modifiers.Add(new Modifier(mod));
+		}
+		i = 0;
+		foreach (Modifier mod in e.constant_modifiers) {
+			constant_modifiers.Add(new Modifier(mod));
 		}
 	}
 
 	public double price;
 	public string name;
 	public string effect;
+	public List<Modifier> variable_modifiers;
+	public List<Modifier> constant_modifiers;
 	public string description;
 	public bool available;
 }
@@ -63,9 +58,37 @@ public class EquipmentsProvider {
 		Equipment equipment = new Equipment();
 		equipment.name = fields [0];
 		equipment.effect = fields [1];
-		System.Double.TryParse (fields [2], out equipment.price);
-		equipment.description = fields [3];
+		//TODO:String validation
+		equipment.variable_modifiers = GetModifier(fields[2].Split(','));
+		equipment.constant_modifiers = GetModifier(fields[3].Split(','));
+
+
+		System.Double.TryParse (fields [4], out equipment.price);
+		equipment.description = fields [5];
 		equipments.Add (equipment);
+	}
+
+	public List<Modifier> GetModifier(string[] modifier_descriptor){
+		List<Modifier> modifiers = new List<Modifier>();
+
+		if (modifier_descriptor == null)
+			return modifiers;
+
+		foreach(string s in modifier_descriptor){
+			string[] fields = s.Split('/');
+			if (s.Length < 2) //Must have at least a pair (value, attribute)
+				continue;
+			Modifier mod = new Modifier();
+			mod.value = fields[0];
+			mod.attribute = fields[1];
+			if(fields.Length > 2){
+				for(int i=2; i<fields.Length; i++){
+					mod.arguments.Add(fields[i]);
+				}
+			}
+			modifiers.Add(mod);
+		}
+		return modifiers;
 	}
 
 	//Returns a copy of the equipments list

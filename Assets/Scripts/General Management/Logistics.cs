@@ -7,13 +7,15 @@ public class Logistics {
 	public Logistics(){
 		provider = new IngredientsProvider ();
 		inventory = new List<Ingredient> ();
-		current_day = 0;
+
 	}
 
 	public bool Initiate(){
 		if (!LoadAttributes ()) {
 			return false;
 		}
+		current_day = 0;
+
 		return provider.Initiate ();
 	}
 
@@ -72,6 +74,10 @@ public class Logistics {
 		return inventory.Find (x => x.code == code);
 	}
 
+	public IngredientsProvider GetProvider(){
+		return provider;
+	}
+
 	public void CleanOutOfDateIngredients(){
 		foreach (Ingredient i in inventory) {
 			if(storage_time - current_day - i.aquired_day <= 0){
@@ -118,6 +124,9 @@ public class Logistics {
 			return false;
 		storage_time = at_m.IntValue ("storage_time");
 		storage_capacity = at_m.IntValue ("inventory_capacity");
+
+		Debug.Log (storage_time);
+		Debug.Log (storage_capacity);
 		return true;
 	}
 	

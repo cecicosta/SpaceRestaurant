@@ -63,7 +63,7 @@ public class Employee{
 	}
 	public List<int> dishes;
 
-	public enum Type{Chef, Waiter, Marketing, Finances};
+	public enum Type{chef, waiter, marketing, finances};
 
 	public void Print(){
 		Debug.Log (name);
@@ -125,16 +125,16 @@ public class EmployeesProvider{
 
 		switch (fields [1]) {
 		case "chef":
-			candidate.type = Employee.Type.Chef;
+			candidate.type = Employee.Type.chef;
 			break;
 		case "waiter":
-			candidate.type = Employee.Type.Waiter;
+			candidate.type = Employee.Type.waiter;
 			break;
 		case "marketing":
-			candidate.type = Employee.Type.Marketing;
+			candidate.type = Employee.Type.marketing;
 			break;
 		case "finances":
-			candidate.type = Employee.Type.Finances;
+			candidate.type = Employee.Type.finances;
 			break;
 		}
 
@@ -162,6 +162,14 @@ public class EmployeesProvider{
 			copy.Add(c_cpy);
 		}
 		return copy;
+	}
+
+	public List<Employee> GetCandidatesOfType(string type){
+		return candidates.FindAll(x => x.type.ToString() == type);
+	}
+
+	public List<Employee> GetCandidatesOfType(Employee.Type type){
+		return candidates.FindAll(x => x.type == type);
 	}
 
 	//Returns a reference for a candidate

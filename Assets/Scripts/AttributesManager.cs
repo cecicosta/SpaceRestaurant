@@ -70,7 +70,7 @@ public class AttributesManager  {
 	public GameAttribute GetAttribute(string identifier){
 		GameAttribute attribute = 
 			attributes.Find (
-				x => x.attribute == identifier);
+				x => x.attribute.CompareTo(identifier) == 0);
 		return attribute;
 	}
 
@@ -94,6 +94,27 @@ public class AttributesManager  {
 		System.Int32.TryParse (values[1], out range[1]);
 
 		return range;
+	}
+	
+	public void SetAttribute(string attribute, string value){
+		GameAttribute att = GetAttribute(attribute);
+		att.current_value = value;
+	}
+
+	public bool UpdateAttributes(){
+		if(!Establishment.LoadAttributes ())
+			return false;
+		if(!Employee.LoadAttributes ())
+			return false;
+		if(!Marketing.LoadAttributes ())
+			return false;
+		if(!Logistics.LoadAttributes ())
+			return false;
+		if(!Marketing.LoadAttributes ())
+			return false;
+		if(!Finances.LoadAttributes ())
+			return false;
+		return true;
 	}
 
 	public List<GameAttribute> attributes;

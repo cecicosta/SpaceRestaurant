@@ -29,7 +29,7 @@ public class AlianResources{
 		}
 		if(!employee_provider.RemoveCandidate (candidate))
 			return false;
-
+	
 		employees.Add(candidate);
 		return true;
 	}
@@ -39,7 +39,7 @@ public class AlianResources{
 		if (employee == null)
 			return false;
 		//Add new dishes for the chef
-		if(employee.type == Employee.Type.Chef){
+		if(employee.type == Employee.Type.chef){
 			MenuProvider menu = MenuProvider.GetInstance();
 			if(menu == null)
 				return false;
@@ -74,6 +74,8 @@ public class AlianResources{
 			return false;
 		if(!employee_provider.AddCandidate (employee))
 			return false;
+
+
 		return true;
 	}
 
@@ -94,8 +96,20 @@ public class AlianResources{
 		return employees.Find (x => x.name == name);
 	}
 
+	public Employee GetCandidate(string name){
+		return employee_provider.GetCandidate (name);
+	}
+
 	public List<Employee> GetEmployeesOfType(Employee.Type type){
 		List<Employee> emp = employees.FindAll (x => x.type == type);
+		List<Employee> copy = new List<Employee> ();
+		foreach (Employee e in emp) {
+			copy.Add(new Employee(e));
+		}
+		return copy;
+	}
+	public List<Employee> GetEmployeesOfType(string type){
+		List<Employee> emp = employees.FindAll (x => x.type.ToString() == type);
 		List<Employee> copy = new List<Employee> ();
 		foreach (Employee e in emp) {
 			copy.Add(new Employee(e));
@@ -114,6 +128,6 @@ public class AlianResources{
 	private List<string> trained;
 	private List<Employee> employees;
 	private EmployeesProvider employee_provider;
-	private const int kSalaryMultiplier = 10;
+
 
 }
