@@ -76,8 +76,16 @@ public class Establishment{
 		return capacity;
 	}
 	public int CalculateRequests(){
+		List<Advertising> ads = marketing.GetActiveAdvertisementsList ();
+		int additional = 0;
+		if (ads != null) {
+			foreach (Advertising ad in ads) {
+				additional += generator.Next (ad.min_reach, ad.max_reach);
+			}
+		}
+
 		int factor = requestCalcFactorRange[generator.Next (0, requestCalcFactorRange.Length)];
-		return marketing.Satisfaction / factor;
+		return (marketing.Satisfaction / factor) + additional;
 	}
 
 	//Alien Resources Options
@@ -143,7 +151,6 @@ public class Establishment{
 	}
 
 	public bool BuyIngredient(string name){
-		Debug.Log (finances.Cash);
 		List<Ingredient> ingredients_list = logistics.GetProviderIngredientsList ();
 		Ingredient ingredient = ingredients_list.Find (x => x.name == name);
 		if (ingredient == null)
@@ -167,13 +174,66 @@ public class Establishment{
 	public void GeneralBalance(){
 		//TODO:
 	}
-	public void IncreasePrices(string dish){
-		finances.IncreasePrice (dish);
+	public void IncreasePrices(){
+		MenuProvider m_provider = MenuProvider.GetInstance ();
+		if (m_provider == null) {
+			Debug.LogError("Error getting the menu");
+			return;
+		}
+		List<Dish> menu_list = m_provider.GetDishList (); 
+		foreach(Dish d in menu_list){
+			finances.IncreasePrice (d.name);
+		}
 		marketing.Satisfaction -= satisfactionIncrement;
 	}
-	public void DecreasePrices(string dish){
-		finances.DecreasePrice (dish);
+	public void DecreasePrices(){
+		MenuProvider m_provider = MenuProvider.GetInstance ();
+		if (m_provider == null) {
+			Debug.LogError("Error getting the menu");
+			return;
+		}
+		List<Dish> menu_list = m_provider.GetDishList (); 
+		foreach(Dish d in menu_list){
+			finances.DecreasePrice (d.name);
+		}
 		marketing.Satisfaction += satisfactionIncrement;
+	}
+	public bool IsOrderAvailable(int number){
+
+		List<Employee> chefs = alien_resources.GetEmployeesOfType (Employee.Type.chef);
+		foreach(Employee e in chefs){
+			if(e.dishes.Contains(number))
+				return true;
+		}
+		Debug.Log ("Nenhum chefe pode preparar o prato " + number);
+		return false;
+	}
+
+	public bool MakeOrder(int number){
+		MenuProvider menu = MenuProvider.GetInstance ();
+		if (menu == null) {
+			Debug.LogError("Error getting the menu");
+			return false;
+		}
+		Dish dish = menu.GetDishByID (number);
+		if (dish == null) {
+			Debug.Log("Prato nao existe");
+			return false;
+		}
+
+		foreach(string s in dish.ingredients){
+			if(!logistics.HasIngredient(s)){
+				Debug.Log("Nao possui todos os ingredientes necessarios.");
+				return false;
+			}
+		}
+		foreach(string s in dish.ingredients){
+			if(logistics.HasIngredient(s)){
+				logistics.SpendIngredient(s);
+			}
+		}
+		finances.Cash += dish.price;
+		return true;
 	}
 
 	//Logistics
@@ -185,7 +245,12 @@ public class Establishment{
 		logistics.CleanOutOfDateIngredients ();
 		alien_resources.ClearTrained ();
 		marketing.ClearHiredAds ();
+		finances.CloseDayBalance ();
+		infrastructure.DirtnessIncrease ();
+		DirtnessDailyEffects ();
+
 		RestorePoints ();
+
 	}
 	public int GetStorageTime(){
 		//TODO: some equipments can add to the storage time
@@ -247,6 +312,63 @@ public class Establishment{
 		Debug.Log (logistics.StorageTime);
 		return true;
 	}
+	
+	public void DirtnessDailyEffects(){
+		if (infrastructure.Dirtiness >= 10) {
+			GameOver();
+		}
+		if (infrastructure.Dirtiness == 0 ||
+			infrastructure.Dirtiness == 1 || 
+		    infrastructure.Dirtiness == 2) {
+			marketing.Satisfaction += 2;
+		}
+		if (infrastructure.Dirtiness == 6 || 
+		    infrastructure.Dirtiness == 7) {
+			marketing.Satisfaction -= 1;
+		}
+		if (infrastructure.Dirtiness == 8 || 
+		    infrastructure.Dirtiness == 9) {
+			marketing.Satisfaction -= 2;
+		}
+		DirtnessTemporaryEffects ();
+	}
+	public void DirtnessTemporaryEffects(){
+		if (!dirness_temp_effect_active && 
+		    (infrastructure.Dirtiness == 8 || 
+			 infrastructure.Dirtiness == 9 ||
+		 	 infrastructure.Dirtiness == 10)) {
+			dirness_temp_effect_active = true;
+			original_storage_time = logistics.StorageTime;
+			logistics.StorageTime = (int)Mathf.Ceil((float)logistics.StorageTime/2.0f); 
+			Debug.Log(logistics.StorageTime);
+			AttributeModifiers.EmployeeHappinessModifierAll(this, -1);
+		} 
+		if (dirness_temp_effect_active &&
+		   (infrastructure.Dirtiness != 8 && 
+		    infrastructure.Dirtiness != 9 &&
+		 	infrastructure.Dirtiness != 10)){
+			dirness_temp_effect_active = false;
+			logistics.StorageTime = original_storage_time; 
+			AttributeModifiers.EmployeeHappinessModifierAll(this, 1);
+		}
+	}
+	public void DoCleaning(){
+		if (infrastructure.Dirtiness <= 0)
+			return;
+		if (finances.Cash - cleaning_costs < 0) {
+			Debug.Log ("Nao ha dinheiro suficiente para fazer a limpeza.");
+			return;
+		}
+		infrastructure.MakeCleaning ();
+		finances.Cash -= cleaning_costs;
+
+		DirtnessTemporaryEffects ();
+	}
+	public int CleaningCosts{
+		get{
+			return cleaning_costs;
+		}
+	}
 
 	//Establishment
 	public void RestorePoints(){
@@ -260,6 +382,8 @@ public class Establishment{
 		reaction_points++;
 		return true;
 	}
+	public void GameOver(){
+	}
 
 	public static bool LoadAttributes(){
 		AttributesManager at_m = AttributesManager.GetInstance ();
@@ -269,6 +393,7 @@ public class Establishment{
 		initialReactionPoints = at_m.IntValue ("reaction_points");
 		actionReationConvertion = at_m.IntValue ("action_reaction_convertion");
 		satisfactionIncrement = at_m.IntValue ("satisfaction_increment");
+		cleaning_costs = at_m.IntValue ("cleaning_costs");
 		requestCalcFactorRange = at_m.RangeValue ("requests_calc_factor_range");
 		return true;
 	}
@@ -277,6 +402,10 @@ public class Establishment{
 	private static int initialActionPoints;
 	private static int actionReationConvertion;
 	private static int satisfactionIncrement; //Incremental value of satisfaction over price changes
+	private static int cleaning_costs;
 	private static int[] requestCalcFactorRange;
+
 	private System.Random generator;
+	private bool dirness_temp_effect_active = false;
+	private int original_storage_time = 0;
 }

@@ -17,11 +17,9 @@ public class Equipment{
 		available = e.available;
 		variable_modifiers = new List<Modifier> ();
 		constant_modifiers = new List<Modifier> ();
-		int i = 0;
 		foreach (Modifier mod in e.variable_modifiers) {
 			variable_modifiers.Add(new Modifier(mod));
 		}
-		i = 0;
 		foreach (Modifier mod in e.constant_modifiers) {
 			constant_modifiers.Add(new Modifier(mod));
 		}

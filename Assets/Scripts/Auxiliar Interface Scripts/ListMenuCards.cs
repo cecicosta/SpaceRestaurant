@@ -57,6 +57,12 @@ public class ListMenuCards : MonoBehaviour {
 			card.description.text = dish.description.ToString();
 			card.price.text = dish.price.ToString();
 			card.nivel.text = dish.nivel.ToString();
+			string ing_name = "";
+			foreach(string s in dish.ingredients){
+				Ingredient ing = establishment.logistics.GetProviderIngredientFromCode(s);
+				ing_name += ", " + ing.name;
+			}
+			card.ingredients.text = ing_name;
 			cards.Add(card);
 			i++;
 		}

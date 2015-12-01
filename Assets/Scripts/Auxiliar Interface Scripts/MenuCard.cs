@@ -8,4 +8,5 @@ public class MenuCard : MonoBehaviour {
 	public Text description;
 	public Text nivel;
 	public Text price;
+	public Text ingredients;
 }

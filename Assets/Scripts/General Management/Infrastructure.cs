@@ -19,7 +19,12 @@ public class Infrastructure{
 	}
 
 	public bool MakeCleaning(){
-		dirtiness--;
+		dirtiness -=dirtness_decrement_clean;
+		return true;
+	}
+
+	public bool DirtnessIncrease(){
+		dirtiness += dirtness_increment_day;
 		return true;
 	}
 		
@@ -66,8 +71,11 @@ public class Infrastructure{
 		if (at_m == null)
 			return false;
 		initial_dirtness = at_m.IntValue ("initial_dirtness");
+		dirtness_increment_day = at_m.IntValue ("dirtness_increment_day");
+		dirtness_decrement_clean = at_m.IntValue ("dirtness_decrement_clean");
 		return true;
 	}
 	private static int initial_dirtness;
-
+	private static int dirtness_increment_day;
+	private static int dirtness_decrement_clean;
 }

@@ -92,6 +92,13 @@ public class MenuProvider{
 		return dish;
 	}
 
+	public Dish GetDishByID(int id){
+		Dish dish = 
+			dishes.Find (
+				x => x.id == id);
+		return dish;
+	}
+
 	public bool SetAvailable(string name, bool available){
 		Dish dish = 
 			dishes.Find (

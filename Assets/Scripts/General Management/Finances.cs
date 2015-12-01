@@ -14,6 +14,7 @@ public class Finances {
 			return false;
 		}
 		cash = initialCash;
+		starting_day_cash = cash;
 		menu = MenuProvider.GetInstance ();
 		if (menu == null)
 			return false;
@@ -36,7 +37,16 @@ public class Finances {
 		return true;
 	}
 
+
+	public void CloseDayBalance(){
+		starting_day_cash = cash;
+	}
+
 	//Cash control
+	private double starting_day_cash;
+	public double StartingDayCash(){
+		return starting_day_cash;
+	}
 	private double cash;
 	public double Cash {
 		get{

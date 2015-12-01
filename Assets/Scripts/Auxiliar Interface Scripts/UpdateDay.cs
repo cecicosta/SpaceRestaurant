@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
-public class ChangePrices : MonoBehaviour {
+public class UpdateDay : MonoBehaviour {
+
+	public Text day;
 	private EstablishmentManagement establishmentManager;
 	private Establishment establishment;
 	// Use this for initialization
@@ -14,12 +16,9 @@ public class ChangePrices : MonoBehaviour {
 		}
 		establishment = establishmentManager.establishment;
 	}
-
-	public void IncreasePrices(){
-		establishment.IncreasePrices ();
-	}
-
-	public void DecreasePrices(){
-		establishment.DecreasePrices ();
+	
+	// Update is called once per frame
+	void Update () {
+		day.text = establishment.CurrentDay ().ToString ();
 	}
 }

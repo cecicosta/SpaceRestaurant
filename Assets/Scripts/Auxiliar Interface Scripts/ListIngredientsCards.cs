@@ -54,7 +54,7 @@ public class ListIngredientsCards : MonoBehaviour {
 			card.description.text = e.description.ToString();
 			card.cost.text = e.cost.ToString();
 			card.daysLeft.text = (establishment.GetStorageTime() - 
-			                      establishment.CurrentDay() - e.aquired_day).ToString();
+			                      (establishment.CurrentDay() - e.aquired_day)).ToString();
 			cards.Add(card);
 		}
 	}	

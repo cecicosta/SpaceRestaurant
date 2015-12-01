@@ -29,11 +29,15 @@ public class Logistics {
 		return true;
 	}
 
-	public bool SpendIngredient(string name){
-		Ingredient ingredient = inventory.Find (x => x.name == name);
+	public bool SpendIngredient(string code){
+		Ingredient ingredient = inventory.Find (x => x.code == code);
 		if (ingredient == null)
 			return false;
 		return inventory.Remove (ingredient);
+	}
+
+	public bool HasIngredient(string code){
+		return inventory.Find (x => x.code == code) != null;
 	}
 
 	public string GetIngredientCodeFromName(string name){
@@ -74,15 +78,23 @@ public class Logistics {
 		return inventory.Find (x => x.code == code);
 	}
 
+	public Ingredient GetProviderIngredientFromCode(string code){
+		return provider.GetIngredientsList().Find (x => x.code == code);
+	}
+
 	public IngredientsProvider GetProvider(){
 		return provider;
 	}
 
 	public void CleanOutOfDateIngredients(){
+		List<Ingredient> to_remove = new List<Ingredient> ();
 		foreach (Ingredient i in inventory) {
-			if(storage_time - current_day - i.aquired_day <= 0){
-				inventory.Remove(i);
+			if(storage_time - (current_day - i.aquired_day) <= 0){
+				to_remove.Add(i);
 			}
+		}
+		foreach(Ingredient i in to_remove){
+			inventory.Remove(i);
 		}
 	}
 
