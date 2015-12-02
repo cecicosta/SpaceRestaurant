@@ -25,7 +25,6 @@ public class MakeCleaning : MonoBehaviour {
 
 	public void DoCleaning(){
 		establishment.DoCleaning();
-		value.text = establishment.CleaningCosts.ToString ();
 	}
 
 }

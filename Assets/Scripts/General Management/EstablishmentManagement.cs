@@ -41,15 +41,12 @@ public class EstablishmentManagement{
 
 		List<Dish> dishes_list = null;
 		if (establishment.CurrentDay() <= 5) {
-			Debug.Log("Dia < 5");
 			dishes_list = menu.GetDishList ().FindAll (x => x.nivel == 1);
 		}
 		else if (establishment.CurrentDay() <= 15) {
-			Debug.Log("Dia <= 15");
 			dishes_list = menu.GetDishList ().FindAll (x => x.nivel == 1 || x.nivel == 2);
 		}
 		else if (establishment.CurrentDay() > 15) {
-			Debug.Log("Dia > 15");
 			dishes_list = menu.GetDishList ();
 		}
 
@@ -66,15 +63,18 @@ public class EstablishmentManagement{
 		while(attended_count < requests_capacity && orders.Count > 0 ) {
 			if(!e.IsOrderAvailable(orders[0])){
 				not_attended.Add(orders[0]);
+				e.DecreaseSatisfactionByOrder();
 				orders.RemoveAt(0);
 				continue;
 			}
 			if(!e.MakeOrder(orders[0])){
 				not_attended.Add(orders[0]);
+				e.DecreaseSatisfactionByOrder();
 				orders.RemoveAt(0);
 				continue;
 			}
 			attended.Add(orders[0]);
+			e.IncreaseSatisfactionByOrder();
 			orders.RemoveAt(0);
 			attended_count++;
 		}

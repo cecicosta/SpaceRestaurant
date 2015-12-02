@@ -79,6 +79,14 @@ public class AlianResources{
 		return true;
 	}
 
+	public double CalculateEmployeesPayment(){
+		double payment = 0;
+		foreach(Employee e in employees){
+			payment += e.Salary;
+		}
+		return payment;
+	}
+
 	public List<Employee> GetCandidatesList() {
 		return employee_provider.GetCandidatesList ();
 	}

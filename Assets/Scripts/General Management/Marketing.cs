@@ -65,7 +65,12 @@ public class Marketing {
 			return satisfaction;
 		}
 		set{
-			satisfaction = value;
+			if(value < 0)
+				satisfaction = 0;
+			else if (value > 100)
+				satisfaction = 100;
+			else 
+				satisfaction = value;
 		}
 	}
 
@@ -77,6 +82,7 @@ public class Marketing {
 		return true;
 	}
 
+	private static int kMaxSatisfaction = 100;
 	private static int initialSatisfaction;
 	private AdvertisementsProvider adsProvider;
 	private List<Advertising> advertisements;

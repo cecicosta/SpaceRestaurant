@@ -52,6 +52,8 @@ public class Establishment{
 			Debug.LogError("failed to initiate infrastructure");
 			return false;
 		}
+		action_points = initialActionPoints;
+		reaction_points = initialReactionPoints;
 		return true;
 	}
 
@@ -89,24 +91,32 @@ public class Establishment{
 	}
 
 	//Alien Resources Options
+	private static int kActionHireCost = 1;
 	public bool Hire(string name){
 		List<Employee> candidates_list = alien_resources.GetCandidatesList ();
 		Employee candidate = candidates_list.Find (x => x.name == name);
 		if (candidate == null)
 			return false;
+		if(action_points - kActionHireCost < 0){
+			return false;
+		}
 		if (finances.Cash - candidate.HireCosts < 0)
 			return false;
 		if (!alien_resources.HireEmployee (candidate.name))
 			return false;
 		finances.Cash -= candidate.HireCosts;
-
+		action_points -= kActionHireCost;
 		return true;
 	}
+	private static int kActionTrainLevelCost = 1;
 	public bool TrainLevel(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
 		if (employee == null)
 			return false;
+		if(action_points - kActionTrainLevelCost < 0){
+			return false;
+		}
 		if (alien_resources.WasTrained (name))
 			return false;
 		if (finances.Cash - employee.TrainSkillCosts < 0)
@@ -116,14 +126,19 @@ public class Establishment{
 		if (!alien_resources.TrainEmployeeLevel (employee.name))
 			return false;
 		finances.Cash -= train_costs;
+		action_points -= kActionTrainLevelCost;
 
 		return true;
 	}
+	private static int kActionTrainHappinessCost = 1;
 	public bool TrainHappiness(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
 		if (employee == null)
 			return false;
+		if(action_points - kActionTrainHappinessCost < 0){
+			return false;
+		}
 		if (alien_resources.WasTrained (name))
 			return false;
 		if (finances.Cash - employee.TrainHappinessCosts < 0)
@@ -133,14 +148,19 @@ public class Establishment{
 		if (!alien_resources.TrainEmployeeHapyness (employee.name))
 			return false;
 		finances.Cash -= train_costs;
+		action_points -= kActionTrainHappinessCost;
 		
 		return true;
 	}
+	private static int kActionDismissCost = 1;
 	public bool Dismiss(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
 		if (employee == null)
 			return false;
+		if(action_points - kActionDismissCost < 0){
+			return false;
+		}
 		if (finances.Cash - employee.DismissCosts < 0)
 			return false;
 		if (!alien_resources.DismissEmployee (employee.name))
@@ -150,11 +170,15 @@ public class Establishment{
 		return true;
 	}
 
+	private static int kActionBuyIngredientCost = 1;
 	public bool BuyIngredient(string name){
 		List<Ingredient> ingredients_list = logistics.GetProviderIngredientsList ();
 		Ingredient ingredient = ingredients_list.Find (x => x.name == name);
 		if (ingredient == null)
 			return false;
+		if (action_points - kActionBuyIngredientCost < 0) {
+			return false;
+		}
 		if (finances.Cash - ingredient.cost < 0)
 			return false;
 		if (logistics.InventoryCount >= GetStorageCapacity ()) 
@@ -162,6 +186,7 @@ public class Establishment{
 		if (!logistics.AquireIngredient (ingredient.name))
 			return false;
 		finances.Cash -= ingredient.cost;
+		action_points -= kActionBuyIngredientCost;
 
 		return true;
 	}
@@ -174,29 +199,46 @@ public class Establishment{
 	public void GeneralBalance(){
 		//TODO:
 	}
-	public void IncreasePrices(){
+
+	bool changed_prices = false;
+	private static int kActionIncreaseDecreasePricesCost = 1;
+	public bool IncreasePrices(){
 		MenuProvider m_provider = MenuProvider.GetInstance ();
 		if (m_provider == null) {
 			Debug.LogError("Error getting the menu");
-			return;
+			return false;
 		}
+		if(action_points - kActionIncreaseDecreasePricesCost < 0){
+			return false;
+		}
+
 		List<Dish> menu_list = m_provider.GetDishList (); 
 		foreach(Dish d in menu_list){
 			finances.IncreasePrice (d.name);
 		}
-		marketing.Satisfaction -= satisfactionIncrement;
+		marketing.Satisfaction -= satisfactionIncrementByPrice;
+		action_points -= kActionIncreaseDecreasePricesCost;
+		changed_prices = true;
+		return true;
 	}
-	public void DecreasePrices(){
+	public bool DecreasePrices(){
 		MenuProvider m_provider = MenuProvider.GetInstance ();
 		if (m_provider == null) {
 			Debug.LogError("Error getting the menu");
-			return;
+			return false;
 		}
+		if(action_points - kActionIncreaseDecreasePricesCost < 0){
+			return false;
+		}
+
 		List<Dish> menu_list = m_provider.GetDishList (); 
 		foreach(Dish d in menu_list){
 			finances.DecreasePrice (d.name);
 		}
-		marketing.Satisfaction += satisfactionIncrement;
+		marketing.Satisfaction += satisfactionIncrementByPrice;
+		action_points -= kActionIncreaseDecreasePricesCost;
+		changed_prices = true;
+		return true;
 	}
 	public bool IsOrderAvailable(int number){
 
@@ -241,6 +283,7 @@ public class Establishment{
 		return logistics.CurrentDay;
 	}
 	public void NextDay(){
+		changed_prices = false;
 		logistics.NextDay ();
 		logistics.CleanOutOfDateIngredients ();
 		alien_resources.ClearTrained ();
@@ -248,9 +291,10 @@ public class Establishment{
 		finances.CloseDayBalance ();
 		infrastructure.DirtnessIncrease ();
 		DirtnessDailyEffects ();
-
+		PaySalaries ();
 		RestorePoints ();
 
+		CheckGameOverConditions ();
 	}
 	public int GetStorageTime(){
 		//TODO: some equipments can add to the storage time
@@ -264,11 +308,15 @@ public class Establishment{
 	}
 
 	//Marketing 
+	private static int kActionAdvertisementCost = 1;
 	public bool HireAdvertisement(string type){
 		List<Advertising> ads_list = marketing.GetAdvertisementsList ();
 		Advertising advertisement = ads_list.Find (x => x.type == type);
 		if (advertisement == null)
 			return false;
+		if(action_points - kActionAdvertisementCost < 0){
+			return false;
+		}
 		if (marketing.WasHired (type))
 			return false;
 		if (finances.Cash - advertisement.price < 0)
@@ -276,23 +324,28 @@ public class Establishment{
 		if (!marketing.HireAdvertisement (type))
 			return false;
 		finances.Cash -= advertisement.price;
+		action_points -= kActionAdvertisementCost;
 		
 		return true;
 	}
 
 	//Infrastructure
+	private static int kActionBuyEquipmentCost = 1;
 	public bool BuyEquipment(string name){
 
 		List<Equipment> equips_list = infrastructure.GetProviderEquipmentsList ();
 		Equipment equipment = equips_list.Find (x => x.name == name);
 		if (equipment == null)
 			return false;
+		if (action_points - kActionBuyEquipmentCost < 0) {
+			return false;
+		}
 		if (finances.Cash - equipment.price < 0)
 			return false;
 		if (!infrastructure.BuyEquipment (name))
 			return false;
 		finances.Cash -= equipment.price;
-	
+		action_points -= kActionBuyEquipmentCost;
 
 		foreach(Modifier mod in equipment.variable_modifiers)
 			AttributeModifiers.ApplyModifier (this, mod);
@@ -314,9 +367,6 @@ public class Establishment{
 	}
 	
 	public void DirtnessDailyEffects(){
-		if (infrastructure.Dirtiness >= 10) {
-			GameOver();
-		}
 		if (infrastructure.Dirtiness == 0 ||
 			infrastructure.Dirtiness == 1 || 
 		    infrastructure.Dirtiness == 2) {
@@ -332,6 +382,16 @@ public class Establishment{
 		}
 		DirtnessTemporaryEffects ();
 	}
+
+	const int kIncreaseSatisfactionByOrderRate = 2;
+	const int kDecreaseSatisfactionByOrderRate = -5;
+	public void IncreaseSatisfactionByOrder(){
+		marketing.Satisfaction += kIncreaseSatisfactionByOrderRate;
+	}
+	public void DecreaseSatisfactionByOrder(){
+		marketing.Satisfaction += kDecreaseSatisfactionByOrderRate;
+	}
+
 	public void DirtnessTemporaryEffects(){
 		if (!dirness_temp_effect_active && 
 		    (infrastructure.Dirtiness == 8 || 
@@ -352,17 +412,24 @@ public class Establishment{
 			AttributeModifiers.EmployeeHappinessModifierAll(this, 1);
 		}
 	}
-	public void DoCleaning(){
+	private static int kActionCleaningCost = 1; 
+	public bool DoCleaning(){
 		if (infrastructure.Dirtiness <= 0)
-			return;
+			return false;
+		if (action_points - kActionCleaningCost < 0) {
+			return false;
+		}
 		if (finances.Cash - cleaning_costs < 0) {
 			Debug.Log ("Nao ha dinheiro suficiente para fazer a limpeza.");
-			return;
+			return false;
 		}
 		infrastructure.MakeCleaning ();
 		finances.Cash -= cleaning_costs;
+		action_points -= kActionCleaningCost;
 
 		DirtnessTemporaryEffects ();
+	
+		return true;
 	}
 	public int CleaningCosts{
 		get{
@@ -382,7 +449,28 @@ public class Establishment{
 		reaction_points++;
 		return true;
 	}
+
+	public int kDaysBetweenPayment = 5;
+	public void PaySalaries(){
+		if (logistics.CurrentDay % 5 == 0) {
+			double payment = alien_resources.CalculateEmployeesPayment ();
+			finances.Cash -= payment;
+		}
+	}
+	public void CheckGameOverConditions(){
+		if (infrastructure.Dirtiness >= 10) {
+			GameOver();
+		}
+		if (marketing.Satisfaction <= 0) {
+			GameOver ();
+		}
+		if (finances.Cash <= 0) {
+			GameOver();
+		}
+	}
+
 	public void GameOver(){
+		Debug.Log ("Game Over");
 	}
 
 	public static bool LoadAttributes(){
@@ -392,7 +480,7 @@ public class Establishment{
 		initialActionPoints = at_m.IntValue ("action_points");
 		initialReactionPoints = at_m.IntValue ("reaction_points");
 		actionReationConvertion = at_m.IntValue ("action_reaction_convertion");
-		satisfactionIncrement = at_m.IntValue ("satisfaction_increment");
+		satisfactionIncrementByPrice = at_m.IntValue ("satisfaction_increment");
 		cleaning_costs = at_m.IntValue ("cleaning_costs");
 		requestCalcFactorRange = at_m.RangeValue ("requests_calc_factor_range");
 		return true;
@@ -401,7 +489,7 @@ public class Establishment{
 	private static int initialReactionPoints;
 	private static int initialActionPoints;
 	private static int actionReationConvertion;
-	private static int satisfactionIncrement; //Incremental value of satisfaction over price changes
+	private static int satisfactionIncrementByPrice; //Incremental value of satisfaction over price changes
 	private static int cleaning_costs;
 	private static int[] requestCalcFactorRange;
 
