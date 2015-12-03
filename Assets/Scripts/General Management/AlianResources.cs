@@ -57,6 +57,28 @@ public class AlianResources{
 			trained.Add (employee.name);
 		return true;
 	}
+
+	public bool IncreaseEmployeeLevel(Employee employee){
+		if (employee == null)
+			return false;
+		//Add new dishes for the chef
+		if(employee.type == Employee.Type.chef){
+			MenuProvider menu = MenuProvider.GetInstance();
+			if(menu == null)
+				return false;
+			List<Dish> dishes = menu.GetDishList().FindAll(
+				x => x.nivel == employee.level+1);
+			System.Random generator = new System.Random();
+			Dish dish = dishes[generator.Next(0,dishes.Count-1)];
+			dishes.Remove(dish);
+			employee.dishes.Add(dish.id);
+			dish = dishes[generator.Next(0,dishes.Count-1)];
+			employee.dishes.Add(dish.id);
+		}
+		employee.level++;
+		return true;
+	}
+
 	public bool TrainEmployeeHapyness(string name){
 		Employee employee = employees.Find (x => x.name == name);
 		if (employee == null)

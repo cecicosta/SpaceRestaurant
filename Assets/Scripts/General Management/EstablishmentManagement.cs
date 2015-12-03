@@ -61,22 +61,33 @@ public class EstablishmentManagement{
 		List<int> attended = new List<int> ();
 		List<int> not_attended = new List<int>();
 		while(attended_count < requests_capacity && orders.Count > 0 ) {
+
+			GameLog.Log(GameLog.kTClientOrder, menu.GetDishByID(orders[0]).name);
+
 			if(!e.IsOrderAvailable(orders[0])){
+				GameLog.Log(GameLog.kTClientOrderNotAttended);
 				not_attended.Add(orders[0]);
 				e.DecreaseSatisfactionByOrder();
 				orders.RemoveAt(0);
 				continue;
 			}
 			if(!e.MakeOrder(orders[0])){
+				GameLog.Log(GameLog.kTClientOrderNotAttended);
 				not_attended.Add(orders[0]);
 				e.DecreaseSatisfactionByOrder();
 				orders.RemoveAt(0);
 				continue;
 			}
+
+			GameLog.Log(GameLog.kTClientOrderAttended);
 			attended.Add(orders[0]);
 			e.IncreaseSatisfactionByOrder();
 			orders.RemoveAt(0);
 			attended_count++;
+		}
+
+		if (orders.Count > 0) {
+			GameLog.Log(orders.Count.ToString(), GameLog.kTClientsLeft);
 		}
 
 		if (attended_count < number_of_requests) {

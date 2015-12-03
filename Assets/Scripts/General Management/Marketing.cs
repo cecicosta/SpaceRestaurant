@@ -47,6 +47,10 @@ public class Marketing {
 		return cpy;
 	}
 
+	public AdvertisementsProvider GetProvider(){
+		return adsProvider;
+	}
+
 	public Advertising GetAd(string type){
 		return advertisements.Find (x => x.type == type);
 	}

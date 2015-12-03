@@ -92,16 +92,29 @@ public class Establishment{
 
 	//Alien Resources Options
 	private static int kActionHireCost = 1;
+	private static int kAdsDiscountMultiplier = 2;
+	private static int kIngredientsDiscountMultiplier = 2;
 	public bool Hire(string name){
 		List<Employee> candidates_list = alien_resources.GetCandidatesList ();
 		Employee candidate = candidates_list.Find (x => x.name == name);
 		if (candidate == null)
 			return false;
 		if(action_points - kActionHireCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (finances.Cash - candidate.HireCosts < 0)
+		if (finances.Cash - candidate.HireCosts < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
+		}
+		if (candidate.type == Employee.Type.marketing) {
+			AttributeModifiers.AdvertisementPriceModifier(this, -candidate.level*kAdsDiscountMultiplier);
+			AttributeModifiers.AdvertisementImpactModifier(this, candidate.level);
+		}
+		if (candidate.type == Employee.Type.finances) {
+			AttributeModifiers.IngredientsPriceModifier(this, -candidate.level*kIngredientsDiscountMultiplier);
+		}
+
 		if (!alien_resources.HireEmployee (candidate.name))
 			return false;
 		finances.Cash -= candidate.HireCosts;
@@ -115,16 +128,41 @@ public class Establishment{
 		if (employee == null)
 			return false;
 		if(action_points - kActionTrainLevelCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (alien_resources.WasTrained (name))
+		if (alien_resources.WasTrained (name)) {
+			GameLog.Log(GameLog.kTEmployeeAlreadyTrained);
 			return false;
-		if (finances.Cash - employee.TrainSkillCosts < 0)
+		}
+		if (finances.Cash - employee.TrainSkillCosts < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
+		}
+		//Undo modifiers
+		if (employee.type == Employee.Type.marketing) {
+			AttributeModifiers.AdvertisementPriceModifier(this,  employee.level*kAdsDiscountMultiplier);
+			AttributeModifiers.AdvertisementImpactModifier(this, -employee.level);
+		}
+		if (employee.type == Employee.Type.finances) {
+			AttributeModifiers.IngredientsPriceModifier(this, employee.level*kIngredientsDiscountMultiplier);
+		}
 
 		double train_costs = employee.TrainSkillCosts;
 		if (!alien_resources.TrainEmployeeLevel (employee.name))
 			return false;
+
+		//Redo modifiers
+		employees_list = alien_resources.GetEmployeesList ();
+		employee = employees_list.Find (x => x.name == name);
+		if (employee.type == Employee.Type.marketing) {
+			AttributeModifiers.AdvertisementPriceModifier(this,  -employee.level*kAdsDiscountMultiplier);
+			AttributeModifiers.AdvertisementImpactModifier(this, employee.level);
+		}
+		if (employee.type == Employee.Type.finances) {
+			AttributeModifiers.IngredientsPriceModifier(this, -employee.level*kIngredientsDiscountMultiplier);
+		}
+
 		finances.Cash -= train_costs;
 		action_points -= kActionTrainLevelCost;
 
@@ -137,12 +175,17 @@ public class Establishment{
 		if (employee == null)
 			return false;
 		if(action_points - kActionTrainHappinessCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (alien_resources.WasTrained (name))
+		if (alien_resources.WasTrained (name)) {
+			GameLog.Log(GameLog.kTEmployeeAlreadyTrained);
 			return false;
-		if (finances.Cash - employee.TrainHappinessCosts < 0)
+		}
+		if (finances.Cash - employee.TrainHappinessCosts < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
+		}
 
 		double train_costs = employee.TrainSkillCosts;
 		if (!alien_resources.TrainEmployeeHapyness (employee.name))
@@ -159,14 +202,24 @@ public class Establishment{
 		if (employee == null)
 			return false;
 		if(action_points - kActionDismissCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (finances.Cash - employee.DismissCosts < 0)
+		if (finances.Cash - employee.DismissCosts < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
+		}
 		if (!alien_resources.DismissEmployee (employee.name))
 			return false;
 		finances.Cash -= employee.DismissCosts;
 
+		if (employee.type == Employee.Type.marketing) {
+			AttributeModifiers.AdvertisementPriceModifier(this,  employee.level*kAdsDiscountMultiplier);
+			AttributeModifiers.AdvertisementImpactModifier(this, -employee.level);
+		}
+		if (employee.type == Employee.Type.finances) {
+			AttributeModifiers.IngredientsPriceModifier(this, employee.level*kIngredientsDiscountMultiplier);
+		}
 		return true;
 	}
 
@@ -177,12 +230,17 @@ public class Establishment{
 		if (ingredient == null)
 			return false;
 		if (action_points - kActionBuyIngredientCost < 0) {
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (finances.Cash - ingredient.cost < 0)
+		if (finances.Cash - ingredient.cost < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
-		if (logistics.InventoryCount >= GetStorageCapacity ()) 
+		}
+		if (logistics.InventoryCount >= GetStorageCapacity ()) {
+			GameLog.Log(GameLog.kTInventoryOutOfSpace, logistics.StorageCapacity.ToString());
 			return false;
+		}
 		if (!logistics.AquireIngredient (ingredient.name))
 			return false;
 		finances.Cash -= ingredient.cost;
@@ -191,15 +249,11 @@ public class Establishment{
 		return true;
 	}
 	public bool SpendIngredient(string name){
+		GameLog.Log(GameLog.kTIngredientSpend, name);
 		return logistics.SpendIngredient(name);
 	}
 
 	//Finances Options
-	//Returns the financy status and balance clients 
-	public void GeneralBalance(){
-		//TODO:
-	}
-
 	bool changed_prices = false;
 	private static int kActionIncreaseDecreasePricesCost = 1;
 	public bool IncreasePrices(){
@@ -208,7 +262,12 @@ public class Establishment{
 			Debug.LogError("Error getting the menu");
 			return false;
 		}
+		if (changed_prices) {
+			GameLog.Log(GameLog.kTPricesAlreadyChanged);
+			return false;
+		}
 		if(action_points - kActionIncreaseDecreasePricesCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
 
@@ -227,10 +286,14 @@ public class Establishment{
 			Debug.LogError("Error getting the menu");
 			return false;
 		}
-		if(action_points - kActionIncreaseDecreasePricesCost < 0){
+		if (changed_prices) {
+			GameLog.Log(GameLog.kTPricesAlreadyChanged);
 			return false;
 		}
-
+		if(action_points - kActionIncreaseDecreasePricesCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
+			return false;
+		}
 		List<Dish> menu_list = m_provider.GetDishList (); 
 		foreach(Dish d in menu_list){
 			finances.DecreasePrice (d.name);
@@ -247,7 +310,7 @@ public class Establishment{
 			if(e.dishes.Contains(number))
 				return true;
 		}
-		Debug.Log ("Nenhum chefe pode preparar o prato " + number);
+		GameLog.Log (GameLog.kTDishCannotBePrepared);
 		return false;
 	}
 
@@ -265,7 +328,7 @@ public class Establishment{
 
 		foreach(string s in dish.ingredients){
 			if(!logistics.HasIngredient(s)){
-				Debug.Log("Nao possui todos os ingredientes necessarios.");
+				GameLog.Log (GameLog.kTOutOfIngredients);
 				return false;
 			}
 		}
@@ -288,9 +351,9 @@ public class Establishment{
 		logistics.CleanOutOfDateIngredients ();
 		alien_resources.ClearTrained ();
 		marketing.ClearHiredAds ();
-		finances.CloseDayBalance ();
 		infrastructure.DirtnessIncrease ();
 		DirtnessDailyEffects ();
+		finances.CloseDayBalance ();
 		PaySalaries ();
 		RestorePoints ();
 
@@ -359,10 +422,7 @@ public class Establishment{
 			}
 			at_m.UpdateAttributes();
 		}
-
-		Debug.Log (infrastructure.Dirtiness);
-		Debug.Log (marketing.Satisfaction);
-		Debug.Log (logistics.StorageTime);
+	
 		return true;
 	}
 	
@@ -371,14 +431,17 @@ public class Establishment{
 			infrastructure.Dirtiness == 1 || 
 		    infrastructure.Dirtiness == 2) {
 			marketing.Satisfaction += 2;
+			GameLog.Log(GameLog.kTSatisfactionIncreased, "2 pontos");
 		}
 		if (infrastructure.Dirtiness == 6 || 
 		    infrastructure.Dirtiness == 7) {
 			marketing.Satisfaction -= 1;
+			GameLog.Log(GameLog.kTSatisfactionDecreased, "1 ponto");
 		}
 		if (infrastructure.Dirtiness == 8 || 
 		    infrastructure.Dirtiness == 9) {
 			marketing.Satisfaction -= 2;
+			GameLog.Log(GameLog.kTSatisfactionDecreased, "2 pontos");
 		}
 		DirtnessTemporaryEffects ();
 	}
@@ -386,9 +449,11 @@ public class Establishment{
 	const int kIncreaseSatisfactionByOrderRate = 2;
 	const int kDecreaseSatisfactionByOrderRate = -5;
 	public void IncreaseSatisfactionByOrder(){
+		GameLog.Log(GameLog.kTSatisfactionIncreased, kIncreaseSatisfactionByOrderRate.ToString());
 		marketing.Satisfaction += kIncreaseSatisfactionByOrderRate;
 	}
 	public void DecreaseSatisfactionByOrder(){
+		GameLog.Log(GameLog.kTSatisfactionDecreased, kDecreaseSatisfactionByOrderRate.ToString());
 		marketing.Satisfaction += kDecreaseSatisfactionByOrderRate;
 	}
 
@@ -400,7 +465,8 @@ public class Establishment{
 			dirness_temp_effect_active = true;
 			original_storage_time = logistics.StorageTime;
 			logistics.StorageTime = (int)Mathf.Ceil((float)logistics.StorageTime/2.0f); 
-			Debug.Log(logistics.StorageTime);
+			GameLog.Log(GameLog.kTStorageTimeDecreased, logistics.StorageTime + " dias");
+			GameLog.Log(GameLog.kTEmployeesHappinessDecreased, "1 ponto." );
 			AttributeModifiers.EmployeeHappinessModifierAll(this, -1);
 		} 
 		if (dirness_temp_effect_active &&
@@ -409,6 +475,8 @@ public class Establishment{
 		 	infrastructure.Dirtiness != 10)){
 			dirness_temp_effect_active = false;
 			logistics.StorageTime = original_storage_time; 
+			GameLog.Log(GameLog.kTStorageTimeIncreased, logistics.StorageTime + " dias");
+			GameLog.Log(GameLog.kTEmployeesHappinessIncreased, "1 ponto." );
 			AttributeModifiers.EmployeeHappinessModifierAll(this, 1);
 		}
 	}
@@ -417,10 +485,11 @@ public class Establishment{
 		if (infrastructure.Dirtiness <= 0)
 			return false;
 		if (action_points - kActionCleaningCost < 0) {
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
 		if (finances.Cash - cleaning_costs < 0) {
-			Debug.Log ("Nao ha dinheiro suficiente para fazer a limpeza.");
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
 		}
 		infrastructure.MakeCleaning ();

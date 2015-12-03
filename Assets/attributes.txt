@@ -3,7 +3,7 @@ int 	Restaurant	reaction_points	0
 int	Restaurant	action_reaction_convertion	2	
 int	Restaurant	satisfaction_increment	5	how much of satisfaction is aquired os lost when the prices change.
 range	Restaurant	requests_calc_factor_range	8-12	a random number amoung the range is used to calculate the number of requests each day
-double	Finances	initial_cash	100	
+double	Finances	initial_cash	10000	
 double	Finances	food_price_increment	0.05	
 int	Employee	capacity_multiplier	3	multiplica a capacidade do empregado
 int	Employee	dismiss_multiplier	12	multiplies the employee lvl, to calculate the dismissing cost

@@ -94,6 +94,7 @@ public class Logistics {
 			}
 		}
 		foreach(Ingredient i in to_remove){
+			GameLog.Log(GameLog.kTRottenIngredientsDiscarted, i.name);
 			inventory.Remove(i);
 		}
 	}

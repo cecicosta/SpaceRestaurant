@@ -37,13 +37,49 @@ public class AttributeModifiers{
 		List<Employee> employees = e.alien_resources.GetEmployeesList ();
 		foreach (Employee emp in employees) {
 			Employee employee = e.alien_resources.GetEmployee (emp.name);
-			employee.level += increment; 
+
+			if (employee.type == Employee.Type.marketing) {
+				AttributeModifiers.AdvertisementPriceModifier(e,  employee.level*2);
+				AttributeModifiers.AdvertisementImpactModifier(e, -employee.level);
+			}
+			if (employee.type == Employee.Type.finances) {
+				AttributeModifiers.IngredientsPriceModifier(e, employee.level*2);
+			}
+			e.alien_resources.IncreaseEmployeeLevel(employee);
+
+			if (employee.type == Employee.Type.marketing) {
+
+				AttributeModifiers.AdvertisementPriceModifier(e,  -employee.level*2);
+				AttributeModifiers.AdvertisementImpactModifier(e, employee.level);
+			}
+			if (employee.type == Employee.Type.finances) {
+				AttributeModifiers.IngredientsPriceModifier(e, -employee.level*2);
+			}
 		}
 		List<Employee> candidates = e.alien_resources.GetCandidatesList ();
 		foreach (Employee emp in candidates) {
 			Employee employee = e.alien_resources.GetCandidate (emp.name);
-			employee.level += increment; 
+
+			if (employee.type == Employee.Type.marketing) {
+				AttributeModifiers.AdvertisementPriceModifier(e,  employee.level*2);
+				AttributeModifiers.AdvertisementImpactModifier(e, -employee.level);
+			}
+			if (employee.type == Employee.Type.finances) {
+				AttributeModifiers.IngredientsPriceModifier(e, employee.level*2);
+			}
+			e.alien_resources.IncreaseEmployeeLevel(employee);
+			
+			if (employee.type == Employee.Type.marketing) {
+				
+				AttributeModifiers.AdvertisementPriceModifier(e,  -employee.level*2);
+				AttributeModifiers.AdvertisementImpactModifier(e, employee.level);
+			}
+			if (employee.type == Employee.Type.finances) {
+				AttributeModifiers.IngredientsPriceModifier(e, -employee.level*2);
+			}
 		}
+
+
 	}
 	public static void EmployeeHappinessModifier(Establishment e, string type, int increment){
 		List<Employee> employees = e.alien_resources.GetEmployeesOfType (type);
@@ -77,13 +113,47 @@ public class AttributeModifiers{
 	public static void ClientsSatisfactionModifier(Establishment e, int increment){
 		e.marketing.Satisfaction += increment;
 	}
-	public static void IngredientsPriceModifier(Establishment e, double increment_percent ){
+
+	public static void IngredientsPriceModifierPercent(Establishment e, double increment_percent ){
 		List<Ingredient> ingredients = e.logistics.GetProvider().GetIngredientsList();
 		foreach(Ingredient i in ingredients){
 			Ingredient ingredient = e.logistics.GetProvider().GetIngredient(i.name);
 			if(ingredient == null)
 				continue;
-			ingredient.cost += ingredient.cost*increment_percent;
+			ingredient.cost += increment_percent;
+		}
+	}
+
+	public static void IngredientsPriceModifier(Establishment e, double increment ){
+		List<Ingredient> ingredients = e.logistics.GetProvider().GetIngredientsList();
+		foreach(Ingredient i in ingredients){
+			Ingredient ingredient = e.logistics.GetProvider().GetIngredient(i.name);
+			if(ingredient == null)
+				continue;
+			ingredient.cost += increment;
+		}
+	}
+
+	public static void AdvertisementPriceModifier(Establishment e, double increment ){
+		List<Advertising> ads = e.marketing.AvailableAdvertisements();
+		foreach(Advertising ad in ads){
+
+			Advertising advertising = e.marketing.GetProvider().GetAd(ad.type);
+			if(advertising == null)
+				continue;
+			advertising.price += increment;
+		}
+	}
+	public static void AdvertisementImpactModifier(Establishment e, int increment ){
+		List<Advertising> ads = e.marketing.AvailableAdvertisements();
+		foreach(Advertising ad in ads){
+			
+			Advertising advertising = e.marketing.GetProvider().GetAd(ad.type);
+			if(advertising == null)
+				continue;
+
+			advertising.max_reach += increment;
+			advertising.min_reach += increment;
 		}
 	}
 
@@ -125,7 +195,7 @@ public class AttributeModifiers{
 			{
 				double value;
 				System.Double.TryParse(modifier.value, out value);
-				IngredientsPriceModifier(e, value);
+				IngredientsPriceModifierPercent(e, value);
 			}break;
 		}
 	}

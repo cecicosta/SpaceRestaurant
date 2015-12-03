@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AttributeModifiers.cs" />
      <Compile Include="Assets\Scripts\AttributesManager.cs" />
+     <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\ActionPointsLabel.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\AdvertisementCard.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\BuyEquipment.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\BuyIngredient.cs" />
@@ -67,6 +68,7 @@
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\ListEquipmentsCards.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\ListIngredientsCards.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\ListMenuCards.cs" />
+     <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\LogMessageScroll.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\MakeCleaning.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\MenuCard.cs" />
      <Compile Include="Assets\Scripts\Auxiliar Interface Scripts\StatusPanel.cs" />
@@ -79,6 +81,7 @@
      <Compile Include="Assets\Scripts\Business Management\Publicity.cs" />
      <Compile Include="Assets\Scripts\DailyPhase.cs" />
      <Compile Include="Assets\Scripts\EndingPhase.cs" />
+     <Compile Include="Assets\Scripts\GameLog.cs" />
      <Compile Include="Assets\Scripts\GameLoop.cs" />
      <Compile Include="Assets\Scripts\General Management\AlianResources.cs" />
      <Compile Include="Assets\Scripts\General Management\Establishment.cs" />

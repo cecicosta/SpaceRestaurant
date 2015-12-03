@@ -61,6 +61,7 @@ public class Employee{
 			return level * capacityMultiplier;
 		}
 	}
+
 	public List<int> dishes;
 
 	public enum Type{chef, waiter, marketing, finances};
