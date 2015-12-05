@@ -34,6 +34,7 @@ public class ListCandidatesCards : MonoBehaviour {
 		foreach(Employee e in employees){
 			CandidateCard card = Instantiate(candidateCard);
 			card.transform.SetParent(this.transform);
+			card.transform.localScale = new Vector3(1,1,1);
 			//TODO: find image by candidate name
 			card.name.text = e.name.ToString();
 			card.profession.text = e.type.ToString();

@@ -36,12 +36,10 @@ public class ListAdvertisementsCards : MonoBehaviour {
 			}
 			cards.Clear();
 		}
-		List<Advertising> advertisement_list = null;
-		if (viwerType == AdvertisementViwer.Available) {
-			advertisement_list = establishment.marketing.GetAdvertisementsList ();
-		} else if(viwerType == AdvertisementViwer.Active) {
-			advertisement_list = establishment.marketing.GetActiveAdvertisementsList ();
-		}
+		List<Advertising> advertisement_list = establishment.marketing.GetAdvertisementsList ();
+
+		List<Advertising> active_advertisement_list = establishment.marketing.GetActiveAdvertisementsList ();
+		
 		if (advertisement_list == null) {
 			Debug.LogError("Error getting the ingredients list");
 			return;
@@ -49,10 +47,15 @@ public class ListAdvertisementsCards : MonoBehaviour {
 		foreach(Advertising ad in advertisement_list){
 			AdvertisementCard card = Instantiate(advertisementCard);
 			card.transform.SetParent(this.transform);
-			//TODO: find image by candidate name
+			card.transform.localScale = new Vector3(1,1,1);
 			card.type.text = ad.type;
 			card.range.text = ad.min_reach.ToString() + "-" + ad.max_reach.ToString();
 			card.price.text = ad.price.ToString();
+			if( active_advertisement_list.Find(x => x.type == ad.type) != null )
+				card.button.interactable = false;
+			else
+				card.button.interactable = true;
+
 			cards.Add(card);
 		}
 	}	
