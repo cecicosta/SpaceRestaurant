@@ -32,9 +32,7 @@ public class Infrastructure{
 		Equipment equipment = equip_provider.GetEquipment(name);
 		if (equipment == null)
 			return false;
-		if (!equip_provider.RemoveEquipment (equipment)) {
-			return false;
-		}
+
 		Equipment e_cpy = new Equipment (equipment);
 		equipments.Add (e_cpy);
 		return true;

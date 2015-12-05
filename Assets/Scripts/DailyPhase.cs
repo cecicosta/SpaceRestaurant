@@ -3,6 +3,7 @@ using System.Collections;
 
 public class DailyPhase : MonoBehaviour {
 
+	public GameObject infoPanel;
 	private EstablishmentManagement establishmentManager;
 	private Establishment establishment;
 	// Use this for initialization
@@ -17,6 +18,7 @@ public class DailyPhase : MonoBehaviour {
 
 	public void StartDailyPhase(){
 		establishmentManager.RunDailyPhase ();
+		infoPanel.SetActive (true);
 	}
 
 }

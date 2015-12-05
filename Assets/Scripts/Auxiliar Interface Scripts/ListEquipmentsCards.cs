@@ -8,8 +8,6 @@ public class ListEquipmentsCards : MonoBehaviour {
 	private List<EquipmentCard> cards = new List<EquipmentCard> ();
 	private EstablishmentManagement establishmentManager;
 	private Establishment establishment;
-	public enum EquipmentViwer {Available, Aquired};
-	public EquipmentViwer viwerType;
 	// Use this for initialization
 	void Awake () {
 		establishmentManager = EstablishmentManagement.GetInstance ();
@@ -36,12 +34,9 @@ public class ListEquipmentsCards : MonoBehaviour {
 			}
 			cards.Clear();
 		}
-		List<Equipment> equipments_list = null;
-		if (viwerType == EquipmentViwer.Available) {
-			equipments_list = establishment.infrastructure.GetProviderEquipmentsList ();
-		} else if (viwerType == EquipmentViwer.Aquired) {
-			equipments_list = establishment.infrastructure.GetAquiredEquipmentsList ();
-		} 
+		List<Equipment> equipments_list = establishment.infrastructure.GetProviderEquipmentsList ();
+		List<Equipment>	aquired_equipments_list = establishment.infrastructure.GetAquiredEquipmentsList ();
+		 
 
 		if (equipments_list == null) {
 			Debug.LogError("Error getting the equipments list");
@@ -51,10 +46,15 @@ public class ListEquipmentsCards : MonoBehaviour {
 		foreach(Equipment eq in equipments_list){
 			EquipmentCard card = Instantiate(equipmentCard);
 			card.transform.SetParent(this.transform);
+			card.transform.localScale = new Vector3(1,1,1);
 			card.name.text = eq.name;
 			card.effect.text = eq.effect;
 			card.description.text = eq.description;
 			card.price.text = eq.price.ToString();
+			if( aquired_equipments_list.Find(x => x.name == eq.name) != null )
+				card.buy_button.interactable = false;
+			else
+				card.buy_button.interactable = true;
 			//TODO: find image by candidate name
 			cards.Add(card);
 		}

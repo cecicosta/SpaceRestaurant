@@ -51,6 +51,7 @@ public class ListMenuCards : MonoBehaviour {
 		foreach(Dish dish in menu_list){
 			MenuCard card = Instantiate(menuCard);
 			card.transform.SetParent(this.transform);
+			card.transform.localScale = new Vector3(1,1,1);
 			//TODO: find image by candidate name
 			card.number.text = i.ToString();
 			card.name.text = dish.name.ToString();

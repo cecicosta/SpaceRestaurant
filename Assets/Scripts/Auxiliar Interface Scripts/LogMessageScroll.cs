@@ -14,6 +14,7 @@ public class LogMessageScroll : MonoBehaviour {
 		if(GameLog.logs.Count > 0){
 			Text text = Instantiate(logText);
 			text.transform.SetParent(this.transform);
+			text.transform.localScale = new Vector3(1,1,1);
 			text.text = GameLog.logs[0];
 			GameLog.logs.RemoveAt(0);
 		}	

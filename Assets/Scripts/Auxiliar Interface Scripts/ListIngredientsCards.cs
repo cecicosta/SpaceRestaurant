@@ -49,6 +49,7 @@ public class ListIngredientsCards : MonoBehaviour {
 		foreach(Ingredient e in ingredients_list){
 			IngredientCard card = Instantiate(ingredientCard);
 			card.transform.SetParent(this.transform);
+			card.transform.localScale = new Vector3(1,1,1);
 			//TODO: find image by candidate name
 			card.name.text = e.name.ToString();
 			card.description.text = e.description.ToString();

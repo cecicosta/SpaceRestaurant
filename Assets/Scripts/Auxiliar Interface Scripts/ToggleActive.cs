@@ -7,7 +7,7 @@ public class ToggleActive : MonoBehaviour {
 		gameObject.SetActive (initialActieveState);
 	}
 	public void ToggleActiveState(){
-		initialActieveState = ! initialActieveState;
+		initialActieveState = !gameObject.activeSelf;
 		gameObject.SetActive (initialActieveState);
 	}
 }
