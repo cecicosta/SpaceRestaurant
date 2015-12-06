@@ -5,11 +5,11 @@ using System.Linq;
 
 public class EstablishmentManagement{ 
 	public Establishment establishment;
-
 	private EstablishmentManagement(){
 		establishment = new Establishment ();
 	
 	}
+
 	private static EstablishmentManagement establishment_man = null;
 	public static EstablishmentManagement GetInstance(){
 		if (establishment_man == null) {
@@ -102,6 +102,68 @@ public class EstablishmentManagement{
 		e.NextDay ();
 	}
 
+	public static string save_key = "res_esq_fim_uni_sav";
+	public static string save_game = "";
+	public static string[] load_game;
+	private static int loaded_inter;
+	public void SaveGameState(){
+		SaveAttribute (management_costs);
+		SaveAttribute (previous_day_cash);
+		SaveAttribute (day_income);
+		SaveAttribute (total_request_number);
+		SaveAttribute (attended_requests_number);
+
+		establishment.SaveObjectState ();
+		AttributesManager.GetInstance ().SaveObjectState ();
+		PlayerPrefs.SetString (save_key, save_game);
+		PlayerPrefs.Save ();
+	}
+
+	public void LoadGameState(){
+		loaded_inter = 0;
+		load_game = PlayerPrefs.GetString (save_key).Split('\n');
+		LoadAttribute (out management_costs);
+		LoadAttribute (out previous_day_cash);
+		LoadAttribute (out day_income);
+		LoadAttribute (out total_request_number);
+		LoadAttribute (out attended_requests_number);
+
+		establishment.LoadObjectState ();
+		AttributesManager.GetInstance ().LoadObjectState ();
+	}
+
+	public static void SaveAttribute(int attribute){
+		save_game += attribute.ToString () + "\n";
+	}
+	public static void SaveAttribute(float attribute){
+		save_game += attribute.ToString () + "\n";
+	}
+	public static void SaveAttribute(double attribute){
+		save_game += attribute.ToString () + "\n";
+	}
+	public static void SaveAttribute(bool attribute){
+		save_game += attribute.ToString () + "\n";
+	}
+	public static void SaveAttribute(string attribute){
+		save_game += attribute + "\n";
+	}
+
+	public static void LoadAttribute(out int attribute){
+		attribute = System.Int32.Parse(load_game [loaded_inter++]);
+	}
+	public static void LoadAttribute(out float attribute){
+		attribute = (float)System.Double.Parse(load_game [loaded_inter++]);
+	}
+	public static void LoadAttribute(out double attribute){
+		attribute = System.Double.Parse(load_game [loaded_inter++]);
+	}
+	public static void LoadAttribute(out bool attribute){
+		System.Boolean.TryParse(load_game [loaded_inter++], out attribute);
+	}
+	public static void LoadAttribute(out string attribute){
+		attribute = load_game [loaded_inter++];
+	}
+	
 	public double management_costs;
 	public double previous_day_cash;
 	public double day_income;

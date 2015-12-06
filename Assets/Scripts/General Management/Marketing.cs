@@ -86,6 +86,23 @@ public class Marketing {
 		return true;
 	}
 
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (advertisements.Count);
+		foreach(Advertising ad in advertisements){
+			ad.SaveObjectState();
+		}
+	}
+
+	public void LoadObjectState(){
+		int count;
+		EstablishmentManagement.LoadAttribute (out count);
+		for(int i=0; i<count; i++){
+			Advertising ad = new Advertising();
+			ad.LoadObjectState();
+			advertisements.Add(ad);
+		}
+	}
+
 	private static int kMaxSatisfaction = 100;
 	private static int initialSatisfaction;
 	private AdvertisementsProvider adsProvider;

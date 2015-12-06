@@ -7,7 +7,6 @@ public class Logistics {
 	public Logistics(){
 		provider = new IngredientsProvider ();
 		inventory = new List<Ingredient> ();
-
 	}
 
 	public bool Initiate(){
@@ -102,8 +101,7 @@ public class Logistics {
 	public void NextDay(){
 		current_day++;
 	}
-
-	private int current_day;
+	
 	public int CurrentDay{
 		get{
 			return current_day; 	
@@ -142,9 +140,30 @@ public class Logistics {
 		Debug.Log (storage_capacity);
 		return true;
 	}
-	
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (current_day);
+		EstablishmentManagement.SaveAttribute (inventory.Count);
+		foreach(Ingredient i in inventory){
+			i.SaveObjectState();
+		}
+	}
+
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out current_day);
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Ingredient ing = new Ingredient();
+			ing.LoadObjectState();
+			inventory.Add(ing);
+		}
+	}
+
 	private static int storage_time = 3;
 	private static int storage_capacity = 20;
+
 	private IngredientsProvider provider;
 	private List<Ingredient> inventory;
+	private int current_day;
 }

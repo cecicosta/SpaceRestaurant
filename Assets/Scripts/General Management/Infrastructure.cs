@@ -51,10 +51,6 @@ public class Infrastructure{
 		return equip_provider.GetEquipmentsList ();
 	}
 
-	private EquipmentsProvider equip_provider;
-	private List<Equipment> equipments;
-	private int dirtiness;
-
 	public int Dirtiness {
 		get{
 			return dirtiness;
@@ -73,7 +69,31 @@ public class Infrastructure{
 		dirtness_decrement_clean = at_m.IntValue ("dirtness_decrement_clean");
 		return true;
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (dirtiness);
+		EstablishmentManagement.SaveAttribute (equipments.Count);
+		foreach(Equipment equip in equipments){
+			equip.SaveObjectState();
+		}
+	}
+	
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out dirtiness);
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Equipment ing = new Equipment();
+			ing.LoadObjectState();
+			equipments.Add(ing);
+		}
+	}
+
 	private static int initial_dirtness;
 	private static int dirtness_increment_day;
 	private static int dirtness_decrement_clean;
+
+	private EquipmentsProvider equip_provider;
+	private List<Equipment> equipments;
+	private int dirtiness;
 }

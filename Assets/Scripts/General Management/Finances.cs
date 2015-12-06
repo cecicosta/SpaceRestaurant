@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Finances {
-	public int income;
-	public int outgoing;
-
 	public Finances(){
 	}
 
@@ -47,7 +44,7 @@ public class Finances {
 	public double StartingDayCash(){
 		return starting_day_cash;
 	}
-	private double cash;
+
 	public double Cash {
 		get{
 			return cash;
@@ -68,7 +65,23 @@ public class Finances {
 		Debug.Log (initialCash);
 		return true;
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (income);
+		EstablishmentManagement.SaveAttribute (outgoing);
+		EstablishmentManagement.SaveAttribute (cash);
+	}
 	
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out income);
+		EstablishmentManagement.LoadAttribute (out outgoing);
+		EstablishmentManagement.LoadAttribute (out cash);
+	}
+
 	private static double changePricePercent; 
 	private static double initialCash;
+
+	private double cash;
+	public int income;
+	public int outgoing;
 }

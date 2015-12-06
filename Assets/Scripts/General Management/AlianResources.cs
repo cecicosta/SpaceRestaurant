@@ -155,6 +155,36 @@ public class AlianResources{
 		trained.Clear();
 	}
 
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (trained.Count);
+		foreach(string s in trained){
+			EstablishmentManagement.SaveAttribute(s);
+		}
+		EstablishmentManagement.SaveAttribute (employees.Count);
+		foreach(Employee e in employees){
+			e.SaveObjectState();
+		}
+		employee_provider.SaveObjectState ();
+
+	}
+
+	public void LoadObjectState(){
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			string s;
+			EstablishmentManagement.LoadAttribute(out s);
+			trained.Add(s);
+		}
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Employee e = new Employee();
+			e.LoadObjectState();
+			employees.Add(e);
+		}
+		employee_provider.LoadObjectState ();
+	}
+
 	private List<string> trained;
 	private List<Employee> employees;
 	private EmployeesProvider employee_provider;

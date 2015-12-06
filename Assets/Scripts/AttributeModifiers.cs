@@ -14,6 +14,28 @@ public class Modifier{
 			arguments.Add(s);
 		}
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (value);
+		EstablishmentManagement.SaveAttribute (attribute);
+		EstablishmentManagement.SaveAttribute (arguments.Count);
+		foreach (string s in arguments) {
+			EstablishmentManagement.SaveAttribute (s);
+		}
+	}
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out value);
+		EstablishmentManagement.LoadAttribute (out attribute);
+		int size;
+		arguments.Clear ();
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++) {
+			string s;
+			EstablishmentManagement.LoadAttribute (out s);
+			arguments.Add(s);
+		}
+	}
+
 	public string value;
 	public string attribute;
 	public List<string> arguments;

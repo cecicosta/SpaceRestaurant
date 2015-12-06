@@ -25,6 +25,43 @@ public class Equipment{
 		}
 	}
 
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (name);
+		EstablishmentManagement.SaveAttribute (price);
+		EstablishmentManagement.SaveAttribute (description);
+		EstablishmentManagement.SaveAttribute (effect);
+		EstablishmentManagement.SaveAttribute (available);
+		EstablishmentManagement.SaveAttribute (variable_modifiers.Count);
+		foreach(Modifier m in variable_modifiers){
+			m.SaveObjectState();
+		}
+		EstablishmentManagement.SaveAttribute (constant_modifiers.Count);
+		foreach(Modifier m in constant_modifiers){
+			m.SaveObjectState();
+		}
+	}
+	
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out name);
+		EstablishmentManagement.LoadAttribute (out price);
+		EstablishmentManagement.LoadAttribute (out description);
+		EstablishmentManagement.LoadAttribute (out effect);
+		EstablishmentManagement.LoadAttribute (out available);
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Modifier m = new Modifier();
+			m.LoadObjectState();
+			variable_modifiers.Add(m);
+		}
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Modifier m = new Modifier();
+			m.LoadObjectState();
+			variable_modifiers.Add(m);
+		}
+	}
+
 	public double price;
 	public string name;
 	public string effect;

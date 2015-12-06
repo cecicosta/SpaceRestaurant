@@ -12,6 +12,23 @@ public class GameAttribute{
 		current_value = at.current_value;
 		description = at.description;
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (unit);
+		EstablishmentManagement.SaveAttribute (affects);
+		EstablishmentManagement.SaveAttribute (attribute);
+		EstablishmentManagement.SaveAttribute (current_value);
+		EstablishmentManagement.SaveAttribute (description);
+	}
+
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out unit);
+		EstablishmentManagement.LoadAttribute (out affects);
+		EstablishmentManagement.LoadAttribute (out attribute);
+		EstablishmentManagement.LoadAttribute (out current_value);
+		EstablishmentManagement.LoadAttribute (out description);
+	}
+
 	public string unit;
 	public string affects;
 	public string attribute;
@@ -115,6 +132,24 @@ public class AttributesManager  {
 		if(!Finances.LoadAttributes ())
 			return false;
 		return true;
+	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (attributes.Count);
+		foreach(GameAttribute ga in attributes){
+			ga.SaveObjectState();
+		}
+	}
+
+	public void LoadObjectState(){
+		int size;
+		attributes.Clear ();
+		EstablishmentManagement.LoadAttribute (out size);
+		for (int i=0; i<size; i++) {
+			GameAttribute ga = new GameAttribute();
+			ga.LoadObjectState();
+			attributes.Add(ga);
+		}
 	}
 
 	public List<GameAttribute> attributes;

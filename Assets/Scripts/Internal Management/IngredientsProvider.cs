@@ -16,6 +16,26 @@ public class Ingredient{
 		available = i.available;
 	}
 
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (name);
+		EstablishmentManagement.SaveAttribute (code);
+		EstablishmentManagement.SaveAttribute (description);
+		EstablishmentManagement.SaveAttribute (cost);
+		EstablishmentManagement.SaveAttribute (satisf_bonus);
+		EstablishmentManagement.SaveAttribute (aquired_day);
+		EstablishmentManagement.SaveAttribute (available);
+	}
+
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out name);
+		EstablishmentManagement.LoadAttribute (out code);
+		EstablishmentManagement.LoadAttribute (out description);
+		EstablishmentManagement.LoadAttribute (out cost);
+		EstablishmentManagement.LoadAttribute (out satisf_bonus);
+		EstablishmentManagement.LoadAttribute (out aquired_day);
+		EstablishmentManagement.LoadAttribute (out available);
+	}
+
 	public string name;
 	public string code;
 	public string description;

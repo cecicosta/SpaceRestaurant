@@ -21,13 +21,7 @@ public class Employee{
 			dishes.Add(d);
 		}
 	}
-
-	public string name;
-	public string description;
-	public Type type;
-	public int level;
-	public int happiness;
-	public double hire_costs;
+	
 	public double HireCosts{
 		get{
 			return hire_costs;
@@ -62,21 +56,25 @@ public class Employee{
 		}
 	}
 
-	public List<int> dishes;
-
-	public enum Type{chef, waiter, marketing, finances};
-
-	public void Print(){
-		Debug.Log (name);
-		Debug.Log(type);
-		Debug.Log(level);
-		foreach(int dish in dishes){
-			Debug.Log(dish);
+	public static Type StringToType(string t){
+		Type tp = Type.chef;
+		switch (t) {
+		case "chef":
+			tp = Employee.Type.chef;
+			break;
+		case "waiter":
+			tp = Employee.Type.waiter;
+			break;
+		case "marketing":
+			tp = Employee.Type.marketing;
+			break;
+		case "finances":
+			tp = Employee.Type.finances;
+			break;
 		}
-		Debug.Log(HireCosts);
-		Debug.Log(description);
+		return tp;
 	}
-
+	
 	public static bool LoadAttributes(){
 
 		AttributesManager at_m = AttributesManager.GetInstance ();
@@ -89,7 +87,52 @@ public class Employee{
 		initialHappiness = at_m.IntValue("initial_happiness");
 		return true;
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (name);
+		EstablishmentManagement.SaveAttribute (description);
+		EstablishmentManagement.SaveAttribute (type.ToString());
+		EstablishmentManagement.SaveAttribute (level);
+		EstablishmentManagement.SaveAttribute (happiness);
+		EstablishmentManagement.SaveAttribute (hire_costs);
+
+		EstablishmentManagement.SaveAttribute (dishes.Count);
+		foreach (int d in dishes) {
+			EstablishmentManagement.SaveAttribute(d);
+		}
+	}
+
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out name);
+		EstablishmentManagement.LoadAttribute (out description);
+
+		string t;
+		EstablishmentManagement.LoadAttribute (out t);
+		type = Employee.StringToType (t);
+
+		EstablishmentManagement.LoadAttribute (out level);
+		EstablishmentManagement.LoadAttribute (out happiness);
+		EstablishmentManagement.LoadAttribute (out hire_costs);
+
+		dishes.Clear();
+		int count;
+		EstablishmentManagement.LoadAttribute (out count);
+		for (int i=0; i<count; i++) {
+			int d;
+			EstablishmentManagement.LoadAttribute(out d);
+			dishes.Add(d);
+		}
+	}
 	
+	public string name;
+	public string description;
+	public Type type;
+	public int level;
+	public int happiness;
+	public double hire_costs;
+	public List<int> dishes;
+	public enum Type{chef, waiter, marketing, finances};
+
 	private static int capacityMultiplier;
 	private static int trainCostMultiplier;
 	private static int dismissCostMultiplier;
@@ -196,11 +239,23 @@ public class EmployeesProvider{
 		return true;
 	}
 
-	public void PrettyPrint(){
-		foreach (Employee cand in candidates) {
-			cand.Print();
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (candidates.Count);
+		foreach(Employee e in candidates){
+			e.SaveObjectState();
 		}
 	}
-	
+
+	public void LoadObjectState(){
+		candidates.Clear ();
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for (int i=0; i<size; i++) {
+			Employee e = new Employee();
+			e.LoadObjectState();
+			candidates.Add(e);
+		}
+	}
+
 	private List<Employee> candidates;
 }

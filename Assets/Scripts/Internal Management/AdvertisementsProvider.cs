@@ -12,6 +12,21 @@ public class Advertising{
 		max_reach = ad.max_reach;
 		price = ad.price;
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (type);
+		EstablishmentManagement.SaveAttribute (min_reach);
+		EstablishmentManagement.SaveAttribute (max_reach);
+		EstablishmentManagement.SaveAttribute (price);
+	}
+	
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out type);
+		EstablishmentManagement.LoadAttribute (out min_reach);
+		EstablishmentManagement.LoadAttribute (out max_reach);
+		EstablishmentManagement.LoadAttribute (out price);
+	}
+
 	public string type;
 	public int min_reach;
 	public int max_reach;

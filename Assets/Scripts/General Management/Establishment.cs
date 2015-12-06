@@ -9,14 +9,20 @@ using System.Collections.Generic;
 
 public class Establishment{
 
-	public AlianResources alien_resources;
-	public Marketing marketing;
-	public Finances finances;
-	public Logistics logistics;
-	public Infrastructure infrastructure;
-
-	public int action_points;
-	public int reaction_points;
+	public int kDaysBetweenPayment = 5;
+	private static int kActionCleaningCost = 1;
+	private static int kIncreaseSatisfactionByOrderRate = 2;
+	private static int kDecreaseSatisfactionByOrderRate = -5;
+	private static int kActionBuyEquipmentCost = 1;
+	private static int kActionAdvertisementCost = 1;
+	private static int kActionIncreaseDecreasePricesCost = 1;
+	private static int kActionBuyIngredientCost = 1;
+	private static int kActionDismissCost = 1;
+	private static int kActionTrainHappinessCost = 1;
+	private static int kActionTrainLevelCost = 1;
+	private static int kActionHireCost = 1;
+	private static int kAdsDiscountMultiplier = 2;
+	private static int kIngredientsDiscountMultiplier = 2;
 
 	public Establishment(){
 		generator = new System.Random ();
@@ -91,9 +97,6 @@ public class Establishment{
 	}
 
 	//Alien Resources Options
-	private static int kActionHireCost = 1;
-	private static int kAdsDiscountMultiplier = 2;
-	private static int kIngredientsDiscountMultiplier = 2;
 	public bool Hire(string name){
 		List<Employee> candidates_list = alien_resources.GetCandidatesList ();
 		Employee candidate = candidates_list.Find (x => x.name == name);
@@ -121,7 +124,7 @@ public class Establishment{
 		action_points -= kActionHireCost;
 		return true;
 	}
-	private static int kActionTrainLevelCost = 1;
+
 	public bool TrainLevel(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
@@ -168,7 +171,7 @@ public class Establishment{
 
 		return true;
 	}
-	private static int kActionTrainHappinessCost = 1;
+
 	public bool TrainHappiness(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
@@ -195,7 +198,7 @@ public class Establishment{
 		
 		return true;
 	}
-	private static int kActionDismissCost = 1;
+
 	public bool Dismiss(string name){
 		List<Employee> employees_list = alien_resources.GetEmployeesList ();
 		Employee employee = employees_list.Find (x => x.name == name);
@@ -223,7 +226,7 @@ public class Establishment{
 		return true;
 	}
 
-	private static int kActionBuyIngredientCost = 1;
+
 	public bool BuyIngredient(string name){
 		List<Ingredient> ingredients_list = logistics.GetProviderIngredientsList ();
 		Ingredient ingredient = ingredients_list.Find (x => x.name == name);
@@ -254,8 +257,6 @@ public class Establishment{
 	}
 
 	//Finances Options
-	bool changed_prices = false;
-	private static int kActionIncreaseDecreasePricesCost = 1;
 	public bool IncreasePrices(){
 		MenuProvider m_provider = MenuProvider.GetInstance ();
 		if (m_provider == null) {
@@ -371,7 +372,6 @@ public class Establishment{
 	}
 
 	//Marketing 
-	private static int kActionAdvertisementCost = 1;
 	public bool HireAdvertisement(string type){
 		List<Advertising> ads_list = marketing.GetAdvertisementsList ();
 		Advertising advertisement = ads_list.Find (x => x.type == type);
@@ -393,7 +393,6 @@ public class Establishment{
 	}
 
 	//Infrastructure
-	private static int kActionBuyEquipmentCost = 1;
 	public bool BuyEquipment(string name){
 
 		List<Equipment> equips_list = infrastructure.GetProviderEquipmentsList ();
@@ -446,8 +445,7 @@ public class Establishment{
 		DirtnessTemporaryEffects ();
 	}
 
-	const int kIncreaseSatisfactionByOrderRate = 2;
-	const int kDecreaseSatisfactionByOrderRate = -5;
+
 	public void IncreaseSatisfactionByOrder(){
 		GameLog.Log(GameLog.kTSatisfactionIncreased, kIncreaseSatisfactionByOrderRate.ToString());
 		marketing.Satisfaction += kIncreaseSatisfactionByOrderRate;
@@ -480,7 +478,7 @@ public class Establishment{
 			AttributeModifiers.EmployeeHappinessModifierAll(this, 1);
 		}
 	}
-	private static int kActionCleaningCost = 1; 
+	 
 	public bool DoCleaning(){
 		if (infrastructure.Dirtiness <= 0)
 			return false;
@@ -519,7 +517,7 @@ public class Establishment{
 		return true;
 	}
 
-	public int kDaysBetweenPayment = 5;
+
 	public void PaySalaries(){
 		if (logistics.CurrentDay % 5 == 0) {
 			double payment = alien_resources.CalculateEmployeesPayment ();
@@ -555,14 +553,52 @@ public class Establishment{
 		return true;
 	}
 
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (action_points);
+		EstablishmentManagement.SaveAttribute (reaction_points);
+		EstablishmentManagement.SaveAttribute (changed_prices);
+		EstablishmentManagement.SaveAttribute (dirness_temp_effect_active);
+		EstablishmentManagement.SaveAttribute (original_storage_time);
+
+		alien_resources.SaveObjectState ();
+		marketing.SaveObjectState ();
+		finances.SaveObjectState ();
+		logistics.SaveObjectState ();
+		infrastructure.SaveObjectState ();
+	}
+
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out action_points);
+		EstablishmentManagement.LoadAttribute (out reaction_points);
+		EstablishmentManagement.LoadAttribute (out changed_prices);
+		EstablishmentManagement.LoadAttribute (out dirness_temp_effect_active);
+		EstablishmentManagement.LoadAttribute (out original_storage_time);
+		
+		alien_resources.LoadObjectState ();
+		marketing.LoadObjectState ();
+		finances.LoadObjectState ();
+		logistics.LoadObjectState ();
+		infrastructure.LoadObjectState ();
+	}
+
 	private static int initialReactionPoints;
 	private static int initialActionPoints;
 	private static int actionReationConvertion;
 	private static int satisfactionIncrementByPrice; //Incremental value of satisfaction over price changes
 	private static int cleaning_costs;
 	private static int[] requestCalcFactorRange;
-
 	private System.Random generator;
+
+	//States to save
+	public int action_points;
+	public int reaction_points;
+	private bool changed_prices = false;
 	private bool dirness_temp_effect_active = false;
 	private int original_storage_time = 0;
+
+	public AlianResources alien_resources;
+	public Marketing marketing;
+	public Finances finances;
+	public Logistics logistics;
+	public Infrastructure infrastructure;
 }
