@@ -1,8 +1,8 @@
-Freezer Zorgnator 2000	1 dia a mais para que o alimentos estraguem 		4/storage_time	100	Uma vez em Chef foi encontrado em um desses freezers 800 anos depois de ter ido pegar uma linguiÁa.		
-Fog„o ‡ lenha da floresta de Rupester	1 de Skill para os Chefs	1/skill/chef		200	DestrÛi a natureza desde a hora de coletar a madeira atÈ o momento da queimada.		
-Patins Voadores Bulianos	1 de Skill para GarÁonetes e 1 de Felicidade para GarÁonetes	1/skill/waiter,1/happiness/waiter		250	Quem precisa de hoverboards?		
-Calculadora HP 8.000	1 de Skill para FinanÁas	1/skill/finances		200	Essa n„o tem nenhum inimigo.		
-”culos Hipster Firuliano	1 de Skill Marketing	1/skill/marketing		180	Estudos comprovam que esse Ûculos te deixa mais pedante e descolado.		
-Auto Cleaner 7500 LimpÛide	-2 de Sujeira no momento da compra	-1/dirtness		100	AVISO: O nÌvel 5 pode gerar mini buracos negros, use com cuidado.		
-Jukebox Jeki 5000	1 de Felicidade para funcion·rios e 10 SatisfaÁ„o para clientes	10/clients_satisfaction,1/happiness/all		300	Os maiores sucessos dos artistas de todas as realidades alternativas.		
-Nave Espacial Space Rover	-5% em todas as compras	-0.05/ingredients_price_discount		400	Se beber n„o dirija. Principalmente se for a cerveja artesanal de h 82, que lhe transforma em um pato kiluniano.		
+ÔªøFreezer Zorgnator 2000	1 dia a mais para que o alimentos estraguem 		4/storage_time	100	Uma vez em Chef foi encontrado em um desses freezers 800 anos depois de ter ido pegar uma lingui√ßa.		
+Fog√£o √† lenha da floresta de Rupester	1 de Skill para os Chefs	1/skill/chef		200	Destr√≥i a natureza desde a hora de coletar a madeira at√© o momento da queimada.		
+Patins Voadores Bulianos	1 de Skill para Gar√ßonetes e 1 de Felicidade para Gar√ßonetes	1/skill/waiter,1/happiness/waiter		250	Quem precisa de hoverboards?		
+Calculadora HP 8.000	1 de Skill para Finan√ßas	1/skill/finances		200	Essa n√£o tem nenhum inimigo.		
+√ìculos Hipster Firuliano	1 de Skill Marketing	1/skill/marketing		180	Estudos comprovam que esse √≥culos te deixa mais pedante e descolado.		
+Auto Cleaner 7500 Limp√≥ide	-2 de Sujeira no momento da compra	-1/dirtness		100	AVISO: O n√≠vel 5 pode gerar mini buracos negros, use com cuidado.		
+Jukebox Jeki 5000	1 de Felicidade para funcion√°rios e 10 Satisfa√ß√£o para clientes	10/clients_satisfaction,1/happiness/all		300	Os maiores sucessos dos artistas de todas as realidades alternativas.		
+Nave Espacial Space Rover	-5% em todas as compras	-0.05/ingredients_price_discount		400	Se beber n√£o dirija. Principalmente se for a cerveja artesanal de h 82, que lhe transforma em um pato kiluniano.		

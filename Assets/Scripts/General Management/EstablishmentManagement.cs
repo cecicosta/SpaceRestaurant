@@ -116,13 +116,16 @@ public class EstablishmentManagement{
 		PlayerPrefs.SetString(
 			UserService.Instance.userEmail + "_SaveBase64" + save_key, dadosSaveBase64);	
 		PlayerPrefs.Save ();
+		GameLog.Log(GameLog.kProgressSaved);
 	}
 
 	public void LocalLoadState(){
 		string data = PlayerPrefs.GetString (UserService.Instance.userEmail + "_SaveBase64" + save_key);
 		
-		if(LoadDataFromBase64 (data))
+		if (LoadDataFromBase64 (data)) {
 			LoadCacheGameData ();
+			GameLog.Log(GameLog.kProgressLoaded);
+		}
 	}
 
 	public string SaveDataToBase64(){

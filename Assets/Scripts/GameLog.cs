@@ -6,6 +6,8 @@ public class GameLog {
 
 	public static string kGameName = "Restaurante na Esquina do Universo";
 
+	public static string kProgressLoaded = "O jogo foi carregado.";
+	public static string kProgressSaved = "O jogo foi salvo.";
 	public static string kTDayIsOver = "O dia terminou.";
 	public static string kTGameOver = "Você perdeu!";
 	public static string kTNoCashBuyIngredient = "Não há dinheiro suficiênte para comprar o ingrediente.";

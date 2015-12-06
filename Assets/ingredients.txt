@@ -1,5 +1,5 @@
-Ingredientes Comuns	i.c	10	0	Ingredientes encontrados em qualquer esquina da galáxia
-Ingredientes Incomuns	i.i	30	0	A Gourmetização dos Ingredientes Comuns
-Ingredientes Exóticos	i.e	50	0	Você precisa matar algumas espécies em extinção para conseguir esses
-Tempero Comum	t.c	10	1	Porque o melhor tempero não é um amor
-Tempero Exótico	t.e	30	2	Para quem quer dar aquela apimentadinha na comida literalmente
+ï»¿Ingredientes Comuns	i.c	10	0	Ingredientes encontrados em qualquer esquina da galÃ¡xia
+Ingredientes Incomuns	i.i	30	0	A GourmetizaÃ§Ã£o dos Ingredientes Comuns
+Ingredientes ExÃ³ticos	i.e	50	0	VocÃª precisa matar algumas espÃ©cies em extinÃ§Ã£o para conseguir esses
+Tempero Comum	t.c	10	1	Porque o melhor tempero nÃ£o Ã© um amor
+Tempero ExÃ³tico	t.e	30	2	Para quem quer dar aquela apimentadinha na comida literalmente

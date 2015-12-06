@@ -372,12 +372,15 @@ public class Establishment{
 		if (advertisement == null)
 			return false;
 		if(action_points - kActionAdvertisementCost < 0){
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
 		if (marketing.WasHired (type))
 			return false;
-		if (finances.Cash - advertisement.Price < 0)
+		if (finances.Cash - advertisement.Price < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
+		}
 		if (!marketing.HireAdvertisement (type))
 			return false;
 		finances.Cash -= advertisement.Price;
@@ -394,12 +397,16 @@ public class Establishment{
 		if (equipment == null)
 			return false;
 		if (action_points - kActionBuyEquipmentCost < 0) {
+			GameLog.Log(GameLog.kTNotEnoughPoints);
 			return false;
 		}
-		if (finances.Cash - equipment.Price < 0)
+		if (finances.Cash - equipment.Price < 0) {
+			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
-		if (!infrastructure.BuyEquipment (name))
+		}
+		if (!infrastructure.BuyEquipment (name)) {
 			return false;
+		}
 		finances.Cash -= equipment.Price;
 		action_points -= kActionBuyEquipmentCost;
 
@@ -515,6 +522,7 @@ public class Establishment{
 	public void PaySalaries(){
 		if (logistics.CurrentDay % 5 == 0) {
 			double payment = alien_resources.CalculateEmployeesPayment ();
+			GameLog.Log(GameLog.kTSalariesPayment);
 			finances.Cash -= payment;
 		}
 	}

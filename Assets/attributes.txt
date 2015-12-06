@@ -1,4 +1,4 @@
-int	Restaurant	action_points	5	
+﻿int	Restaurant	action_points	5	
 int 	Restaurant	reaction_points	0	
 int	Restaurant	action_reaction_convertion	2	
 int	Restaurant	satisfaction_increment	5	how much of satisfaction is aquired os lost when the prices change.

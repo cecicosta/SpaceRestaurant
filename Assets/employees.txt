@@ -1,9 +1,9 @@
-Arlinum	chef	1	0,1	0	Acabou de aprender a fritar um ovo Beloniano pois comeÁou a morar sozinho.
-Ornete	waiter	1		0	T„o simp·tica quanto uma explos„o termonuclear.
-Foguese	chef	2	0,1,2,3	50	Seu hamb˙rguer È conhecido por n„o dar dor de barriga nos seus clientes mesmo se eles usarem a maionese.
-Jargan	chef	3	0,1,4,5,6,7	100	Ele È t„o fino que passa por um buraco de agulha.
-Grete	waiter	2		40	Os clientes v„o entrar na sua lanchonete somente para apreciar seus lindos fur˙nculos que possui nos l·bios.
-Plomela	waiter	3		70	Dizem que sua habilidade de atender clientes È devido seus 8 braÁos, mas acho isso uma inveja.
-Cerse	waiter	1		30	Se ela n„o quebrar tantos pratos talvez a contrataÁ„o valha a pena.
-Caspitol	finances	1		100	Ele ama dinheiro como um Vreniniano ama seus XulinÛides.
-Hinger	marketing	1		80	Sua criatividade sÛ n„o È maior do que suas antenas.
+ÔªøArlinum	chef	1	0,1	0	Acabou de aprender a fritar um ovo Beloniano pois come√ßou a morar sozinho.
+Ornete	waiter	1		0	T√£o simp√°tica quanto uma explos√£o termonuclear.
+Foguese	chef	2	0,1,2,3	50	Seu hamb√∫rguer √© conhecido por n√£o dar dor de barriga nos seus clientes mesmo se eles usarem a maionese.
+Jargan	chef	3	0,1,4,5,6,7	100	Ele √© t√£o fino que passa por um buraco de agulha.
+Grete	waiter	2		40	Os clientes v√£o entrar na sua lanchonete somente para apreciar seus lindos fur√∫nculos que possui nos l√°bios.
+Plomela	waiter	3		70	Dizem que sua habilidade de atender clientes √© devido seus 8 bra√ßos, mas acho isso uma inveja.
+Cerse	waiter	1		30	Se ela n√£o quebrar tantos pratos talvez a contrata√ß√£o valha a pena.
+Caspitol	finances	1		100	Ele ama dinheiro como um Vreniniano ama seus Xulin√≥ides.
+Hinger	marketing	1		80	Sua criatividade s√≥ n√£o √© maior do que suas antenas.
