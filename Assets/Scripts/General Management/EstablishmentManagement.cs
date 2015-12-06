@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+
 
 public class EstablishmentManagement{ 
 	public Establishment establishment;
@@ -115,13 +117,21 @@ public class EstablishmentManagement{
 
 		establishment.SaveObjectState ();
 		AttributesManager.GetInstance ().SaveObjectState ();
-		PlayerPrefs.SetString (save_key, save_game);
+
+		byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(save_game);
+		string dadosSaveBase64 = System.Convert.ToBase64String(toEncodeAsBytes);
+		PlayerPrefs.SetString(
+			UserService.Instance.userEmail + "_SaveBase64" + save_key, dadosSaveBase64);
+	
 		PlayerPrefs.Save ();
 	}
 
 	public void LoadGameState(){
 		loaded_inter = 0;
-		load_game = PlayerPrefs.GetString (save_key).Split('\n');
+		byte[] bytes = System.Convert.FromBase64String(PlayerPrefs.GetString (
+			UserService.Instance.userEmail + "_SaveBase64" + save_key));
+		load_game = Encoding.UTF8.GetString (bytes).Split ('\n');
+
 		LoadAttribute (out management_costs);
 		LoadAttribute (out previous_day_cash);
 		LoadAttribute (out day_income);
