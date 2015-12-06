@@ -22,7 +22,7 @@ public class Finances {
 		Dish dish = menu.GetDish (name);
 		if (dish == null)
 			return false;
-		dish.price += dish.price * changePricePercent; 
+		dish.Price += dish.Price * changePricePercent; 
 		return true;
 	}
 
@@ -30,7 +30,7 @@ public class Finances {
 		Dish dish = menu.GetDish (name);
 		if (dish == null)
 			return false;
-		dish.price -= dish.price * changePricePercent; 
+		dish.Price -= dish.Price * changePricePercent; 
 		return true;
 	}
 
@@ -47,7 +47,7 @@ public class Finances {
 
 	public double Cash {
 		get{
-			return cash;
+			return Mathf.Floor((float)cash);
 		}
 		set{
 			cash = value;

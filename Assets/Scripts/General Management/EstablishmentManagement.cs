@@ -107,40 +107,67 @@ public class EstablishmentManagement{
 	public static string save_key = "res_esq_fim_uni_sav";
 	public static string save_game = "";
 	public static string[] load_game;
+	public static string save_game_base64;
 	private static int loaded_inter;
-	public void SaveGameState(){
+	public void LocalSaveState(){
+		SaveCacheGameData ();
+
+		string dadosSaveBase64 = SaveDataToBase64();
+		PlayerPrefs.SetString(
+			UserService.Instance.userEmail + "_SaveBase64" + save_key, dadosSaveBase64);	
+		PlayerPrefs.Save ();
+	}
+
+	public void LocalLoadState(){
+		string data = PlayerPrefs.GetString (UserService.Instance.userEmail + "_SaveBase64" + save_key);
+		
+		if(LoadDataFromBase64 (data))
+			LoadCacheGameData ();
+	}
+
+	public string SaveDataToBase64(){
+		byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(save_game);
+		string dadosSaveBase64 = System.Convert.ToBase64String(toEncodeAsBytes);
+		return dadosSaveBase64;
+	}
+
+	public bool LoadDataFromBase64 (string data_base64){
+		byte[] bytes = System.Convert.FromBase64String(data_base64);
+		if (bytes.Count() == 0 || bytes.Count() > (512 * 1024)) {
+			Debug.Log("The size of the loaded data is invalid.");
+			return false;
+		}
+		load_game = Encoding.UTF8.GetString (bytes).Split ('\n');
+		return true;
+	}
+
+	public void SaveCacheGameData(){
+		save_game = "";
 		SaveAttribute (management_costs);
 		SaveAttribute (previous_day_cash);
 		SaveAttribute (day_income);
 		SaveAttribute (total_request_number);
 		SaveAttribute (attended_requests_number);
-
+		
 		establishment.SaveObjectState ();
 		AttributesManager.GetInstance ().SaveObjectState ();
-
-		byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(save_game);
-		string dadosSaveBase64 = System.Convert.ToBase64String(toEncodeAsBytes);
-		PlayerPrefs.SetString(
-			UserService.Instance.userEmail + "_SaveBase64" + save_key, dadosSaveBase64);
-	
-		PlayerPrefs.Save ();
 	}
 
-	public void LoadGameState(){
+	public void LoadCacheGameData(){
 		loaded_inter = 0;
-		byte[] bytes = System.Convert.FromBase64String(PlayerPrefs.GetString (
-			UserService.Instance.userEmail + "_SaveBase64" + save_key));
-		load_game = Encoding.UTF8.GetString (bytes).Split ('\n');
-
 		LoadAttribute (out management_costs);
 		LoadAttribute (out previous_day_cash);
 		LoadAttribute (out day_income);
 		LoadAttribute (out total_request_number);
 		LoadAttribute (out attended_requests_number);
-
+		
 		establishment.LoadObjectState ();
 		AttributesManager.GetInstance ().LoadObjectState ();
 	}
+
+
+
+
 
 	public static void SaveAttribute(int attribute){
 		save_game += attribute.ToString () + "\n";

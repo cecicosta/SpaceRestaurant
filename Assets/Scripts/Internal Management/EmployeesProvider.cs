@@ -24,7 +24,7 @@ public class Employee{
 	
 	public double HireCosts{
 		get{
-			return hire_costs;
+			return Mathf.Floor((float)hire_costs);
 		}
 		set{
 			hire_costs = value;

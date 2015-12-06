@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -50,7 +50,7 @@ public class ListAdvertisementsCards : MonoBehaviour {
 			card.transform.localScale = new Vector3(1,1,1);
 			card.type.text = ad.type;
 			card.range.text = ad.min_reach.ToString() + "-" + ad.max_reach.ToString();
-			card.price.text = ad.price.ToString();
+			card.price.text = ad.Price.ToString();
 			if( active_advertisement_list.Find(x => x.type == ad.type) != null )
 				card.button.interactable = false;
 			else

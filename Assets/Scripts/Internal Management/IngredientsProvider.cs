@@ -10,7 +10,7 @@ public class Ingredient{
 		name = i.name;
 		code = i.code;
 		description = i.description;
-		cost = i.cost;
+		Cost = i.Cost;
 		satisf_bonus = i.satisf_bonus;
 		aquired_day = i.aquired_day;
 		available = i.available;
@@ -39,7 +39,15 @@ public class Ingredient{
 	public string name;
 	public string code;
 	public string description;
-	public double cost;
+	private double cost;
+	public double Cost{
+		get{
+			return Mathf.Floor((float)cost);
+		}
+		set{
+			cost = value;
+		}
+	}
 	public int satisf_bonus;
 	public int aquired_day;
 	public bool available;
@@ -66,7 +74,9 @@ public class IngredientsProvider {
 		Ingredient ingredient = new Ingredient();
 		ingredient.name = fields [0];
 		ingredient.code = fields [1];
-		System.Double.TryParse (fields [2], out ingredient.cost);
+		double cost;
+		System.Double.TryParse (fields [2], out cost);
+		ingredient.Cost = cost;
 		System.Int32.TryParse (fields [3], out ingredient.satisf_bonus);
 		ingredient.description = fields [4];
 		ingredients.Add (ingredient);
@@ -105,10 +115,29 @@ public class IngredientsProvider {
 		foreach (Ingredient ing in ingredients) {
 			Debug.Log(ing.name);
 			Debug.Log(ing.code);
-			Debug.Log(ing.cost);
+			Debug.Log(ing.Cost);
 			Debug.Log(ing.satisf_bonus);
 			Debug.Log(ing.description);
 		}
 	}
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (ingredients.Count);
+		foreach(Ingredient i in ingredients){
+			i.SaveObjectState();
+		}
+	}
+	
+	public void LoadObjectState(){
+		int size;
+		ingredients.Clear ();
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Ingredient ing = new Ingredient();
+			ing.LoadObjectState();
+			ingredients.Add(ing);
+		}
+	}
+
 	public List<Ingredient> ingredients;
 }

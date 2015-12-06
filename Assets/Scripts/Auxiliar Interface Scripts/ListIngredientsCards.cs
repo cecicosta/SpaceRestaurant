@@ -53,7 +53,7 @@ public class ListIngredientsCards : MonoBehaviour {
 			//TODO: find image by candidate name
 			card.name.text = e.name.ToString();
 			card.description.text = e.description.ToString();
-			card.cost.text = e.cost.ToString();
+			card.cost.text = e.Cost.ToString();
 			card.daysLeft.text = (establishment.GetStorageTime() - 
 			                      (establishment.CurrentDay() - e.aquired_day)).ToString();
 			cards.Add(card);

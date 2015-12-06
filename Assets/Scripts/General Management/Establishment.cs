@@ -16,7 +16,6 @@ public class Establishment{
 	private static int kActionBuyEquipmentCost = 1;
 	private static int kActionAdvertisementCost = 1;
 	private static int kActionIncreaseDecreasePricesCost = 1;
-	private static int kActionBuyIngredientCost = 1;
 	private static int kActionDismissCost = 1;
 	private static int kActionTrainHappinessCost = 1;
 	private static int kActionTrainLevelCost = 1;
@@ -232,11 +231,7 @@ public class Establishment{
 		Ingredient ingredient = ingredients_list.Find (x => x.name == name);
 		if (ingredient == null)
 			return false;
-		if (action_points - kActionBuyIngredientCost < 0) {
-			GameLog.Log(GameLog.kTNotEnoughPoints);
-			return false;
-		}
-		if (finances.Cash - ingredient.cost < 0) {
+		if (finances.Cash - ingredient.Cost < 0) {
 			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
 		}
@@ -246,8 +241,7 @@ public class Establishment{
 		}
 		if (!logistics.AquireIngredient (ingredient.name))
 			return false;
-		finances.Cash -= ingredient.cost;
-		action_points -= kActionBuyIngredientCost;
+		finances.Cash -= ingredient.Cost;
 
 		return true;
 	}
@@ -338,7 +332,7 @@ public class Establishment{
 				logistics.SpendIngredient(s);
 			}
 		}
-		finances.Cash += dish.price;
+		finances.Cash += dish.Price;
 		return true;
 	}
 
@@ -382,11 +376,11 @@ public class Establishment{
 		}
 		if (marketing.WasHired (type))
 			return false;
-		if (finances.Cash - advertisement.price < 0)
+		if (finances.Cash - advertisement.Price < 0)
 			return false;
 		if (!marketing.HireAdvertisement (type))
 			return false;
-		finances.Cash -= advertisement.price;
+		finances.Cash -= advertisement.Price;
 		action_points -= kActionAdvertisementCost;
 		
 		return true;
@@ -402,11 +396,11 @@ public class Establishment{
 		if (action_points - kActionBuyEquipmentCost < 0) {
 			return false;
 		}
-		if (finances.Cash - equipment.price < 0)
+		if (finances.Cash - equipment.Price < 0)
 			return false;
 		if (!infrastructure.BuyEquipment (name))
 			return false;
-		finances.Cash -= equipment.price;
+		finances.Cash -= equipment.Price;
 		action_points -= kActionBuyEquipmentCost;
 
 		foreach(Modifier mod in equipment.variable_modifiers)
@@ -565,6 +559,7 @@ public class Establishment{
 		finances.SaveObjectState ();
 		logistics.SaveObjectState ();
 		infrastructure.SaveObjectState ();
+		MenuProvider.GetInstance ().SaveObjectState ();
 	}
 
 	public void LoadObjectState(){
@@ -579,6 +574,7 @@ public class Establishment{
 		finances.LoadObjectState ();
 		logistics.LoadObjectState ();
 		infrastructure.LoadObjectState ();
+		MenuProvider.GetInstance ().LoadObjectState ();
 	}
 
 	private static int initialReactionPoints;

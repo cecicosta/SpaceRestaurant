@@ -10,7 +10,7 @@ public class Advertising{
 		type = ad.type;
 		min_reach = ad.min_reach;
 		max_reach = ad.max_reach;
-		price = ad.price;
+		Price = ad.Price;
 	}
 
 	public void SaveObjectState(){
@@ -30,7 +30,15 @@ public class Advertising{
 	public string type;
 	public int min_reach;
 	public int max_reach;
-	public double price;
+	private double price;
+	public double Price{
+		get{
+			return Mathf.Floor((float)price);
+		}
+		set{
+			price = value;
+		}
+	}
 }
 public class AdvertisementsProvider {
 
@@ -69,7 +77,9 @@ public class AdvertisementsProvider {
 		string[] range = fields [1].Split ('-');
 		System.Int32.TryParse (range[0], out advertisement.min_reach);
 		System.Int32.TryParse (range[1], out advertisement.max_reach);
-		System.Double.TryParse(fields [2], out advertisement.price);
+		double price;
+		System.Double.TryParse(fields [2], out price);
+		advertisement.Price = price;
 		advertisements.Add (advertisement);
 	}
 	

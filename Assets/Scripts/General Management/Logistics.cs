@@ -7,6 +7,7 @@ public class Logistics {
 	public Logistics(){
 		provider = new IngredientsProvider ();
 		inventory = new List<Ingredient> ();
+		spend = new List<Ingredient> ();
 	}
 
 	public bool Initiate(){
@@ -14,8 +15,11 @@ public class Logistics {
 			return false;
 		}
 		current_day = 0;
-
-		return provider.Initiate ();
+		if (!provider.Initiate ())
+			return false;
+		AquireIngredient ("Ingredientes Comuns");
+		AquireIngredient ("Ingredientes Comuns");
+		return true;
 	}
 
 	public bool AquireIngredient(string name){
@@ -32,6 +36,10 @@ public class Logistics {
 		Ingredient ingredient = inventory.Find (x => x.code == code);
 		if (ingredient == null)
 			return false;
+		if (spend.Find (x => x.name == ingredient.name) != null)
+			return true;
+
+		spend.Add (ingredient);
 		return inventory.Remove (ingredient);
 	}
 
@@ -147,17 +155,31 @@ public class Logistics {
 		foreach(Ingredient i in inventory){
 			i.SaveObjectState();
 		}
+		EstablishmentManagement.SaveAttribute (spend.Count);
+		foreach(Ingredient i in spend){
+			i.SaveObjectState();
+		}
+		provider.SaveObjectState ();
 	}
 
 	public void LoadObjectState(){
 		EstablishmentManagement.LoadAttribute (out current_day);
 		int size;
+		inventory.Clear ();
 		EstablishmentManagement.LoadAttribute (out size);
 		for(int i=0; i<size; i++){
 			Ingredient ing = new Ingredient();
 			ing.LoadObjectState();
 			inventory.Add(ing);
 		}
+		spend.Clear ();
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++){
+			Ingredient ing = new Ingredient();
+			ing.LoadObjectState();
+			spend.Add(ing);
+		}
+		provider.LoadObjectState ();
 	}
 
 	private static int storage_time = 3;
@@ -165,5 +187,6 @@ public class Logistics {
 
 	private IngredientsProvider provider;
 	private List<Ingredient> inventory;
+	private List<Ingredient> spend;
 	private int current_day;
 }

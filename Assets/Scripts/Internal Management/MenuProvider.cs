@@ -11,7 +11,7 @@ public class Dish{
 		name = d.name;
 		id = d.id;
 		nivel = d.nivel;
-		price = d.price;
+		Price = d.Price;
 		description = d.description;
 		available = d.available;
 		ingredients = new List<string> ();
@@ -25,11 +25,48 @@ public class Dish{
 	public int nivel;
 	public bool available;
 	public double price;
+	public double Price{
+		get{
+			return Mathf.Floor((float)price);
+		}
+		set{
+			price = value;
+		}
+	}
 	public List<string> ingredients;
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (name);
+		EstablishmentManagement.SaveAttribute (id);
+		EstablishmentManagement.SaveAttribute (description);
+		EstablishmentManagement.SaveAttribute (nivel);
+		EstablishmentManagement.SaveAttribute (price);
+		EstablishmentManagement.SaveAttribute (available);
+		EstablishmentManagement.SaveAttribute (ingredients.Count);
+		foreach (string s in ingredients) {
+			EstablishmentManagement.SaveAttribute (s);
+		}
+	}
+	public void LoadObjectState(){
+		EstablishmentManagement.LoadAttribute (out name);
+		EstablishmentManagement.LoadAttribute (out id);
+		EstablishmentManagement.LoadAttribute (out description);
+		EstablishmentManagement.LoadAttribute (out nivel);
+		EstablishmentManagement.LoadAttribute (out price);
+		EstablishmentManagement.LoadAttribute (out available);
+		int size;
+		EstablishmentManagement.LoadAttribute (out size);
+		for(int i=0; i<size; i++) {
+			string s;
+			EstablishmentManagement.LoadAttribute (out s);
+			ingredients.Add(s);
+		}
+	}
 }
 
 public class MenuProvider{
 
+	public List<Dish> dishes;
 	private static MenuProvider menu_provider;
 	private MenuProvider(){
 		dishes = new List<Dish> ();
@@ -64,7 +101,9 @@ public class MenuProvider{
 		dish.name = fields [0];
 		System.Int32.TryParse (fields [1], out dish.id);
 		System.Int32.TryParse (fields [2], out dish.nivel);
-		System.Double.TryParse(fields [3], out dish.price);
+		double price;
+		System.Double.TryParse(fields [3], out price);
+		dish.Price = price;
 
 		string[] ingred = fields [4].Split (',');
 		foreach (string str in ingred) {
@@ -114,7 +153,7 @@ public class MenuProvider{
 		foreach (Dish dish in dishes) {
 			Debug.Log (dish.name);
 			Debug.Log(dish.nivel);
-			Debug.Log(dish.price);
+			Debug.Log(dish.Price);
 
 			foreach(string ingred in dish.ingredients){
 				Debug.Log(ingred);
@@ -122,5 +161,22 @@ public class MenuProvider{
 			Debug.Log(dish.description);
 		}
 	}
-	public List<Dish> dishes;
+
+	public void SaveObjectState(){
+		EstablishmentManagement.SaveAttribute (dishes.Count);
+		foreach(Dish dish in dishes){
+			dish.SaveObjectState();
+		}
+	}
+	
+	public void LoadObjectState(){
+		int size;
+		dishes.Clear ();
+		EstablishmentManagement.LoadAttribute (out size);
+		for (int i=0; i<size; i++) {
+			Dish dish = new Dish ();
+			dish.LoadObjectState ();
+			dishes.Add (dish);
+		}
+	}
 }

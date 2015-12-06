@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameLog {
+
+	public static string kGameName = "Restaurante na Esquina do Universo";
+
 	public static string kTDayIsOver = "O dia terminou.";
 	public static string kTGameOver = "Você perdeu!";
 	public static string kTNoCashBuyIngredient = "Não há dinheiro suficiênte para comprar o ingrediente.";

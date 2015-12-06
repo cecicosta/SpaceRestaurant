@@ -50,7 +50,7 @@ public class ListEquipmentsCards : MonoBehaviour {
 			card.name.text = eq.name;
 			card.effect.text = eq.effect;
 			card.description.text = eq.description;
-			card.price.text = eq.price.ToString();
+			card.price.text = eq.Price.ToString();
 			if( aquired_equipments_list.Find(x => x.name == eq.name) != null )
 				card.buy_button.interactable = false;
 			else

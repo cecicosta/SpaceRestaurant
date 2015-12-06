@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -142,7 +142,7 @@ public class AttributeModifiers{
 			Ingredient ingredient = e.logistics.GetProvider().GetIngredient(i.name);
 			if(ingredient == null)
 				continue;
-			ingredient.cost += increment_percent;
+			ingredient.Cost += increment_percent;
 		}
 	}
 
@@ -152,7 +152,7 @@ public class AttributeModifiers{
 			Ingredient ingredient = e.logistics.GetProvider().GetIngredient(i.name);
 			if(ingredient == null)
 				continue;
-			ingredient.cost += increment;
+			ingredient.Cost += increment;
 		}
 	}
 
@@ -163,7 +163,7 @@ public class AttributeModifiers{
 			Advertising advertising = e.marketing.GetProvider().GetAd(ad.type);
 			if(advertising == null)
 				continue;
-			advertising.price += increment;
+			advertising.Price += increment;
 		}
 	}
 	public static void AdvertisementImpactModifier(Establishment e, int increment ){

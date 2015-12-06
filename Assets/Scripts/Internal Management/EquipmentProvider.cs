@@ -10,7 +10,7 @@ public class Equipment{
 		constant_modifiers = new List<Modifier> ();
 	}
 	public Equipment(Equipment e){
-		price = e.price;
+		Price = e.Price;
 		name = e.name;
 		effect = e.effect;
 		description = e.description;
@@ -62,7 +62,16 @@ public class Equipment{
 		}
 	}
 
-	public double price;
+
+	private double price;
+	public double Price{
+		get{
+			return Mathf.Floor((float)price);
+		}
+		set{
+			price = value;
+		}
+	}
 	public string name;
 	public string effect;
 	public List<Modifier> variable_modifiers;
@@ -97,8 +106,9 @@ public class EquipmentsProvider {
 		equipment.variable_modifiers = GetModifier(fields[2].Split(','));
 		equipment.constant_modifiers = GetModifier(fields[3].Split(','));
 
-
-		System.Double.TryParse (fields [4], out equipment.price);
+		double price;
+		System.Double.TryParse (fields [4], out price);
+		equipment.Price = price;
 		equipment.description = fields [5];
 		equipments.Add (equipment);
 	}
@@ -173,7 +183,7 @@ public class EquipmentsProvider {
 		foreach (Equipment equip in equipments) {
 			Debug.Log (equip.name);
 			Debug.Log(equip.effect);
-			Debug.Log(equip.price);
+			Debug.Log(equip.Price);
 			Debug.Log(equip.description);
 		}
 	}

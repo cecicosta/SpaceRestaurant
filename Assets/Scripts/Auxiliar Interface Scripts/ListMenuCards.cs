@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -56,7 +56,7 @@ public class ListMenuCards : MonoBehaviour {
 			card.number.text = i.ToString();
 			card.name.text = dish.name.ToString();
 			card.description.text = dish.description.ToString();
-			card.price.text = dish.price.ToString();
+			card.price.text = dish.Price.ToString();
 			card.nivel.text = dish.nivel.ToString();
 			string ing_name = "";
 			foreach(string s in dish.ingredients){
