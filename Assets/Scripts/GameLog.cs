@@ -4,70 +4,86 @@ using System.Collections.Generic;
 
 public class GameLog {
 
-	public static string kGameName = "Restaurante na Esquina do Universo";
-
-	public static string kProgressLoaded = "O jogo foi carregado.";
-	public static string kProgressSaved = "O jogo foi salvo.";
-	public static string kTDayIsOver = "O dia terminou.";
-	public static string kTGameOver = "Você perdeu!";
-	public static string kTNoCashBuyIngredient = "Não há dinheiro suficiênte para comprar o ingrediente.";
-	public static string kTNoCashBuyEquipment = "Não há dinheiro suficiênte para comprar o equipamento.";
-	public static string kTNoCashHireAdvertisement = "Não há dinheiro suficiênte para fazer propaganda.";
-	public static string kTNoCashHireEmployee = "Não há dinheiro suficiênte para contratar o empregado.";
-	public static string kTNoCashDismissEmployee = "Não há dinheiro suficiênte para demitir o empregado.";
-	public static string kTNoCashTrainEmployee = "Não há dinheiro suficiênte para treinar o empregado.";
-	public static string kTNoCashDoCleaning = "Não há dinheiro suficiênte para fazer a limpeza.";	
-
-	public static string kTNoPointsBuyIngredient = "Não há pontos de ação suficiêntes para comprar o ingrediente.";
-	public static string kTNoPointsHireEquipment = "Não há pontos de ação suficiêntes para comprar o equipament.";
-	public static string kTNoPointsHireAdvertisement = "Não há pontos de ação suficiêntes para fazer propaganda.";
-	public static string kTNoPointsHireEmployee = "Não há pontos de ação suficiêntes para contratar o empregado.";
-	public static string kTNoPointsDismissEmployee = "Não há pontos de ação suficiêntes para demitir o empregado.";
-	public static string kTNoPointsTrainEmployee = "Não há pontos de ação suficiêntes para treinar o empregado.";
-	public static string kTNoPointsDoCleaning = "Não há pontos de ação suficiêntes para fazer limpeza.";
-
-	public static string kTEmployeeAlreadyTrained = "O empregado já foi treinado";
-
-	public static string kTIngredientAquired = "Ingrediente adquirido.";
-	public static string kTEquipmentAquired = "Equipamento adquirido.";
-	public static string kTEmployeeHired = "Empregado contratado.";
-	public static string kTEmployeeTrained = "Empregado realizou treinamento.";
-	public static string kTEmployeeDismissed = "Empregado foi demitido.";
-	public static string kTCleaningDone = "Limpeza realizada.";
-
-	public static string kTClientOrder = "Cliente pediu um ";
-	public static string kTClientOrderAttended = "Cliente foi atendido.";
-	public static string kTClientOrderNotAttended = "Cliente não foi atendido.";
-	public static string kTDishCannotBePrepared = "Nenhum Chef pode preparar o prato.";
-	public static string kTClientsLeft = " clientes não conseguiram fazer o pedido.";
-	public static string kTOutOfIngredients = "Não há ingredientes suficiênte para preparar o prato.";
-	public static string kTClientWaitTooLong = "O cliente esperou de mais e foi embora.";
-
-	public static string kTDirtnessIncreased = "O nível de sujeira subiu: ";
-	public static string kTDirtnessDecreased = "O nível de sujeira caiu: ";
-	public static string kTSatisfactionIncreased = "A satisfação dos clientes subiu: ";
-	public static string kTSatisfactionDecreased = "A satisfação dos clientes caiu ";
-	public static string kTEmployeesHappinessIncreased = "A felicidade dos empregados subiu: ";
-	public static string kTEmployeesHappinessDecreased = "A felicidade dos empregados caiu: ";
-	public static string kTEmployeesSkillIncreasedForType = "O nível de skill subiu: ";
+	public static string kGameName = "GAME_NAME";
 	
-	public static string kTRottenIngredientsDiscarted = "Os ingredientes ficaram podres e foram descartados ";
-	public static string kTAdvertisementsOver = "Os anúncios contratados acabaram.";
-	public static string kTSalariesPayment = "O pagamento do salário dos empregados foi realizado.";
-	public static string kTIngredientSpend = "Ingrediente gasto: ";
-	public static string kTPricesAlreadyChanged = "Preços só podem ser alterados uma vez por rodada.";
+	public static string kProgressLoaded = "PROGRESS_LOADED";
+	public static string kProgressSaved = "PROGRESS_SAVED";
+	public static string kTDayIsOver = "DAY_IS_OVER";
+	public static string kTGameOver = "GAME_OVER";
+	public static string kTNoCashBuyIngredient = "NO_CASH_BUY_INGREDIENT";
+	public static string kTNoCashBuyEquipment = "NO_CASH_BUY_EQUIPMENT";
+	public static string kTNoCashHireAdvertisement = "NO_CASH_HIRE_ADVERTISEMENT";
+	public static string kTNoCashHireEmployee = "NO_CASH_HIRE_EMPLOYEE";
+	public static string kTNoCashDismissEmployee = "NO_CASH_DISMISS_EMPLOYEE";
+	public static string kTNoCashTrainEmployee = "NO_CASH_TRAIN_EMPLOYEE";
+	public static string kTNoCashDoCleaning = "NO_CASH_DO_CLEANING";	
+	
+	public static string kTNoPointsBuyIngredient = "NO_POINTS_BUY_INGREDIENT";
+	public static string kTNoPointsHireEquipment = "NO_POINTS_HIRE_EQUIPMENT";
+	public static string kTNoPointsHireAdvertisement = "NO_POINTS_HIRE_ADVERTISEMENT";
+	public static string kTNoPointsHireEmployee = "NO_POINTS_HIRE_EMPLOYEE";
+	public static string kTNoPointsDismissEmployee = "NO_POINTS_DISMISS_EMPLOYEE";
+	public static string kTNoPointsTrainEmployee = "NO_POINTS_TRAIN_EMPLOYEE";
+	public static string kTNoPointsDoCleaning = "NO_POINTS_DO_CLEANING";
+	
+	public static string kTEmployeeAlreadyTrained = "EMPLOYEE_ALREADY_TRAINED";
+	
+	public static string kTIngredientAquired = "INGREDIENT_AQUIRED";
+	public static string kTEquipmentAquired = "EQUIPMENT_AQUIRED";
+	public static string kTEmployeeHired = "EMPLOYEE_HIRED";
+	public static string kTEmployeeTrained = "EMPLOYEE_TRAINED";
+	public static string kTEmployeeDismissed = "EMPLOYEE_DISMISSED";
+	public static string kTCleaningDone = "CLEANING_DONE";
+	
+	public static string kTClientOrder = "CLIENT_ORDER";
+	public static string kTClientOrderAttended = "CLIENT_ORDER_ATTENDED";
+	public static string kTClientOrderNotAttended = "CLIENT_ORDER_NOT_ATTENDED";
+	public static string kTDishCannotBePrepared = "DISH_CAN_NOT_BE_PREPARED";
+	public static string kTClientsLeft = "CLIENT_SLEFT";
+	public static string kTOutOfIngredients = "OUT_OF_INGREDIENTS";
+	public static string kTClientWaitTooLong = "CLIENT_WAIT_TOO_LONG";
+	
+	public static string kTDirtnessIncreased = "DIRTNESS_INCREASED";
+	public static string kTDirtnessDecreased = "DIRTNESS_DECREASED";
+	public static string kTSatisfactionIncreased = "SATISFACTION_INCREASED";
+	public static string kTSatisfactionDecreased = "SATISFACTION_DECREASED";
+	public static string kTEmployeesHappinessIncreased = "EMPLOYEES_HAPPINESS_INCREASED";
+	public static string kTEmployeesHappinessDecreased = "EMPLOYEES_HAPPINESS_DECREASED";
+	public static string kTEmployeesSkillIncreasedForType = "EMPLOYEES_SKILL_INCREASED_FOR_TYPE";
+	
+	public static string kTRottenIngredientsDiscarted = "ROTTEN_INGREDIENTS_DISCARTED";
+	public static string kTAdvertisementsOver = "ADVERTISEMENTS_OVER";
+	public static string kTSalariesPayment = "SALARIES_PAY_MENT";
+	public static string kTIngredientSpend = "INGREDIENTS_PEND";
+	public static string kTPricesAlreadyChanged = "PRICES_ALREADY_CHANGED";
+	
+	public static string kTNotEnoughPoints = "NOT_ENOUGH_POINTS";
+	public static string kTNotEnoughtMoney = "NOT_ENOUGH_MONEY";
+	public static string kTInventoryOutOfSpace = "INVENTORY_OUT_OF_SPACE";
+	public static string kTStorageTimeDecreased = "STORAGE_TIME_DECREASED";
+	public static string kTStorageTimeIncreased = "STORAGE_TIME_INCREASED";
 
-	public static string kTNotEnoughPoints = "Não há pontos suficiêntes para completar a ação.";
-	public static string kTNotEnoughtMoney = "Não há dinheiro suficiênte para completar a ação.";
-	public static string kTInventoryOutOfSpace = "Não há espaço na dispensa. Limite de itens: ";
-	public static string kTStorageTimeDecreased = "Tempo de armazenamento diminuiu para: ";
-	public static string kTStorageTimeIncreased = "Tempo de armazenamento subiu para: ";
+	public static string kTTooDirt = "TOO_DIRT";
+	public static string kTLowSatisfaction = "LOW_SATISFACTION";
+	public static string kTBankrupt = "BANKROUPT";
+
+	public static string kTDays = "DAYS_UNIT";
+	public static string kTPoints = "POINTS_UNIT";
 
 	public static void Log(string token){
-		logs.Add (token);
+		logs.Add (GameTranslator.Instance.Translate(token));
 	}
 	public static void Log(string token, string value){
-		logs.Add (token + value);
+		logs.Add (GameTranslator.Instance.Translate(token) + value);
+	}
+	public static void LogValueToken(string value, string token){
+		logs.Add (value + GameTranslator.Instance.Translate(token));
+	}
+	public static void Log(string token, string value, string unit){
+		logs.Add (GameTranslator.Instance.Translate(token) + value + GameTranslator.Instance.Translate(unit));
+	}
+	public static void Log(int value, string token){
+		logs.Add (value.ToString() + GameTranslator.Instance.Translate(token));
 	}
 
 	public static List<string> logs = new List<string>(); 

@@ -103,7 +103,7 @@ public class Marketing {
 		}
 	}
 
-	private static int kMaxSatisfaction = 100;
+	public static int kMaxSatisfaction = 100;
 	private static int initialSatisfaction;
 	private AdvertisementsProvider adsProvider;
 	private List<Advertising> advertisements;

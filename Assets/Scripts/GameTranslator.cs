@@ -26,6 +26,11 @@ public class GameTranslator: Singleton<GameTranslator> {
 		string[] pairs = file.Split ('\n');
 		foreach(string s in pairs){
 			string[] pair = s.Split('\t');
+			if (translations.ContainsKey (pair[0])) {
+				Debug.Log("Key already exists: " + pair[0]);
+				continue;
+			}
+
 			translations.Add(pair[0], pair[1]);
 		}
 	}
@@ -33,7 +38,9 @@ public class GameTranslator: Singleton<GameTranslator> {
 	private void TranslateGUI(){
 		Text[] labels = GetComponentsInChildren<Text> (true);
 		foreach (Text t in labels) {
-			t.text = Translate(t.text);
+			string trans = Translate(t.text);
+			if(trans != "")
+				t.text = trans;
 		}
 	}
 
@@ -42,8 +49,6 @@ public class GameTranslator: Singleton<GameTranslator> {
 			Debug.Log("Key not found: " + key);
 			return "";
 		}
-		Debug.Log("Key found: " + key);
-		Debug.Log ("token: " + translations [key]);
 		return translations[key];
 	}
 }

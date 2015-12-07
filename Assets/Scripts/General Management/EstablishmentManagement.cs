@@ -89,7 +89,7 @@ public class EstablishmentManagement{
 		}
 
 		if (orders.Count > 0) {
-			GameLog.Log(orders.Count.ToString(), GameLog.kTClientsLeft);
+			GameLog.LogValueToken(orders.Count + " ", GameLog.kTClientsLeft);
 		}
 
 		if (attended_count < number_of_requests) {
@@ -189,7 +189,9 @@ public class EstablishmentManagement{
 	}
 
 	public static void LoadAttribute(out int attribute){
-		attribute = System.Int32.Parse(load_game [loaded_inter++]);
+		if(!System.Int32.TryParse(load_game [loaded_inter], out attribute))
+			Debug.Log(load_game [loaded_inter]);
+		loaded_inter++;
 	}
 	public static void LoadAttribute(out float attribute){
 		attribute = (float)System.Double.Parse(load_game [loaded_inter++]);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 //structures as the finances to evaluate if there is budget enough to hire
 //the employee.
 
+[System.Serializable]
 public class Establishment{
 
 	public int kDaysBetweenPayment = 5;
@@ -22,6 +23,7 @@ public class Establishment{
 	private static int kActionHireCost = 1;
 	private static int kAdsDiscountMultiplier = 2;
 	private static int kIngredientsDiscountMultiplier = 2;
+	private static int kMaxScore = 1000000;
 
 	public Establishment(){
 		generator = new System.Random ();
@@ -351,8 +353,9 @@ public class Establishment{
 		finances.CloseDayBalance ();
 		PaySalaries ();
 		RestorePoints ();
-
+		CalculateScore ();
 		CheckGameOverConditions ();
+		CheckVictoryConditions ();
 	}
 	public int GetStorageTime(){
 		//TODO: some equipments can add to the storage time
@@ -431,17 +434,17 @@ public class Establishment{
 			infrastructure.Dirtiness == 1 || 
 		    infrastructure.Dirtiness == 2) {
 			marketing.Satisfaction += 2;
-			GameLog.Log(GameLog.kTSatisfactionIncreased, "2 pontos");
+			GameLog.Log(GameLog.kTSatisfactionIncreased, "2 ", GameLog.kTPoints);
 		}
 		if (infrastructure.Dirtiness == 6 || 
 		    infrastructure.Dirtiness == 7) {
 			marketing.Satisfaction -= 1;
-			GameLog.Log(GameLog.kTSatisfactionDecreased, "1 ponto");
+			GameLog.Log(GameLog.kTSatisfactionDecreased, "1 ",  GameLog.kTPoints);
 		}
 		if (infrastructure.Dirtiness == 8 || 
 		    infrastructure.Dirtiness == 9) {
 			marketing.Satisfaction -= 2;
-			GameLog.Log(GameLog.kTSatisfactionDecreased, "2 pontos");
+			GameLog.Log(GameLog.kTSatisfactionDecreased, "2 ", GameLog.kTPoints);
 		}
 		DirtnessTemporaryEffects ();
 	}
@@ -464,8 +467,8 @@ public class Establishment{
 			dirness_temp_effect_active = true;
 			original_storage_time = logistics.StorageTime;
 			logistics.StorageTime = (int)Mathf.Ceil((float)logistics.StorageTime/2.0f); 
-			GameLog.Log(GameLog.kTStorageTimeDecreased, logistics.StorageTime + " dias");
-			GameLog.Log(GameLog.kTEmployeesHappinessDecreased, "1 ponto." );
+			GameLog.Log(GameLog.kTStorageTimeDecreased, logistics.StorageTime + " ", GameLog.kTDays);
+			GameLog.Log(GameLog.kTEmployeesHappinessDecreased, "1 ", GameLog.kTPoints );
 			AttributeModifiers.EmployeeHappinessModifierAll(this, -1);
 		} 
 		if (dirness_temp_effect_active &&
@@ -474,8 +477,8 @@ public class Establishment{
 		 	infrastructure.Dirtiness != 10)){
 			dirness_temp_effect_active = false;
 			logistics.StorageTime = original_storage_time; 
-			GameLog.Log(GameLog.kTStorageTimeIncreased, logistics.StorageTime + " dias");
-			GameLog.Log(GameLog.kTEmployeesHappinessIncreased, "1 ponto." );
+			GameLog.Log(GameLog.kTStorageTimeIncreased, logistics.StorageTime + " ", GameLog.kTDays);
+			GameLog.Log(GameLog.kTEmployeesHappinessIncreased, "1 ", GameLog.kTPoints );
 			AttributeModifiers.EmployeeHappinessModifierAll(this, 1);
 		}
 	}
@@ -517,6 +520,11 @@ public class Establishment{
 		reaction_points++;
 		return true;
 	}
+	public void CalculateScore(){
+		score = (int)finances.Cash * 1000 + marketing.Satisfaction * 10000 - infrastructure.Dirtiness * 100000;
+		if (score > 1000000)
+			score = 1000000;
+	}
 
 
 	public void PaySalaries(){
@@ -528,18 +536,24 @@ public class Establishment{
 	}
 	public void CheckGameOverConditions(){
 		if (infrastructure.Dirtiness >= 10) {
+			game_over_message = GameTranslator.Instance.Translate(GameLog.kTTooDirt);
 			GameOver();
 		}
 		if (marketing.Satisfaction <= 0) {
+			game_over_message = GameTranslator.Instance.Translate(GameLog.kTLowSatisfaction);
 			GameOver ();
 		}
-		if (finances.Cash <= 0) {
-			GameOver();
+	}
+
+	public void CheckVictoryConditions(){
+		if(score == kMaxScore ){
+			victory_condition = true;
 		}
 	}
 
 	public void GameOver(){
-		Debug.Log ("Game Over");
+		GameLog.Log (GameLog.kTGameOver);
+		game_over_condition = true;
 	}
 
 	public static bool LoadAttributes(){
@@ -561,6 +575,10 @@ public class Establishment{
 		EstablishmentManagement.SaveAttribute (changed_prices);
 		EstablishmentManagement.SaveAttribute (dirness_temp_effect_active);
 		EstablishmentManagement.SaveAttribute (original_storage_time);
+		EstablishmentManagement.SaveAttribute (victory_condition);
+		EstablishmentManagement.SaveAttribute (game_over_condition);
+		EstablishmentManagement.SaveAttribute (game_over_message);
+		EstablishmentManagement.SaveAttribute (score);
 
 		alien_resources.SaveObjectState ();
 		marketing.SaveObjectState ();
@@ -576,6 +594,10 @@ public class Establishment{
 		EstablishmentManagement.LoadAttribute (out changed_prices);
 		EstablishmentManagement.LoadAttribute (out dirness_temp_effect_active);
 		EstablishmentManagement.LoadAttribute (out original_storage_time);
+		EstablishmentManagement.LoadAttribute (out victory_condition);
+		EstablishmentManagement.LoadAttribute (out game_over_condition);
+		EstablishmentManagement.LoadAttribute (out game_over_message);
+		EstablishmentManagement.LoadAttribute (out score);
 		
 		alien_resources.LoadObjectState ();
 		marketing.LoadObjectState ();
@@ -596,9 +618,13 @@ public class Establishment{
 	//States to save
 	public int action_points;
 	public int reaction_points;
+	public int score = 0;
 	private bool changed_prices = false;
 	private bool dirness_temp_effect_active = false;
 	private int original_storage_time = 0;
+	public bool victory_condition = false;
+	public bool game_over_condition = false;
+	public string game_over_message = "";
 
 	public AlianResources alien_resources;
 	public Marketing marketing;
