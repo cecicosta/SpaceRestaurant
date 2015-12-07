@@ -1,8 +1,8 @@
 ﻿ACTION_POINTS_LABEL	Pontos de Ação:
 MENU	Menu
 DAY	Dia
-SAVE	Salvar
-LOAD	Carregar
+SAVE	Save
+LOAD	Load
 ALIEN_RESOURCES	Recursos Alienigenas
 MARKETING	Propaganda Intergaláctica
 FINANCES	Finanças Universais
@@ -106,3 +106,4 @@ BACK_TO_MAIN_SCREEN	Gostaria de voltar para a tela principal?
 DAYS_UNIT	dias
 POINTS_UNIT	pontos
 SCORE	Score:
+AUDIO	Som

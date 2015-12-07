@@ -111,6 +111,7 @@ public class Establishment{
 			GameLog.Log(GameLog.kTNotEnoughtMoney);
 			return false;
 		}
+	
 		if (candidate.type == Employee.Type.marketing) {
 			AttributeModifiers.AdvertisementPriceModifier(this, -candidate.level*kAdsDiscountMultiplier);
 			AttributeModifiers.AdvertisementImpactModifier(this, candidate.level);
@@ -521,7 +522,7 @@ public class Establishment{
 		return true;
 	}
 	public void CalculateScore(){
-		score = (int)finances.Cash * 1000 + marketing.Satisfaction * 10000 - infrastructure.Dirtiness * 100000;
+		score = marketing.Satisfaction * 10000;
 		if (score > 1000000)
 			score = 1000000;
 	}

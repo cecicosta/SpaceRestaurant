@@ -81,6 +81,7 @@ public class Infrastructure{
 	public void LoadObjectState(){
 		EstablishmentManagement.LoadAttribute (out dirtiness);
 		int size;
+		equipments.Clear ();
 		EstablishmentManagement.LoadAttribute (out size);
 		for(int i=0; i<size; i++){
 			Equipment ing = new Equipment();

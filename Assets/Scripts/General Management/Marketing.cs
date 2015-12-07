@@ -95,6 +95,7 @@ public class Marketing {
 
 	public void LoadObjectState(){
 		int count;
+		advertisements.Clear ();
 		EstablishmentManagement.LoadAttribute (out count);
 		for(int i=0; i<count; i++){
 			Advertising ad = new Advertising();

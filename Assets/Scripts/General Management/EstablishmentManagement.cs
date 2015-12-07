@@ -25,6 +25,10 @@ public class EstablishmentManagement{
 		return establishment_man;
 	}
 
+	public static void EraseInstance(){
+		establishment_man = null;
+	}
+
 	public void RunDailyPhase(){
 		Establishment e = establishment_man.establishment;
 		int number_of_requests = e.CalculateRequests ();

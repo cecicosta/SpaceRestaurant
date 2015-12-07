@@ -170,12 +170,14 @@ public class AlianResources{
 
 	public void LoadObjectState(){
 		int size;
+		trained.Clear ();
 		EstablishmentManagement.LoadAttribute (out size);
 		for(int i=0; i<size; i++){
 			string s;
 			EstablishmentManagement.LoadAttribute(out s);
 			trained.Add(s);
 		}
+		employees.Clear ();
 		EstablishmentManagement.LoadAttribute (out size);
 		for(int i=0; i<size; i++){
 			Employee e = new Employee();
