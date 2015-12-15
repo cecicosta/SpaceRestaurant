@@ -1,0 +1,9 @@
+﻿Arlinum	chef	1	0,1	0	Acabou de aprender a fritar um ovo Beloniano pois começou a morar sozinho.
+Ornete	waiter	1		0	Tão simpática quanto uma explosão termonuclear.
+Foguese	chef	2	0,1,2,3	25	Seu hambúrguer é conhecido por não dar dor de barriga nos seus clientes mesmo se eles usarem a maionese.
+Jargan	chef	3	0,1,4,5,6,7	40	Ele é tão fino que passa por um buraco de agulha.
+Grete	waiter	2		25	Os clientes vão entrar na sua lanchonete somente para apreciar seus lindos furúnculos que possui nos lábios.
+Plomela	waiter	3		40	Dizem que sua habilidade de atender clientes é devido seus 8 braços, mas acho isso uma inveja.
+Cerse	waiter	1		25	Se ela não quebrar tantos pratos talvez a contratação valha a pena.
+Caspitol	finances	1		30	Ele ama dinheiro como um Vreniniano ama seus Xulinóides.
+Hinger	marketing	1		30	Sua criatividade só não é maior do que suas antenas.

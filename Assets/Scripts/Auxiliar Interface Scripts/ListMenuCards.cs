@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ListMenuCards : MonoBehaviour {
 
+	public Color availableDishColor;
 	public MenuCard menuCard;
 	private List<MenuCard> cards = new List<MenuCard> ();
 	private EstablishmentManagement establishmentManager;
@@ -53,6 +54,10 @@ public class ListMenuCards : MonoBehaviour {
 			card.transform.SetParent(this.transform);
 			card.transform.localScale = new Vector3(1,1,1);
 			//TODO: find image by candidate name
+
+			if(establishment.IsOrderAvailable(dish.id))
+			   card.background.color = availableDishColor;
+
 			card.number.text = i.ToString();
 			card.name.text = dish.name.ToString();
 			card.description.text = dish.description.ToString();

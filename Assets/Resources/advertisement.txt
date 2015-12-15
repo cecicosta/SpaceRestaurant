@@ -1,0 +1,4 @@
+﻿Jornal	1-2	20
+Radio	2-4	60
+Internet	4-6	100
+TV	6-8	200

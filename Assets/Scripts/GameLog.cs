@@ -62,6 +62,8 @@ public class GameLog {
 	public static string kTInventoryOutOfSpace = "INVENTORY_OUT_OF_SPACE";
 	public static string kTStorageTimeDecreased = "STORAGE_TIME_DECREASED";
 	public static string kTStorageTimeIncreased = "STORAGE_TIME_INCREASED";
+	public static string kNoCashToPaySalaries = "NO_CASH_TO_PAY";
+
 
 	public static string kTTooDirt = "TOO_DIRT";
 	public static string kTLowSatisfaction = "LOW_SATISFACTION";

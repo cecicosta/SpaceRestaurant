@@ -15,7 +15,10 @@ public class GameTranslator: Singleton<GameTranslator> {
 	}
 
 	private void LoadTokens(){
-		string tokens = System.IO.File.ReadAllText ("Assets/game_tokens.txt");
+		//Load texture from disk
+		TextAsset bindata= Resources.Load("game_tokens") as TextAsset;
+		string tokens = bindata.text;
+		//string tokens = System.IO.File.ReadAllText ("Assets/game_tokens.txt");
 		if(tokens.CompareTo("") == 0){
 			Debug.LogError("Failed to load tokens.");
 			return;

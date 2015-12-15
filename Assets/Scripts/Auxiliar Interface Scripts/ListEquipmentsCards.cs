@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ListEquipmentsCards : MonoBehaviour {
 
 	public EquipmentCard equipmentCard;
+	public List<Sprite> images = new List<Sprite>();
 	private List<EquipmentCard> cards = new List<EquipmentCard> ();
 	private EstablishmentManagement establishmentManager;
 	private Establishment establishment;
@@ -47,6 +48,10 @@ public class ListEquipmentsCards : MonoBehaviour {
 			EquipmentCard card = Instantiate(equipmentCard);
 			card.transform.SetParent(this.transform);
 			card.transform.localScale = new Vector3(1,1,1);
+
+			if(images.Count > eq.id)
+				card.image.sprite = images[eq.id];
+
 			card.name.text = eq.name;
 			card.effect.text = eq.effect;
 			card.description.text = eq.description;

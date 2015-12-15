@@ -9,8 +9,9 @@ public class ResetGame : MonoBehaviour {
 	}
 
 	public void Reset(){
+		Application.LoadLevel (Application.loadedLevelName);
 		EstablishmentManagement.EraseInstance ();
 		EstablishmentManagement.GetInstance ();
-		Application.LoadLevel (Application.loadedLevelName);
+
 	}
 }

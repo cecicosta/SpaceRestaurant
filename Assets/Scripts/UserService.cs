@@ -3,16 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using UnityEngine.UI;
+
 public class UserService : Singleton<UserService> {
 	public string userName;
 	public string userEmail;
 	public string urlServidor;
 	public string metaData;
 
+	public InputField eMailInput;
+	public InputField nameInput;
+
 	int highscore;
 
 	public void Awake() {
-		Application.ExternalCall("enviarDadosJogo", "Login Service");
+		//Application.ExternalCall("enviarDadosJogo", "Login Service");
 	}
 	public void SetUserData(string info) {
 		string[] dados = info.Split(';');
@@ -71,6 +76,10 @@ public class UserService : Singleton<UserService> {
 		
 	}
 
+	public void CheckInputFields(){
+		userEmail = eMailInput.text;
+		userName = nameInput.text;
+	}
 
 
 

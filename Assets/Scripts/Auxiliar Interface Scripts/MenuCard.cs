@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class MenuCard : MonoBehaviour {
+	public Image background;
 	public Text number;
 	public Text name;
 	public Text description;

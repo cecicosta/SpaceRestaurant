@@ -1,0 +1,8 @@
+﻿Freezer Zorgnator 2000	1 dia a mais para que o alimentos estraguem 		4/storage_time	20	Uma vez em Chef foi encontrado em um desses freezers 800 anos depois de ter ido pegar uma linguiça.
+Fogão à lenha da floresta de Rupester	1 de Skill para os Chefs	1/skill/chef		40	O calor da sua fornalha se equipara a 200 milhões de sóis no verão
+Patins Voadores Bulianos	1 de Skill para Garçonetes e 1 de Felicidade para Garçonetes	1/skill/waiter,1/happiness/waiter		30	Quem precisa de hoverboards?
+Calculadora HP 8.000	1 de Skill para Finanças	1/skill/finances		20	Essa não tem nenhum inimigo.
+Óculos Hipster Firuliano	1 de Skill Marketing	1/skill/marketing		30	Estudos comprovam que esse óculos te deixa mais pedante e descolado.
+Auto Cleaner 7500 Limpóide	-2 de Sujeira no momento da compra	-2/dirtness		30	AVISO: O nível 5 pode gerar mini buracos negros, use com cuidado.
+Jukebox Jeki 5000	1 de Felicidade para funcionários e 10 Satisfação para clientes	10/clients_satisfaction,1/happiness/all		40	Os maiores sucessos dos artistas de todas as realidades alternativas.
+Nave Espacial Space Rover	-20 % em todas as compras	-0.20/ingredients_price_discount		40	Se beber não dirija. Principalmente se for a cerveja artesanal de h 82, que lhe transforma em um pato kiluniano.

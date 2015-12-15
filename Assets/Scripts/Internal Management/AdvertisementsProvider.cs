@@ -48,7 +48,11 @@ public class AdvertisementsProvider {
 	}
 	
 	private bool Initiate(){
-		string ads_file = System.IO.File.ReadAllText ("Assets/advertisement.txt");
+
+		TextAsset bindata= Resources.Load("advertisement") as TextAsset;
+		string ads_file = bindata.text;
+
+		//string ads_file = System.IO.File.ReadAllText ("Assets/advertisement.txt");
 		if(ads_file.CompareTo("") == 0){
 			return false;
 		}

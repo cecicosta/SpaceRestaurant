@@ -1,0 +1,11 @@
+﻿Ovo de Zarcóide	0	1	18	i.c	Só pra matar a fome mesmo
+Pão com Xazilcon	1	1	20	i.c	Gostinho de casa, se você mora em Xazilconland
+Arroz com Fóllons	2	2	28	i.i	Brilham no escuro
+Vitamina de Trelurian	3	2	30	i.i	VEM MONSTRO!
+Churrasco Linsgon	4	3	32	i.e	A carne de Linsgon é rica em gorduras e sal, tudo que nosso organismo precisa
+Gorkeslada	5	3	35	i.e	A melhor forma de descrever isso é se um Gorsk vomitasse em um balde. Apetitoso!
+Macarronada de Shaszon	6	2	30	i.c,i.c	Essa macarronada foi feita para parecer com os cabelos da Miss Universo do ano passado
+Ghulo Shake	7	2	32	i.c,i.i	Ótimo para tomar a dois, principalmente se você tem 2 cabeças
+NizonBurguer	8	2	35	i.i,i.i	Não vem com brinquedo mas é muito divertido comer sem gravidade!
+Sushi Jergon	9	3	30	i.i,i.e	Direto do Oriente! Mesmo sendo difícil definir onde fica o oriente do Universo.
+Burrito Hullen	10	3	40	i.e,i.e	Apimentado como pular em um Vulcão em Morfin no Setor 33.

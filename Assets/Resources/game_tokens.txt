@@ -1,0 +1,137 @@
+﻿ACTION_POINTS_LABEL	Pontos de Ação:
+MENU	Menu
+DAY	Dia
+SAVE	Save
+LOAD	Load
+ALIEN_RESOURCES	Recursos Alienigenas
+MARKETING	Propaganda Intergaláctica
+FINANCES	Finanças Universais
+LOGISTICS	Logistica Espacial
+INFRASTRUCTURE	Infraestrutura Antigravitacional
+LOG_LABEL	Log:
+HIRE	Contratar
+MANAGE	Gerenciar
+PROFESSION_LABEL	Profissão:
+SKILL	Habilidade
+HAPPINESS	Felicidade
+SALARY	Salário:
+DISMISS	Demitir
+CLIENTS_RANGE	Clientes
+ANOUNCE	Anunciar
+INCREASE_PRICES	Aumentar Preços
+DECREASE_PRICES	Baixar Preços
+INCREASE_PRICES_EFFECT	Preço +10% Satisfação -5
+DECREASE_PRICES_EFFECT	Preço -10% Satisfação +5
+SATISFACTION_PLUS	Satisfação +
+SATISFACTION_MINUS	Satisfação -
+PROVIDER	Fornecedor
+INVENTORY	Estoque
+BUY	Comprar
+MAKE_CLEANING	Fazer Limpeza
+DISH_NUMBER_LABEL	Número do Prato:
+LEVEL_LABEL	Nível:
+INGREDIENTS_LABEL	Ingredientes: 
+NEW_GAME	Novo Jogo
+CONTINUE	Continuar
+AUDIO_LABEL	Som
+QUIT	Sair
+YES	Sim
+NO	Não
+SUMMARY	Resumo
+TOTAL_BALANCE	Balanço Total
+TOTAL_INCOME	Total Arrecadado
+TOTAL_SPEND	Gastos de Gereciamento
+CLIENTS_RECEIVED	Clientes Recebidos
+CLIENTS_ATTENDED	Clientes Atendidos
+CURRENT_CAPACITY	Capacidade Atual
+GAME_OVER	Game Over
+VICTORY	Vitoria
+VICTORY_MESSAGE	Parabéns! Você conseguiu ter a lanchonete mais bem sucedida da galáxia! Bardos Intergalácticos irão cantar seus feitos por gerações e um filme está sendo negociado com UniverseWood contando o seu caso de sucesso!
+WISH_TO_DISMISS	Desaja demitir?
+DAYS_LEFT	Dias até estragar.
+GAME_NAME	Restaurante na Esquina do Universo
+PROGRESS_LOADED	O jogo foi carregado.
+PROGRESS_SAVED	O jogo foi salvo.
+DAY_IS_OVER	O dia terminou.
+GAME_OVER	Você perdeu!
+NO_CASH_BUY_INGREDIENT	Não há dinheiro suficiênte para comprar o ingrediente.
+NO_CASH_BUY_EQUIPMENT	Não há dinheiro suficiênte para comprar o equipamento.
+NO_CASH_HIRE_ADVERTISEMENT	Não há dinheiro suficiênte para fazer propaganda.
+NO_CASH_HIRE_EMPLOYEE	Não há dinheiro suficiênte para contratar o empregado.
+NO_CASH_DISMISS_EMPLOYEE	Não há dinheiro suficiênte para demitir o empregado.
+NO_CASH_TRAIN_EMPLOYEE	Não há dinheiro suficiênte para treinar o empregado.
+NO_CASH_DO_CLEANING	Não há dinheiro suficiênte para fazer a limpeza.
+NO_POINTS_BUY_INGREDIENT	Não há pontos de ação suficiêntes para comprar o ingrediente.
+NO_POINTS_HIRE_EQUIPMENT	Não há pontos de ação suficiêntes para comprar o equipament.
+NO_POINTS_HIRE_ADVERTISEMENT	Não há pontos de ação suficiêntes para fazer propaganda.
+NO_POINTS_HIRE_EMPLOYEE	Não há pontos de ação suficiêntes para contratar o empregado.
+NO_POINTS_DISMISS_EMPLOYEE	Não há pontos de ação suficiêntes para demitir o empregado.
+NO_POINTS_TRAIN_EMPLOYEE	Não há pontos de ação suficiêntes para treinar o empregado.
+NO_POINTS_DO_CLEANING	Não há pontos de ação suficiêntes para fazer limpeza.
+EMPLOYEE_ALREADY_TRAINED	O empregado já foi treinado
+INGREDIENT_AQUIRED	Ingrediente adquirido.
+EQUIPMENT_AQUIRED	Equipamento adquirido.
+EMPLOYEE_HIRED	Empregado contratado.
+EMPLOYEE_TRAINED	Empregado realizou treinamento.
+EMPLOYEE_DISMISSED	Empregado foi demitido.
+CLEANING_DONE	Limpeza realizada.
+CLIENT_ORDER	Cliente pediu um 
+CLIENT_ORDER_ATTENDED	Cliente foi atendido.
+CLIENT_ORDER_NOT_ATTENDED	Cliente não foi atendido.
+DISH_CAN_NOT_BE_PREPARED	Nenhum Chef pode preparar o prato.
+CLIENT_SLEFT	clientes não conseguiram fazer o pedido.
+OUT_OF_INGREDIENTS	Não há ingredientes para preparar o prato.
+CLIENT_WAIT_TOO_LONG	O cliente esperou de mais e foi embora.
+DIRTNESS_INCREASED	O nível de sujeira subiu: 
+DIRTNESS_DECREASED	O nível de sujeira caiu: 
+SATISFACTION_INCREASED	A satisfação dos clientes subiu: 
+SATISFACTION_DECREASED	A satisfação dos clientes caiu 
+EMPLOYEES_HAPPINESS_INCREASED	A felicidade dos empregados subiu: 
+EMPLOYEES_HAPPINESS_DECREASED	A felicidade dos empregados caiu: 
+EMPLOYEES_SKILL_INCREASED_FOR_TYPE	O nível de skill subiu: 
+ROTTEN_INGREDIENTS_DISCARTED	Os ingredientes podres foram descartados 
+ADVERTISEMENTS_OVER	Os anúncios contratados acabaram.
+SALARIES_PAY_MENT	O pagamento do salário dos empregados foi realizado.
+INGREDIENTS_PEND	Ingrediente gasto: 
+PRICES_ALREADY_CHANGED	Preços só podem ser alterados uma vez por rodada.
+NOT_ENOUGH_POINTS	Não há pontos suficiêntes para completar a ação.
+NOT_ENOUGH_MONEY	Não há dinheiro suficiênte para completar a ação.
+INVENTORY_OUT_OF_SPACE	Não há espaço na dispensa. Limite de itens: 
+STORAGE_TIME_DECREASED	Tempo de armazenamento diminuiu para: 
+STORAGE_TIME_INCREASED	Tempo de armazenamento subiu para: 
+TOO_DIRT	Que nojo! Um ambiente limpo de trabalho é essencial tanto para seus cliente quanto para os seus funcionários, principalmente se for uma lanchonete! O Ministério da Saúde Interplanetária teve que incendiar o local para matar todas as Xenobactérias! Tente novamente!
+LOW_SATISFACTION	Que pena! Os clientes estão xingando muito na Internet! Lembre-se, um cliente insatisfeito espalha a notícia para mais cinco! Então tente agradar mais sua clientela e tente de novo!
+BANKROUPT	Seu negócio entrou em falência.
+BACK_TO_MAIN_SCREEN	Gostaria de voltar para a tela principal?
+DAYS_UNIT	dias
+POINTS_UNIT	pontos
+SCORE	Score:
+NEXT	Próximo
+SKIP	Pular
+BACK	Voltar
+PAUSE	Pausar
+SCORE	Score:
+AUDIO	Som
+NO_CASH_TO_PAY_SALARIES	Não há dinheiro suficiênte para pagar os salários.
+PAGE_1	Olá, bem vindo! Este é um sistema automatizado que irá guia-lo através do excitante processo de gerênciar seu novo negócio. Gostaria que me chamasse de Geovánia. E eu fui programada com sentimentos, então por favor, acompanhe até o fim!
+PAGE_3	Estas são as informações mais importantes que você deverá considerar ao tomar suas decisões de negócio: quanto dinheiro tem em caixa, o nível de satisfação e sujeira do seu estabelecimento. Além da sua pontuação, que será uma estimativa calculada do quão bem sucedido é o seu negócio.
+PAGE_4	Seu progresso durante o jogo poderá ser salvo ou carregado atraves dos botões "Save" e "Load".  Estes botçoes só estarão disponíveis durante a fase de gerênciamento. Ao clicar em "play" no painel que indica o "Dia" eles ficarão desativados até que o dia termine.
+PAGE_5	É possivel clicar em "Pause" a qualquer momento durante o jogo. Quando isso é feito, as informações do painel "Resumo" serão exibidas. Para voltar, basta clicar no botão "Voltar" neste painel.
+PAGE_2	Clicando em "Recursos Alienigenas" você se conectará diretamente com nossa prestigiadissima agência. Contratar alguém, assim como varias outras ações, além de dinheiro gastará pontos de ação. Fique atento à quantidade de pontos que você tem disponiveis.
+PAGE_6	No mesmo menu, você tem a opção de "Gerênciar" seus empregados. Aqui você tem disponivel diversas informações sobre cada um, como: a profissão, níveis de habilidade, felicidade e salário.
+PAGE_7	Treinar um empregado, custará um pequena taxa. Mas o investimento pode valer a pena.
+PAGE_8	O salário deverá sera automaticamente descontado a 5 dias. Apenas tenha certeza de reservar algum dinheiro para isso. Você não quer deixar seus funcionarios infelizes, certo?
+PAGE_9	Demitir um funcionário também é uma opção. Mas você sabe, todos aqueles direitos trabalhistas precisam ser cumpridos. 
+PAGE_10	No menu de "Propaganda Intergaláctica" nos separamos para você algumas das mídias mais populares e acessiveis dessa região do universo. Que tal dedicar algum tempo e dinheiro para planejar sua campanha?
+PAGE_11	Aqui oferecemos uma pequena projeção do número de clientes que podem ser atingidos pelo seu anuncio. 
+PAGE_12	Agora um pouco mais sobre o gerênciamento interno. Em "Logistica Espacial" você poderá fazer seu controle de estoque. Claro, não se pode cozinhar nada sem ingredientes. Tente lembrar disso.
+PAGE_13	Através da aba "Fornecedor", você poderá adquirir novos ingrediêntes. Tenha certeza de possuir os ingredientes certos para cada tipo de prato.
+PAGE_14	Os tipos de pratos disponíveis e seus ingrediêntes, podem ser vistos clicando no botão "Menu". Aqueles destacados em azul são pratos que seu chefe está apto a preparar.
+PAGE_15	Aumentar o nível do chefe permitirá que ele aprenda novos pratos. 
+PAGE_16	Em "Infraestrutura Gravitacional" é possivel, através de um serviço unico de entrega e instalação, equipar o seu negócio com o que há de mais avançado em tecnologia Outer Space!
+PAGE_17	É interessante manter o lugar limpinho, certo? Não queremos nada estranho crescedo que não possamos cozinhar! Não daria um bom lema?
+PAGE_18	Em "Finanças Universais" você tem o controle sobre os preços dos pratos que serão oferecidos. Nunca foi tão simples não é? Claro, temos um cara cuidando de todos aqueles números para vocês. Então é só sentar e apertas uns botões...
+PAGE_19	Terminada a fase de gerênciamento, chegou a hora de vermos as coisas acontecerem! Clicando no botão mais à esquerda, no painel que indica o "Dia". Dará-se inicio a um novo dia de trabalho. O que significa, clientes fazendo fila na sua porta e o doce som da caixa registradora!
+PAGE_20	Você pode adiantar um pouco as coisas se desejar através dos outros botões. Com nosso novo motor de dobra espacial, o tempo não é nada mais além de um  pedaço daquelas gosmas que você costumava brincar quando criança. Esticando e puxando...
+PAGE_21	Isso é tudo! Espero que você tenha sucesso no novo empreendimento!
+CREDITS	Créditos

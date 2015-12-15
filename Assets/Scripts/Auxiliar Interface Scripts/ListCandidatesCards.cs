@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ListCandidatesCards : MonoBehaviour {
 	public CandidateCard candidateCard;
+	public List<RuntimeAnimatorController> images = new List<RuntimeAnimatorController>();
 	private List<CandidateCard> cards = new List<CandidateCard> ();
 	private EstablishmentManagement establishmentManager;
 	// Use this for initialization
@@ -35,13 +37,18 @@ public class ListCandidatesCards : MonoBehaviour {
 			CandidateCard card = Instantiate(candidateCard);
 			card.transform.SetParent(this.transform);
 			card.transform.localScale = new Vector3(1,1,1);
-			//TODO: find image by candidate name
+
+			if(images.Count > e.id)
+				card.anim.runtimeAnimatorController = images[e.id];
+		
 			card.name.text = e.name.ToString();
 			card.profession.text = e.type.ToString();
 			card.skill.text = e.level.ToString();
 			card.happiness.text = e.happiness.ToString();
 			card.cost.text = e.HireCosts.ToString();
 			card.salary.text = e.Salary.ToString();
+			card.description.text = e.description;
+	
 			cards.Add(card);
 		}
 	}

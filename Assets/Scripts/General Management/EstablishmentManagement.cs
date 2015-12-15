@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 public class EstablishmentManagement{ 
 	public Establishment establishment;
 	private EstablishmentManagement(){
@@ -15,7 +14,7 @@ public class EstablishmentManagement{
 	private static EstablishmentManagement establishment_man = null;
 	public static EstablishmentManagement GetInstance(){
 		if (establishment_man == null) {
-			establishment_man = new EstablishmentManagement ();
+			establishment_man = new EstablishmentManagement();
 
 			if(!establishment_man.establishment.Initiate()){
 				Debug.LogError("Could not initiate some essencial resources.");
@@ -29,23 +28,32 @@ public class EstablishmentManagement{
 		establishment_man = null;
 	}
 
-	public void RunDailyPhase(){
-		Establishment e = establishment_man.establishment;
-		int number_of_requests = e.CalculateRequests ();
-		int requests_capacity = e.CalculateCapacity ();
 
-		MenuProvider menu = MenuProvider.GetInstance ();
+	Establishment e;
+	MenuProvider menu;
+	int number_of_requests;
+	int requests_capacity;
+	List<Dish> dishes_list;
+	List<int> orders;
+	List<int> attended;
+	List<int> not_attended;
+	int attended_count;
+
+	System.Random rand = new System.Random ();
+
+	public void DayPhaseSetup(){
+		e = establishment_man.establishment;
+		menu = MenuProvider.GetInstance ();
 		if (menu == null) {
 			Debug.LogError ("Failed to access the dishes menu");
 			return;
 		}
-
+		
+		number_of_requests = e.CalculateRequests ();
+		requests_capacity = e.CalculateCapacity ();
 		previous_day_cash = e.finances.StartingDayCash ();
 		management_costs = e.Cash () - previous_day_cash;
-
-		System.Random rand = new System.Random ();
-
-		List<Dish> dishes_list = null;
+		
 		if (establishment.CurrentDay() <= 5) {
 			dishes_list = menu.GetDishList ().FindAll (x => x.nivel == 1);
 		}
@@ -55,64 +63,79 @@ public class EstablishmentManagement{
 		else if (establishment.CurrentDay() > 15) {
 			dishes_list = menu.GetDishList ();
 		}
-
-		List<int> orders = new List<int> ();
+		
+		orders = new List<int> ();
 		for(int i=0; i<number_of_requests; i++){
 			int index = rand.Next (0, dishes_list.Count);
-			Debug.Log ("Prato: " + dishes_list[index].id);
 			orders.Add(dishes_list[index].id);
 		}
+		attended_count = 0;
+		day_phase_over = false;
+		attended = new List<int> ();
+		not_attended = new List<int>();
+		time_per_order = initial_time_per_order;
+		last_order_time = Time.time+4;
+	}
 
-		int attended_count = 0;
-		List<int> attended = new List<int> ();
-		List<int> not_attended = new List<int>();
-		while(attended_count < requests_capacity && orders.Count > 0 ) {
 
-			GameLog.Log(GameLog.kTClientOrder, menu.GetDishByID(orders[0]).name);
-
-			if(!e.IsOrderAvailable(orders[0])){
-				GameLog.Log(GameLog.kTClientOrderNotAttended);
-				not_attended.Add(orders[0]);
-				e.DecreaseSatisfactionByOrder();
-				orders.RemoveAt(0);
-				continue;
-			}
-			if(!e.MakeOrder(orders[0])){
-				GameLog.Log(GameLog.kTClientOrderNotAttended);
-				not_attended.Add(orders[0]);
-				e.DecreaseSatisfactionByOrder();
-				orders.RemoveAt(0);
-				continue;
-			}
-
-			GameLog.Log(GameLog.kTClientOrderAttended);
-			attended.Add(orders[0]);
-			e.IncreaseSatisfactionByOrder();
-			orders.RemoveAt(0);
-			attended_count++;
+	public void RunDayPhase(){
+	
+		if(paused){
+			return;	
+		}
+		//Actual day phase loop
+		if (attended_count > requests_capacity || orders.Count == 0) {
+			day_phase_over = true;
+			return;
 		}
 
+		//Create a wating time between orders 
+		if (Time.time - last_order_time < time_per_order) {
+			return;
+		}
+
+		GameLog.Log(GameLog.kTClientOrder, menu.GetDishByID(orders[0]).name);
+
+		if(!e.IsOrderAvailable(orders[0])){
+			GameLog.Log (GameLog.kTDishCannotBePrepared);
+			GameLog.Log(GameLog.kTClientOrderNotAttended);
+			not_attended.Add(orders[0]);
+			e.DecreaseSatisfactionByOrder();
+			orders.RemoveAt(0);
+			last_order_time = Time.time;
+			return;
+		}
+		if(!e.MakeOrder(orders[0])){
+			GameLog.Log(GameLog.kTClientOrderNotAttended);
+			not_attended.Add(orders[0]);
+			e.DecreaseSatisfactionByOrder();
+			orders.RemoveAt(0);
+			last_order_time = Time.time;
+			return;
+		}
+
+		GameLog.Log(GameLog.kTClientOrderAttended);
+		attended.Add(orders[0]);
+		e.IncreaseSatisfactionByOrder();
+		orders.RemoveAt(0);
+		attended_count++;
+		last_order_time = Time.time;
+		return;
+
+	}
+
+	public void CloseDayPhase(){
 		if (orders.Count > 0) {
 			GameLog.LogValueToken(orders.Count + " ", GameLog.kTClientsLeft);
 		}
-
-		if (attended_count < number_of_requests) {
-			//TODO: Message
-		}
-
+		time_per_order = initial_time_per_order;
 		total_request_number = number_of_requests;
 		attended_requests_number = attended_count;
 		current_capacity = requests_capacity;
 		day_income = e.Cash () - previous_day_cash - management_costs;
-	
 		e.NextDay ();
 	}
-
-	public static string save_key = "res_esq_fim_uni_sav";
-	public static string save_game = "";
-	public static string[] load_game;
-	public static string save_game_base64;
-	private static int loaded_inter;
+	
 	public void LocalSaveState(){
 		SaveCacheGameData ();
 
@@ -172,9 +195,24 @@ public class EstablishmentManagement{
 		AttributesManager.GetInstance ().LoadObjectState ();
 	}
 
+	public void Pause(){
+		paused = true;
+	}
 
+	public void Resume(){
+		paused = false;
+	}
+	public bool IsDayPhaseOver(){
+		return day_phase_over;
+	}
 
+	public void FastPhaseTime(){
+		time_per_order = 1;
+	}
 
+	public void SkipPhaseTime(){
+		time_per_order = 0;
+	}
 
 	public static void SaveAttribute(int attribute){
 		save_game += attribute.ToString () + "\n";
@@ -209,11 +247,26 @@ public class EstablishmentManagement{
 	public static void LoadAttribute(out string attribute){
 		attribute = load_game [loaded_inter++];
 	}
-	
+
+	public static string save_key = "res_esq_fim_uni_sav";
+	public static string save_game = "";
+	public static string[] load_game;
+	public static string save_game_base64;
+	private static int loaded_inter;
+
 	public double management_costs;
 	public double previous_day_cash;
 	public double day_income;
 	public int total_request_number;
 	public int attended_requests_number;
 	public int current_capacity;
+
+	private bool paused = false;
+	private bool day_phase = false;
+	private bool day_phase_over = true;
+
+	private float initial_time_per_order = 4;
+	private float time_per_order = 4;
+	private float last_order_time = 0;
+
 }

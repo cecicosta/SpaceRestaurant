@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ListEmployeesCards : MonoBehaviour {
 	public EmployeeCard employeeCard;
+	public List<RuntimeAnimatorController> images = new List<RuntimeAnimatorController>();
 	private List<EmployeeCard> cards = new List<EmployeeCard> ();
 	private EstablishmentManagement establishmentManager;
 	// Use this for initialization
@@ -35,13 +36,17 @@ public class ListEmployeesCards : MonoBehaviour {
 			EmployeeCard card = Instantiate(employeeCard);
 			card.transform.SetParent(this.transform);
 			card.transform.localScale = new Vector3(1,1,1);
-			//TODO: find image by candidate name
+
+			if(images.Count > e.id)
+				card.anim.runtimeAnimatorController = images[e.id];
+
 			card.name.text = e.name.ToString();
 			card.profession.text = e.type.ToString();
 			card.skill.text = e.level.ToString();
 			card.happiness.text = e.happiness.ToString();
 			card.salary.text = e.Salary.ToString();
 			card.cost.text = e.DismissCosts.ToString();
+			card.description.text = e.description;
 			cards.Add(card);
 		}
 	}

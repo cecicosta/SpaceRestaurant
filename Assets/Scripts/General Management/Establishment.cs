@@ -9,11 +9,8 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Establishment{
-
-	public int kDaysBetweenPayment = 5;
+	
 	private static int kActionCleaningCost = 1;
-	private static int kIncreaseSatisfactionByOrderRate = 2;
-	private static int kDecreaseSatisfactionByOrderRate = -5;
 	private static int kActionBuyEquipmentCost = 1;
 	private static int kActionAdvertisementCost = 1;
 	private static int kActionIncreaseDecreasePricesCost = 1;
@@ -21,7 +18,7 @@ public class Establishment{
 	private static int kActionTrainHappinessCost = 1;
 	private static int kActionTrainLevelCost = 1;
 	private static int kActionHireCost = 1;
-	private static int kAdsDiscountMultiplier = 2;
+	private static int kAdsDiscountMultiplier = 4;
 	private static int kIngredientsDiscountMultiplier = 2;
 	private static int kMaxScore = 1000000;
 
@@ -308,7 +305,7 @@ public class Establishment{
 			if(e.dishes.Contains(number))
 				return true;
 		}
-		GameLog.Log (GameLog.kTDishCannotBePrepared);
+
 		return false;
 	}
 
@@ -452,12 +449,12 @@ public class Establishment{
 
 
 	public void IncreaseSatisfactionByOrder(){
-		GameLog.Log(GameLog.kTSatisfactionIncreased, kIncreaseSatisfactionByOrderRate.ToString());
-		marketing.Satisfaction += kIncreaseSatisfactionByOrderRate;
+		GameLog.Log(GameLog.kTSatisfactionIncreased, increaseSatisfactionByOrderRate.ToString());
+		marketing.Satisfaction += increaseSatisfactionByOrderRate;
 	}
 	public void DecreaseSatisfactionByOrder(){
-		GameLog.Log(GameLog.kTSatisfactionDecreased, kDecreaseSatisfactionByOrderRate.ToString());
-		marketing.Satisfaction += kDecreaseSatisfactionByOrderRate;
+		GameLog.Log(GameLog.kTSatisfactionDecreased, decreaseSatisfactionByOrderRate.ToString());
+		marketing.Satisfaction += decreaseSatisfactionByOrderRate;
 	}
 
 	public void DirtnessTemporaryEffects(){
@@ -531,10 +528,25 @@ public class Establishment{
 	public void PaySalaries(){
 		if (logistics.CurrentDay % 5 == 0) {
 			double payment = alien_resources.CalculateEmployeesPayment ();
-			GameLog.Log(GameLog.kTSalariesPayment);
+
+			if (finances.Cash - payment > 0){	
+				GameLog.Log (GameLog.kTSalariesPayment);
 			finances.Cash -= payment;
+			}else{
+				GameLog.Log(GameLog.kNoCashToPaySalaries);
+				GameLog.Log(GameLog.kTEmployeesHappinessDecreased, "1 ", GameLog.kTPoints);
+				AttributeModifiers.EmployeeHappinessModifierAll(this, -1);
+			}
 		}
 	}
+
+	public void CheckEmployesSelfDismiss(){
+		foreach(Employee e in alien_resources.GetEmployeesList()){
+			if(e.happiness == 0)
+				alien_resources.DismissEmployee(e.name);
+		}
+	}
+
 	public void CheckGameOverConditions(){
 		if (infrastructure.Dirtiness >= 10) {
 			game_over_message = GameTranslator.Instance.Translate(GameLog.kTTooDirt);
@@ -567,6 +579,11 @@ public class Establishment{
 		satisfactionIncrementByPrice = at_m.IntValue ("satisfaction_increment");
 		cleaning_costs = at_m.IntValue ("cleaning_costs");
 		requestCalcFactorRange = at_m.RangeValue ("requests_calc_factor_range");
+		
+		increaseSatisfactionByOrderRate = at_m.IntValue ("increase_satisfaction_by_order_rate");
+		decreaseSatisfactionByOrderRate = at_m.IntValue ("decrease_satisfaction_by_order_rate");
+		daysBetweenPayment = at_m.IntValue ("days_between_payment");
+
 		return true;
 	}
 
@@ -614,7 +631,12 @@ public class Establishment{
 	private static int satisfactionIncrementByPrice; //Incremental value of satisfaction over price changes
 	private static int cleaning_costs;
 	private static int[] requestCalcFactorRange;
-	private System.Random generator;
+	private static int increaseSatisfactionByOrderRate = 2;
+	private static int decreaseSatisfactionByOrderRate = -5;
+	public static int daysBetweenPayment = 5;
+
+	private System.Random generator = new System.Random();
+
 
 	//States to save
 	public int action_points;

@@ -1,0 +1,5 @@
+﻿Ingredientes Comuns	i.c	10	0	Ingredientes encontrados em qualquer esquina da galáxia
+Ingredientes Incomuns	i.i	20	0	A Gourmetização dos Ingredientes Comuns
+Ingredientes Exóticos	i.e	30	0	É necessário viajar até os confins do universo para encontrar esses
+Tempero Comum	t.c	10	1	Porque o melhor tempero não é um amor
+Tempero Exótico	t.e	30	2	Para quem quer dar aquela apimentadinha na comida literalmente

@@ -16,6 +16,7 @@ public class Employee{
 		level = c.level;
 		happiness = c.happiness;
 		description = c.description;
+		id = c.id;
 		dishes = new List<int> ();
 		foreach (int d in c.dishes) {
 			dishes.Add(d);
@@ -95,7 +96,7 @@ public class Employee{
 		EstablishmentManagement.SaveAttribute (level);
 		EstablishmentManagement.SaveAttribute (happiness);
 		EstablishmentManagement.SaveAttribute (hire_costs);
-
+		EstablishmentManagement.SaveAttribute (id);
 		EstablishmentManagement.SaveAttribute (dishes.Count);
 		foreach (int d in dishes) {
 			EstablishmentManagement.SaveAttribute(d);
@@ -113,6 +114,7 @@ public class Employee{
 		EstablishmentManagement.LoadAttribute (out level);
 		EstablishmentManagement.LoadAttribute (out happiness);
 		EstablishmentManagement.LoadAttribute (out hire_costs);
+		EstablishmentManagement.LoadAttribute (out id);
 
 		dishes.Clear();
 		int count;
@@ -130,6 +132,7 @@ public class Employee{
 	public int level;
 	public int happiness;
 	public double hire_costs;
+	public int id;
 	public List<int> dishes;
 	public enum Type{chef, waiter, marketing, finances};
 
@@ -147,7 +150,11 @@ public class EmployeesProvider{
 
 	public bool Initiate(){
 
-		string employees = System.IO.File.ReadAllText ("Assets/employees.txt");
+
+		TextAsset bindata= Resources.Load("employees") as TextAsset;
+		string employees = bindata.text;
+
+		//string employees = System.IO.File.ReadAllText ("Assets/employees.txt");
 		if(employees.CompareTo("") == 0){
 			return false;
 		}
@@ -195,6 +202,7 @@ public class EmployeesProvider{
 			System.Int32.TryParse (str, out dish);
 			candidate.dishes.Add(dish);
 		}
+		candidate.id = candidates.Count;
 		candidates.Add (candidate);
 	}
 

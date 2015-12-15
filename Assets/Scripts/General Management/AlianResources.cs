@@ -43,8 +43,10 @@ public class AlianResources{
 			MenuProvider menu = MenuProvider.GetInstance();
 			if(menu == null)
 				return false;
-			List<Dish> dishes = menu.GetDishList().FindAll(
-								x => x.nivel == employee.level+1);
+			List<Dish> dishes = menu.GetDishList();
+			foreach(int i in employee.dishes){
+				dishes.Remove(dishes.Find(x => x.id == i));
+			}
 			System.Random generator = new System.Random();
 			Dish dish = dishes[generator.Next(0,dishes.Count-1)];
 			dishes.Remove(dish);

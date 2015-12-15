@@ -58,7 +58,10 @@ public class IngredientsProvider {
 		ingredients = new List<Ingredient> ();
 	}
 	public bool Initiate(){
-		string ingredients_file = System.IO.File.ReadAllText ("Assets/ingredients.txt");
+
+		TextAsset bindata= Resources.Load("ingredients") as TextAsset;
+		string ingredients_file = bindata.text;
+		//string ingredients_file = System.IO.File.ReadAllText ("Assets/ingredients.txt");
 		if(ingredients_file.CompareTo("") == 0){
 			return false;
 		}

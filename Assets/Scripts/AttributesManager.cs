@@ -43,7 +43,11 @@ public class AttributesManager  {
 	}
 	
 	private bool Initiate(){
-		string attributes_file = System.IO.File.ReadAllText ("Assets/attributes.txt");
+
+		TextAsset bindata= Resources.Load("attributes") as TextAsset;
+		string attributes_file = bindata.text;
+
+		//string attributes_file = System.IO.File.ReadAllText ("Assets/attributes.txt");
 		if(attributes_file.CompareTo("") == 0){
 			return false;
 		}

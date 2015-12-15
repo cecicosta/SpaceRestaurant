@@ -15,6 +15,7 @@ public class Equipment{
 		effect = e.effect;
 		description = e.description;
 		available = e.available;
+		id = e.id;
 		variable_modifiers = new List<Modifier> ();
 		constant_modifiers = new List<Modifier> ();
 		foreach (Modifier mod in e.variable_modifiers) {
@@ -31,6 +32,7 @@ public class Equipment{
 		EstablishmentManagement.SaveAttribute (description);
 		EstablishmentManagement.SaveAttribute (effect);
 		EstablishmentManagement.SaveAttribute (available);
+		EstablishmentManagement.SaveAttribute (id);
 		EstablishmentManagement.SaveAttribute (variable_modifiers.Count);
 		foreach(Modifier m in variable_modifiers){
 			m.SaveObjectState();
@@ -47,6 +49,7 @@ public class Equipment{
 		EstablishmentManagement.LoadAttribute (out description);
 		EstablishmentManagement.LoadAttribute (out effect);
 		EstablishmentManagement.LoadAttribute (out available);
+		EstablishmentManagement.LoadAttribute (out id);
 		int size;
 		EstablishmentManagement.LoadAttribute (out size);
 		for(int i=0; i<size; i++){
@@ -78,6 +81,7 @@ public class Equipment{
 	public List<Modifier> constant_modifiers;
 	public string description;
 	public bool available;
+	public int id;
 }
 
 public class EquipmentsProvider {
@@ -86,7 +90,10 @@ public class EquipmentsProvider {
 		equipments = new List<Equipment> ();
 	}
 	public bool Initiate(){
-		string equipments_files = System.IO.File.ReadAllText ("Assets/equipments.txt");
+
+		TextAsset bindata= Resources.Load("equipments") as TextAsset;
+		string equipments_files = bindata.text;
+		//string equipments_files = System.IO.File.ReadAllText ("Assets/equipments.txt");
 		if(equipments_files.CompareTo("") == 0){
 			return false;
 		}
@@ -110,6 +117,7 @@ public class EquipmentsProvider {
 		System.Double.TryParse (fields [4], out price);
 		equipment.Price = price;
 		equipment.description = fields [5];
+		equipment.id = equipments.Count;
 		equipments.Add (equipment);
 	}
 

@@ -73,7 +73,11 @@ public class MenuProvider{
 	}
 
 	public bool Initiate(){
-		string dishes_file = System.IO.File.ReadAllText ("Assets/dishes.txt");
+
+		TextAsset bindata= Resources.Load("dishes") as TextAsset;
+		string dishes_file = bindata.text;
+		//
+		//string dishes_file = System.IO.File.ReadAllText ("Assets/dishes.txt");
 		if(dishes_file.CompareTo("") == 0){
 			return false;
 		}
