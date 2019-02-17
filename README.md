@@ -12,9 +12,9 @@ Some upgrades will be available as new workers with higher skill levels to hire 
 
 Among these:
 
-** Cheefs, waiters, marketing and finances professionals
-** Brand new (or not so) equipaments for the kitchen
-** Rare ingredients 
+* Cheefs, waiters, marketing and finances professionals;
+* Brand new (or not so) equipaments for the kitchen;
+* Rare ingredients . 
 
 And some more...
 
